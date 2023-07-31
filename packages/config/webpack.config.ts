@@ -8,7 +8,7 @@ export default {
 	},
 
 	output: {
-		filename: '[name].js',
+		filename: '[name]/[name].js',
 		path: __dirname + '/dist',
 	},
 
@@ -51,4 +51,6 @@ export default {
 			},
 		],
 	},
+
+	target: 'node',
 } as Configuration;
