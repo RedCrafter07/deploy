@@ -17,7 +17,7 @@ export default {
 	},
 
 	module: {
-		loaders: [
+		rules: [
 			{
 				test: /\.tsx?$/,
 				loader: 'swc-loader',
