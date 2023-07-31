@@ -4,7 +4,7 @@ import type { Swcrc } from '@swc/core';
 export default {
 	entry: {
 		client: './src/client/index.tsx',
-		server: './src/server/index.tsx',
+		server: './src/server/index.ts',
 	},
 
 	output: {
