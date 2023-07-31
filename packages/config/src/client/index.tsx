@@ -1,9 +1,13 @@
-import 'index.css';
+import './index.css';
+import ReactDOM from 'react-dom/client';
+import React from 'react';
 
-export default function App() {
+function App() {
 	return (
 		<>
 			<h1>Hi</h1>
 		</>
 	);
 }
+
+ReactDOM.createRoot(document.querySelector('#root')!).render(<App />);
