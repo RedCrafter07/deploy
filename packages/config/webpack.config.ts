@@ -41,6 +41,14 @@ export default {
 					},
 				} as Swcrc,
 			},
+			{
+				test: /\.css$/,
+				use: ['style-loader', 'css-loader'],
+			},
+			{
+				test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+				loader: 'url-loader',
+			},
 		],
 	},
 } as Configuration;
