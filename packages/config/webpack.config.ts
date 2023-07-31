@@ -9,11 +9,11 @@ export default {
 
 	output: {
 		filename: '[name].js',
-		path: './dist',
+		path: __dirname + '/dist',
 	},
 
 	resolve: {
-		extensions: ['', '.ts', '.tsx', '.js', '.jsx'],
+		extensions: ['.ts', '.tsx', '.js', '.jsx'],
 	},
 
 	module: {
