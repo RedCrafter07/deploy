@@ -4,7 +4,7 @@
 	"description": "The config for RedDeploy",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"dev": "webpack watch -c webpack.config.ts --mode development"
 	},
 	"keywords": [],
 	"author": "RedCrafter07",
