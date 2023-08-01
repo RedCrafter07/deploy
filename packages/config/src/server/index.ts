@@ -46,7 +46,7 @@ let blockConfig = false;
 			await docker.pull('ghcr.io/RedCrafter07/deploy/web');
 
 			socket.emit('step', 'Pulling images... (4/4)');
-			await docker.pull('ghcr.io/RedCrafter07/deploy/proxy');
+			// await docker.pull('ghcr.io/RedCrafter07/deploy/proxy');
 
 			socket.emit('step', 'Creating network... (1/2)');
 			await docker.createNetwork({
@@ -120,7 +120,7 @@ let blockConfig = false;
 			});
 
 			socket.emit('step', 'Creating containers... (4/4)');
-			await docker.createContainer({
+			/* await docker.createContainer({
 				Image: 'ghcr.io/RedCrafter07/deploy/proxy',
 				name: 'reddeploy-proxy',
 				Env: [
@@ -131,7 +131,7 @@ let blockConfig = false;
 				HostConfig: {
 					NetworkMode: 'reddeploy-proxy',
 				},
-			});
+			}); */
 
 			socket.emit('step', 'Starting containers... (1/4)');
 			await docker.getContainer('reddeploy-mongo').start();
@@ -143,7 +143,7 @@ let blockConfig = false;
 			await docker.getContainer('reddeploy-web').start();
 
 			socket.emit('step', 'Starting containers... (4/4)');
-			await docker.getContainer('reddeploy-proxy').start();
+			// await docker.getContainer('reddeploy-proxy').start();
 
 			// TODO: Import config to database
 
