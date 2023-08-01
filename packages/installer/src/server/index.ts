@@ -16,7 +16,11 @@ const docker = new Dockerode({
 		transports: ['websocket'],
 	});
 
-	io.on('connect', (socket) => {});
+	io.on('connect', (socket) => {
+		socket.on('from', (data: string) => {
+			if (data == 'config') socket.emit('reload');
+		});
+	});
 
 	await mkdir(path.join(__dirname, '..', '..', 'data'), { recursive: true });
 
