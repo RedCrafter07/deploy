@@ -150,7 +150,22 @@ function App() {
 
 					<div className='my-4' />
 
-					<h3 className='text-xl'>5. Finish configuration!</h3>
+					<h3 className='text-xl'>5. Install URL</h3>
+					<p>Choose the URL on your server to install RedDeploy to</p>
+
+					<div className='my-2' />
+
+					<input
+						type='text'
+						name='install'
+						placeholder='/opt/reddeploy'
+						className='input'
+						defaultValue='/opt/reddeploy'
+					/>
+
+					<div className='my-4' />
+
+					<h3 className='text-xl'>6. Finish configuration!</h3>
 					<p>
 						You're almost done! Just click the button below to finish the
 						configuration.
