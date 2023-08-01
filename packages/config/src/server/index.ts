@@ -40,13 +40,13 @@ let blockConfig = false;
 			await docker.pull('mongo:4.2.17');
 
 			socket.emit('step', 'Pulling images... (2/4)');
-			await docker.pull('ghcr.io/RedCrafter07/deploy/cm');
+			await docker.pull('ghcr.io/RedCrafter07/deploy/cm:prod');
 
 			socket.emit('step', 'Pulling images... (3/4)');
-			await docker.pull('ghcr.io/RedCrafter07/deploy/web');
+			await docker.pull('ghcr.io/RedCrafter07/deploy/web:prod');
 
 			socket.emit('step', 'Pulling images... (4/4)');
-			// await docker.pull('ghcr.io/RedCrafter07/deploy/proxy');
+			// await docker.pull('ghcr.io/RedCrafter07/deploy/proxy:prod');
 
 			socket.emit('step', 'Creating network... (1/2)');
 			await docker.createNetwork({
