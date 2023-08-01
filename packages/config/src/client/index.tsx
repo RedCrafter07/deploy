@@ -34,7 +34,21 @@ function App() {
 
 						const data = new FormData(e.target as HTMLFormElement);
 
-						console.log(data);
+						const domain = data.get('domain') as string;
+						const username = data.get('username') as string;
+						const password = data.get('password') as string;
+						const proxy = data.get('proxy') as string;
+						const prefix = data.get('prefix') as string;
+						const install = data.get('install') as string;
+
+						socket.emit('config', {
+							domain,
+							username,
+							password,
+							proxy,
+							prefix,
+							install,
+						});
 					}}
 				>
 					<h3 className='text-xl'>1. Access URL</h3>
