@@ -5,7 +5,12 @@ import { createHttpTerminator } from 'http-terminator';
 import path from 'path';
 import { Server as SocketServer } from 'socket.io';
 import Dockerode from 'dockerode';
-import { pullImage } from './lib/docker';
+import {
+	createContainer,
+	createNetwork,
+	createVolume,
+	pullImage,
+} from './lib/docker';
 
 const docker = new Dockerode({
 	socketPath: '/var/run/docker.sock',
@@ -50,31 +55,21 @@ let blockConfig = false;
 			// await pullImage('ghcr.io/redcrafter07/deploy/proxy:prod');
 
 			socket.emit('step', 'Creating network... (1/2)');
-			await docker.createNetwork({
-				Name: 'reddeploy',
-				Attachable: true,
-			});
+			await createNetwork('reddeploy');
 
 			socket.emit('step', 'Creating network... (2/2)');
-			await docker.createNetwork({
-				Name: 'reddeploy-proxy',
-				Attachable: true,
-			});
+			await createNetwork('reddeploy-proxy');
 
 			socket.emit('step', 'Creating volumes... (1/2)');
-			await docker.createVolume({
-				Name: 'reddeploy-mongo',
-			});
+			await createVolume('reddeploy-mongo');
 
 			socket.emit('step', 'Creating volumes... (2/2)');
-			await docker.createVolume({
-				Name: 'reddeploy-cm-cache',
-			});
+			await createVolume('reddeploy-cm-cache');
 
 			socket.emit('step', 'Creating containers... (1/4)');
-			await docker.createContainer({
+			await createContainer({
 				Image: 'docker.io/mongo:4.2.17',
-				name: 'reddeploy-mongo',
+				Name: 'reddeploy-mongo',
 				Env: [
 					'MONGO_INITDB_ROOT_USERNAME=root',
 					'MONGO_INITDB_ROOT_PASSWORD=reddeploy',
@@ -90,9 +85,9 @@ let blockConfig = false;
 			});
 
 			socket.emit('step', 'Creating containers... (2/4)');
-			await docker.createContainer({
+			await createContainer({
 				Image: 'ghcr.io/redcrafter07/deploy/cm:prod',
-				name: 'reddeploy-cm',
+				Name: 'reddeploy-cm',
 				Env: [
 					'CM_MONGO_HOST=reddeploy-mongo',
 					'CM_MONGO_PORT=27017',
@@ -111,9 +106,9 @@ let blockConfig = false;
 			});
 
 			socket.emit('step', 'Creating containers... (3/4)');
-			await docker.createContainer({
+			await createContainer({
 				Image: 'ghcr.io/redcrafter07/deploy/web:prod',
-				name: 'reddeploy-web',
+				Name: 'reddeploy-web',
 				Env: ['WEB_CM_HOST=reddeploy-cm', 'WEB_CM_PORT=8080', 'WEB_PORT=80'],
 				HostConfig: {
 					NetworkMode: 'reddeploy',
