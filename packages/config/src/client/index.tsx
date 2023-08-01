@@ -165,7 +165,7 @@ function App() {
 					<div className='my-4' />
 
 					<h3 className='text-xl'>5. Install URL</h3>
-					<p>Choose the URL on your server to install RedDeploy to</p>
+					<p>The location on your server for the docker compose file</p>
 
 					<div className='my-2' />
 
