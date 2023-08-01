@@ -103,6 +103,27 @@ function App() {
 							An additional NGINX proxy instance (coming soon)
 						</label>
 					</div>
+
+					<div className='my-4' />
+
+					<h3 className='text-xl'>4. Container prefix</h3>
+					<p>
+						This is the prefix RedDeploy will add automatically to project
+						containers. For example, if you set this to <code>rd</code>, a
+						project named <code>test</code> will be named <code>rd-test</code>.
+					</p>
+
+					<div className='my-2' />
+
+					<input
+						type='text'
+						name='prefix'
+						placeholder='Prefix'
+						className='input'
+						defaultValue='rd'
+					/>
+
+					<div className='my-4' />
 				</form>
 			</div>
 		</div>
