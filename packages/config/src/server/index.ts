@@ -146,7 +146,9 @@ let blockConfig = false;
 
 			socket.emit('step', 'Done! You can close this tab now.');
 
-			process.exit(0);
+			setTimeout(() => {
+				process.exit(0);
+			}, 500);
 		});
 	});
 
