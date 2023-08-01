@@ -36,7 +36,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: 'latest'
           labels: ${{ steps.meta.outputs.labels }}
           file: ./packages/config/Dockerfile
   installer:
@@ -61,6 +61,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: 'latest'
           labels: ${{ steps.meta.outputs.labels }}
           file: ./packages/installer/Dockerfile
