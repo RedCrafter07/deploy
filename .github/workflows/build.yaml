@@ -39,7 +39,7 @@ jobs:
           tags: 'latest'
           labels: ${{ steps.meta.outputs.labels }}
           file: ./packages/config/Dockerfile
-  installer:
+  web:
     runs-on: self-hosted
     steps:
       - name: Set up QEMU
@@ -56,11 +56,11 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/installer
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/web
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
           push: true
           tags: 'latest'
           labels: ${{ steps.meta.outputs.labels }}
-          file: ./packages/installer/Dockerfile
+          file: ./packages/web/Dockerfile
