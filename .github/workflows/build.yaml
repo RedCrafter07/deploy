@@ -49,6 +49,5 @@ jobs:
           push: true
           tags: 'latest'
           labels: ${{ steps.meta.outputs.labels }}
-          target: ${{ matrix.image }}
           context: ${{ matrix.dir }}
           file: ${{ matrix.dir }}/Dockerfile
