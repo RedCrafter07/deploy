@@ -70,7 +70,16 @@ function App() {
 					<div className='my-4' />
 
 					<h3 className='text-xl'>3. Proxy</h3>
-					<p>Configure your proxy for Project URLs!</p>
+					<p>
+						Configure your reverse proxy for Project URLs.{' '}
+						<a
+							href='https://www.wikiwand.com/en/Reverse_proxy'
+							className='underline'
+							target='_blank'
+						>
+							Learn more about reverse proxies
+						</a>
+					</p>
 
 					<div className='my-2' />
 
@@ -110,7 +119,8 @@ function App() {
 					<p>
 						This is the prefix RedDeploy will add automatically to project
 						containers. For example, if you set this to <code>rd</code>, a
-						project named <code>test</code> will be named <code>rd-test</code>.
+						project named <code>test</code> will have the container name{' '}
+						<code>rd-test</code>.
 					</p>
 
 					<div className='my-2' />
