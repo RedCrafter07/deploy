@@ -64,7 +64,21 @@ async function createContainer(container: Container) {
 		data: container,
 	});
 
-	console.log(req.data);
+	return req.data.Id;
 }
 
-export { pullImage, createNetwork, createVolume, createContainer };
+async function startContainer(id: string) {
+	await axios({
+		socketPath: '/var/run/docker.sock',
+		method: 'POST',
+		url: `/containers/${id}/start`,
+	});
+}
+
+export {
+	pullImage,
+	createNetwork,
+	createVolume,
+	createContainer,
+	startContainer,
+};
