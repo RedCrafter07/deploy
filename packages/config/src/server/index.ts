@@ -22,7 +22,10 @@ let blockConfig = false;
 	const terminator = createHttpTerminator({ server });
 
 	io.on('connect', (socket) => {
-		if (blockConfig) return;
+		if (blockConfig) {
+			socket.emit('view', 'install');
+			return;
+		}
 		blockConfig = true;
 
 		socket.on('config', async (data) => {
@@ -144,8 +147,7 @@ let blockConfig = false;
 
 			// TODO: Import config to database
 
-			socket.emit('step', 'Done!');
-			socket.emit('view', 'done');
+			socket.emit('step', 'Done! You can close this tab now.');
 		});
 	});
 
