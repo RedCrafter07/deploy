@@ -35,4 +35,30 @@ async function createVolume(name: string) {
 	});
 }
 
-export { pullImage, createNetwork, createVolume };
+type Container = Partial<{
+	Name: string;
+	Image: string;
+	Env: string[];
+	HostConfig: {
+		NetworkMode?: string;
+		Binds?: string[];
+	};
+	Volumes: {
+		[key: string]: {
+			Name: string;
+		};
+	};
+}>;
+
+async function createContainer(container: Container) {
+	const req = await axios({
+		socketPath: '/var/run/docker.sock',
+		method: 'POST',
+		url: '/containers/create',
+		data: container,
+	});
+
+	console.log(req.data);
+}
+
+export { pullImage, createNetwork, createVolume, createContainer };
