@@ -10,7 +10,7 @@ import Spinner from './components/Spinner';
 function App() {
 	const socket = useSocket();
 
-	type View = 'config' | 'install' | 'done';
+	type View = 'config' | 'install';
 	const [view, setView] = useState<View>('config');
 	const [step, setStep] = useState<string>('Initializing...');
 
