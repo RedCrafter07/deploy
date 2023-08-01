@@ -1,5 +1,5 @@
 import express from 'express';
-import { mkdir } from 'fs/promises';
+import { mkdir, writeFile } from 'fs/promises';
 import { createServer } from 'http';
 import path from 'path';
 import { Server as SocketServer } from 'socket.io';
@@ -11,7 +11,14 @@ import { Server as SocketServer } from 'socket.io';
 		transports: ['websocket'],
 	});
 
-	io.on('connect', (socket) => {});
+	io.on('connect', (socket) => {
+		socket.on('config', async (data) => {
+			await writeFile(
+				path.join(__dirname, '..', '..', 'data', 'config.json'),
+				JSON.stringify(data, null, 2),
+			);
+		});
+	});
 
 	await mkdir(path.join(__dirname, '..', '..', 'data'), { recursive: true });
 
