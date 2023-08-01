@@ -16,7 +16,15 @@ function App() {
 
 				<div className='my-4' />
 
-				<form>
+				<form
+					onSubmit={(e) => {
+						e.preventDefault();
+
+						const data = new FormData(e.target as HTMLFormElement);
+
+						console.log(data);
+					}}
+				>
 					<h3 className='text-xl'>1. Access URL</h3>
 					<p>
 						Let's configure your Access URL first. You should choose a domain
