@@ -72,7 +72,7 @@ let blockConfig = false;
 
 			socket.emit('step', 'Creating containers... (1/4)');
 			await docker.createContainer({
-				Image: 'mongo:4.2.17',
+				Image: 'docker.io/mongo:4.2.17',
 				name: 'reddeploy-mongo',
 				Env: [
 					'MONGO_INITDB_ROOT_USERNAME=root',
