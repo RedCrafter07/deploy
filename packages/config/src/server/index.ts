@@ -145,6 +145,8 @@ let blockConfig = false;
 			// TODO: Import config to database
 
 			socket.emit('step', 'Done! You can close this tab now.');
+
+			process.exit(0);
 		});
 	});
 
