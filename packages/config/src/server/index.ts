@@ -3,6 +3,11 @@ import { mkdir, writeFile } from 'fs/promises';
 import { createServer } from 'http';
 import path from 'path';
 import { Server as SocketServer } from 'socket.io';
+import Dockerode from 'dockerode';
+
+const docker = new Dockerode({
+	socketPath: '/var/run/docker.sock',
+});
 
 (async () => {
 	const app = express();
@@ -17,6 +22,8 @@ import { Server as SocketServer } from 'socket.io';
 				path.join(__dirname, '..', '..', 'data', 'config.json'),
 				JSON.stringify(data, null, 2),
 			);
+
+			socket.emit('step', 'Pulling installer image...');
 		});
 	});
 
