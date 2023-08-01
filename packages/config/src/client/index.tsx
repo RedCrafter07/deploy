@@ -5,11 +5,14 @@ import '@fontsource/figtree/700.css';
 import '@fontsource/figtree/900.css';
 import './index.css';
 import useSocket from './util/useSocket';
+import Spinner from './components/Spinner';
 
 function App() {
 	const socket = useSocket();
 
-	const [view, setView] = useState<'config' | 'install'>('config');
+	type View = 'config' | 'install' | 'done';
+	const [view, setView] = useState<View>('config');
+	const [step, setStep] = useState<string>('Initializing...');
 
 	useEffect(() => {
 		socket.on('connect', () => {
@@ -20,11 +23,15 @@ function App() {
 			window.location.reload();
 		});
 
+		socket.on('view', (view: View) => setView(view));
+
+		socket.on('step', (step: string) => setStep(step));
+
 		socket.connect();
 	}, []);
 
-	return (
-		<div className='bg-zinc-800 text-zinc-100 min-h-screen'>
+	const Config = () => {
+		return (
 			<div className='container mx-auto p-2'>
 				<h1 className='text-3xl'>Welcome to the RedDeploy Configuration!</h1>
 				<p>
@@ -181,6 +188,22 @@ function App() {
 					</button>
 				</form>
 			</div>
+		);
+	};
+
+	return (
+		<div className='bg-zinc-800 text-zinc-100 min-h-screen'>
+			{view === 'config' && <Config />}
+			{view === 'install' && (
+				<div className='w-full h-full grid place-items-center'>
+					<div className='flex flex-col gap-2'>
+						<h1 className='text-3xl'>Installing RedDeploy...</h1>
+						<p>RedDeploy is being installed. This might take a few minutes.</p>
+						<Spinner />
+						<p>{step}</p>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }
