@@ -5,7 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "concurrently \"webpack watch -c webpack.config.ts --mode development\" \"tsx watch --clear-screen=false ./src/server/index.ts\"",
-		"build": "webpack -c webpack.config.ts --mode production && tsc",
+		"build": "webpack -c webpack.config.ts --mode production && pnpm build:server",
+		"build:server": "esbuild src/server/index.ts --bundle --platform=node --packages=external --outfile=dist/server/index.js",
 		"start": "node dist/server/index.js"
 	},
 	"keywords": [],
@@ -26,6 +27,7 @@
 		"concurrently": "^8.2.0",
 		"css-loader": "^6.8.1",
 		"dockerode": "^3.3.5",
+		"esbuild": "^0.18.17",
 		"esbuild-loader": "^3.1.0",
 		"express": "^4.18.2",
 		"http-terminator": "^3.2.0",
