@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { io } from 'socket.io-client';
 
 export default function useSocket() {
