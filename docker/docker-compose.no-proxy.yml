@@ -21,3 +21,9 @@ services:
       MONGO_INITDB_ROOT_USERNAME: reddeploy
       MONGO_INITDB_ROOT_PASSWORD: '{{INSERT}}'
     command: mongod --auth
+  proxy:
+    container_name: rd-proxy
+    image: ghcr.io/RedCrafter07/deploy/proxy
+    restart: always
+    environment:
+      USE_NPM: true
