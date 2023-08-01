@@ -20,11 +20,11 @@ jobs:
       matrix:
         include:
           - image: config
-            dir: ./packages/config
+            dir: /packages/config
           - image: web
-            dir: ./packages/web
+            dir: /packages/web
           - image: cm
-            dir: ./packages/container-management
+            dir: /packages/container-management
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
