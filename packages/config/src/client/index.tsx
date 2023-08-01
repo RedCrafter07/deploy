@@ -134,6 +134,18 @@ function App() {
 					/>
 
 					<div className='my-4' />
+
+					<h3 className='text-xl'>5. Finish configuration!</h3>
+					<p>
+						You're almost done! Just click the button below to finish the
+						configuration.
+					</p>
+
+					<div className='my-2' />
+
+					<button type='submit' className=''>
+						Finish configuration
+					</button>
 				</form>
 			</div>
 		</div>
