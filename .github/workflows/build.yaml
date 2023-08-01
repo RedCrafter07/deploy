@@ -25,6 +25,9 @@ jobs:
             dir: ./packages/web
           - image: cm
             dir: ./packages/container-management
+    defaults:
+      run:
+        working-directory: ${{ matrix.dir }}
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -48,4 +51,3 @@ jobs:
           tags: 'latest'
           labels: ${{ steps.meta.outputs.labels }}
           context: .
-          file: ${{ matrix.dir }}/Dockerfile
