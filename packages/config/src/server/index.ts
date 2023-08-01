@@ -37,7 +37,7 @@ let blockConfig = false;
 			);
 
 			socket.emit('step', 'Pulling images... (1/4)');
-			await docker.pull('mongo:4.2.17');
+			await docker.pull('docker.io/mongo:4.2.17');
 
 			socket.emit('step', 'Pulling images... (2/4)');
 			await docker.pull('ghcr.io/redcrafter07/deploy/cm:prod');
