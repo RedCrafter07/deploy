@@ -72,7 +72,7 @@ let blockConfig = false;
 
 			socket.emit('step', 'Creating containers... (1/4)');
 			await docker.createContainer({
-				Image: 'docker.io/mongo:4.2.17',
+				Image: 'mongo',
 				name: 'reddeploy-mongo',
 				Env: [
 					'MONGO_INITDB_ROOT_USERNAME=root',
@@ -90,7 +90,7 @@ let blockConfig = false;
 
 			socket.emit('step', 'Creating containers... (2/4)');
 			await docker.createContainer({
-				Image: 'ghcr.io/redcrafter07/deploy/cm:prod',
+				Image: 'ghcr.io/redcrafter07/deploy/cm',
 				name: 'reddeploy-cm',
 				Env: [
 					'CM_MONGO_HOST=reddeploy-mongo',
@@ -111,7 +111,7 @@ let blockConfig = false;
 
 			socket.emit('step', 'Creating containers... (3/4)');
 			await docker.createContainer({
-				Image: 'ghcr.io/redcrafter07/deploy/web:prod',
+				Image: 'ghcr.io/redcrafter07/deploy/web',
 				name: 'reddeploy-web',
 				Env: ['WEB_CM_HOST=reddeploy-cm', 'WEB_CM_PORT=8080', 'WEB_PORT=80'],
 				HostConfig: {
@@ -121,7 +121,7 @@ let blockConfig = false;
 
 			socket.emit('step', 'Creating containers... (4/4)');
 			/* await docker.createContainer({
-				Image: 'ghcr.io/redcrafter07/deploy/proxy:prod',
+				Image: 'ghcr.io/redcrafter07/deploy/proxy',
 				name: 'reddeploy-proxy',
 				Env: [
 					'PROXY_WEB_HOST=reddeploy-web',
