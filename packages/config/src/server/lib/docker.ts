@@ -13,4 +13,15 @@ async function pullImage(image: string) {
 	});
 }
 
-export { pullImage };
+async function createNetwork(name: string) {
+	await axios({
+		socketPath: '/var/run/docker.sock',
+		method: 'POST',
+		url: '/networks/create',
+		params: {
+			Name: name,
+		},
+	});
+}
+
+export { pullImage, createNetwork };
