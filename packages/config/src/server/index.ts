@@ -11,9 +11,7 @@ import { Server as SocketServer } from 'socket.io';
 		transports: ['websocket'],
 	});
 
-	io.on('connect', (socket) => {
-		socket.emit('hello', 'world');
-	});
+	io.on('connect', (socket) => {});
 
 	await mkdir(path.join(__dirname, '..', '..', 'data'), { recursive: true });
 
