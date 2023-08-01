@@ -1,11 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import '@fontsource/figtree';
 import '@fontsource/figtree/700.css';
 import '@fontsource/figtree/900.css';
 import './index.css';
+import useSocket from './util/useSocket';
 
 function App() {
+	const socket = useSocket();
+
+	useEffect(() => {
+		socket.on('hello', (data) => {
+			console.log(data);
+		});
+
+		socket.connect();
+	}, []);
+
 	return (
 		<div className='bg-zinc-800 text-zinc-100 min-h-screen'>
 			<div className='container mx-auto p-2'>
