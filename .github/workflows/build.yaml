@@ -50,4 +50,5 @@ jobs:
           push: true
           tags: 'latest'
           labels: ${{ steps.meta.outputs.labels }}
-          context: .
+          target: ${{ matrix.image }}
+          context: ${{ matrix.dir }}
