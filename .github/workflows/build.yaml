@@ -25,11 +25,7 @@ jobs:
             dir: ./packages/web
           - image: cm
             dir: ./packages/container-management
-    defaults:
-      run:
-        working-directory: ${{ matrix.dir }}
     steps:
-      - uses: actions/checkout@v2
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -52,3 +48,5 @@ jobs:
           tags: 'latest'
           labels: ${{ steps.meta.outputs.labels }}
           target: ${{ matrix.image }}
+          context: ${{ matrix.dir }}
+          file: ${{ matrix.dir }}/Dockerfile
