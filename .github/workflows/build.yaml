@@ -14,11 +14,17 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  config:
+  docker:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: packages/config
+    strategy:
+      matrix:
+        include:
+          - image: config
+            dir: packages/config
+          - image: web
+            dir: packages/web
+          - image: cm
+            dir: packages/container-management
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -34,67 +40,12 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/config
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${{ matrix.image }}
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
           push: true
           tags: 'latest'
           labels: ${{ steps.meta.outputs.labels }}
-          file: ./packages/config/Dockerfile
-  web:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: packages/web
-    steps:
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Log in to the Container registry
-        uses: docker/login-action@v1
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v3
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/web
-      - name: Build and push
-        uses: docker/build-push-action@v4
-        with:
-          push: true
-          tags: 'latest'
-          labels: ${{ steps.meta.outputs.labels }}
-          file: Dockerfile
-  cm:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: packages/container-management
-    steps:
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Log in to the Container registry
-        uses: docker/login-action@v1
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v3
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/cm
-      - name: Build and push
-        uses: docker/build-push-action@v4
-        with:
-          push: true
-          tags: 'latest'
-          labels: ${{ steps.meta.outputs.labels }}
-          file: ./packages/container-management/Dockerfile
+          context: ${{ matrix.dir }}
+          file: ${{ matrix.dir }}/Dockerfile
