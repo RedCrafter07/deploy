@@ -15,7 +15,7 @@ env:
 
 jobs:
   config:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -40,7 +40,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           file: ./packages/config/Dockerfile
   web:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -65,7 +65,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           file: ./packages/web/Dockerfile
   cm:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
