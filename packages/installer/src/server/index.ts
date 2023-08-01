@@ -43,18 +43,46 @@ let step: string = 'Fetching compose file...';
 		console.log('Installer screen running on port 9272');
 	});
 
+	await startInstall();
+
 	async function startInstall() {
 		await mkdir(process.env.INSTALL_DIR as string, { recursive: true });
 
 		step = 'Fetching compose file...';
-
 		io.emit('step', step);
 
+		const baseURL =
+			'https://raw.githubusercontent.com/RedCrafter07/deploy/main';
 		const composeURL =
 			process.env.HAS_PROXY == 'true'
-				? 'https://raw.githubusercontent.com/RedCrafter07/deploy/main/docker/docker-compose.yml'
-				: 'https://raw.githubusercontent.com/RedCrafter07/deploy/main/docker/docker-compose.no-proxy.yml';
+				? baseURL + '/docker-compose.yml'
+				: baseURL + '/docker-compose.no-proxy.yml';
 
 		const { data: composeFile } = await axios.get(composeURL);
+
+		step = 'Writing compose file...';
+		io.emit('step', step);
+
+		await writeFile(
+			path.join(process.env.INSTALL_DIR as string, 'docker-compose.yml'),
+			composeFile,
+		);
+
+		step = 'Pulling images...';
+		io.emit('step', step);
+
+		await compose.pullAll({
+			cwd: process.env.INSTALL_DIR as string,
+		});
+
+		step = 'Starting containers...';
+		io.emit('step', step);
+
+		await compose.upAll({
+			cwd: process.env.INSTALL_DIR as string,
+		});
+
+		step = 'Done!';
+		io.emit('step', step);
 	}
 })();
