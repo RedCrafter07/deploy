@@ -1,6 +1,7 @@
 import express from 'express';
 import { mkdir, writeFile } from 'fs/promises';
 import { createServer } from 'http';
+import { createHttpTerminator } from 'http-terminator';
 import path from 'path';
 import { Server as SocketServer } from 'socket.io';
 import Dockerode from 'dockerode';
@@ -15,6 +16,8 @@ const docker = new Dockerode({
 	const io = new SocketServer(server, {
 		transports: ['websocket'],
 	});
+
+	const terminator = createHttpTerminator({ server });
 
 	io.on('connect', (socket) => {
 		socket.on('config', async (data) => {
