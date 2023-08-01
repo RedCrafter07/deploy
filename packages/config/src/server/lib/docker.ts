@@ -24,4 +24,15 @@ async function createNetwork(name: string) {
 	});
 }
 
-export { pullImage, createNetwork };
+async function createVolume(name: string) {
+	await axios({
+		socketPath: '/var/run/docker.sock',
+		method: 'POST',
+		url: '/volumes/create',
+		params: {
+			Name: name,
+		},
+	});
+}
+
+export { pullImage, createNetwork, createVolume };
