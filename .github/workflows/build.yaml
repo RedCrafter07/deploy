@@ -16,6 +16,9 @@ env:
 jobs:
   config:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/config
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -32,8 +35,6 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/config
-      - name: Change workdir
-        run: cd packages/config
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
@@ -43,6 +44,9 @@ jobs:
           file: ./packages/config/Dockerfile
   web:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/web
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -59,17 +63,18 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/web
-      - name: Change workdir
-        run: cd packages/web
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
           push: true
           tags: 'latest'
           labels: ${{ steps.meta.outputs.labels }}
-          file: ./packages/web/Dockerfile
+          file: Dockerfile
   cm:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/container-management
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -86,8 +91,6 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/cm
-      - name: Change workdir
-        run: cd packages/container-management
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
