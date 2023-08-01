@@ -5,6 +5,7 @@ import path from 'path';
 import { Server as SocketServer } from 'socket.io';
 import Dockerode from 'dockerode';
 import { v2 as compose } from 'docker-compose';
+import axios from 'axios';
 
 const docker = new Dockerode({
 	socketPath: '/var/run/docker.sock',
@@ -41,6 +42,19 @@ let step: string = 'Fetching compose file...';
 	server.listen(9272, () => {
 		console.log('Installer screen running on port 9272');
 	});
-})();
 
-async function startInstall() {}
+	async function startInstall() {
+		await mkdir(process.env.INSTALL_DIR as string, { recursive: true });
+
+		step = 'Fetching compose file...';
+
+		io.emit('step', step);
+
+		const composeURL =
+			process.env.HAS_PROXY == 'true'
+				? 'https://raw.githubusercontent.com/RedCrafter07/deploy/main/docker/docker-compose.yml'
+				: 'https://raw.githubusercontent.com/RedCrafter07/deploy/main/docker/docker-compose.no-proxy.yml';
+
+		const { data: composeFile } = await axios.get(composeURL);
+	}
+})();
