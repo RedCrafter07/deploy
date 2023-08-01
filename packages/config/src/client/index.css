@@ -5,3 +5,7 @@
 * {
 	font-family: Figtree;
 }
+
+input[type='text'] {
+	@apply w-full p-2 bg-zinc-700 text-white placeholder:text-white placeholder:opacity-50 rounded-lg focus:outline-none border-2 border-opacity-10 border-white;
+}
