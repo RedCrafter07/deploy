@@ -4,10 +4,13 @@ import { createServer } from 'http';
 import path from 'path';
 import { Server as SocketServer } from 'socket.io';
 import Dockerode from 'dockerode';
+import { v2 as compose } from 'docker-compose';
 
 const docker = new Dockerode({
 	socketPath: '/var/run/docker.sock',
 });
+
+let step: string = 'Fetching compose file...';
 
 (async () => {
 	const app = express();
@@ -20,9 +23,9 @@ const docker = new Dockerode({
 		socket.on('from', (data: string) => {
 			if (data == 'config') socket.emit('reload');
 		});
-	});
 
-	await mkdir(path.join(__dirname, '..', '..', 'data'), { recursive: true });
+		socket.emit('step', step);
+	});
 
 	app.use('/.rd', express.static(path.join(__dirname, '..', 'client')));
 
@@ -39,3 +42,5 @@ const docker = new Dockerode({
 		console.log('Installer screen running on port 9272');
 	});
 })();
+
+async function startInstall() {}
