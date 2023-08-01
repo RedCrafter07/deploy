@@ -18,7 +18,10 @@ async function createNetwork(name: string) {
 		socketPath: '/var/run/docker.sock',
 		method: 'POST',
 		url: '/networks/create',
-		params: {
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		data: {
 			Name: name,
 		},
 	});
@@ -29,7 +32,10 @@ async function createVolume(name: string) {
 		socketPath: '/var/run/docker.sock',
 		method: 'POST',
 		url: '/volumes/create',
-		params: {
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		data: {
 			Name: name,
 		},
 	});
