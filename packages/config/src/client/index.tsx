@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import '@fontsource/figtree';
+import '@fontsource/figtree/700.css';
 import '@fontsource/figtree/900.css';
 import './index.css';
 
@@ -46,7 +47,10 @@ function App() {
 					<p>
 						Now, we need to create the administrator user. This user will have
 						full access to RedDeploy. You can create more users later, including
-						additional Admin Users.
+						additional Admin Users.{' '}
+						<span className='font-bold'>
+							Make sure to save these credentials!
+						</span>
 					</p>
 
 					<div className='my-2' />
