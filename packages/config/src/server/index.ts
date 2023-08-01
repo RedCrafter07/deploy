@@ -10,6 +10,7 @@ import {
 	createNetwork,
 	createVolume,
 	pullImage,
+	startContainer,
 } from './lib/docker';
 
 const docker = new Dockerode({
@@ -67,7 +68,7 @@ let blockConfig = false;
 			await createVolume('reddeploy-cm-cache');
 
 			socket.emit('step', 'Creating containers... (1/4)');
-			await createContainer({
+			const db = await createContainer({
 				Image: 'docker.io/mongo:4.2.17',
 				Name: 'reddeploy-mongo',
 				Env: [
@@ -85,7 +86,7 @@ let blockConfig = false;
 			});
 
 			socket.emit('step', 'Creating containers... (2/4)');
-			await createContainer({
+			const cm = await createContainer({
 				Image: 'ghcr.io/redcrafter07/deploy/cm:prod',
 				Name: 'reddeploy-cm',
 				Env: [
@@ -106,7 +107,7 @@ let blockConfig = false;
 			});
 
 			socket.emit('step', 'Creating containers... (3/4)');
-			await createContainer({
+			const web = await createContainer({
 				Image: 'ghcr.io/redcrafter07/deploy/web:prod',
 				Name: 'reddeploy-web',
 				Env: ['WEB_CM_HOST=reddeploy-cm', 'WEB_CM_PORT=8080', 'WEB_PORT=80'],
@@ -130,13 +131,13 @@ let blockConfig = false;
 			}); */
 
 			socket.emit('step', 'Starting containers... (1/4)');
-			await docker.getContainer('reddeploy-mongo').start();
+			await startContainer(db);
 
 			socket.emit('step', 'Starting containers... (2/4)');
-			await docker.getContainer('reddeploy-cm').start();
+			await startContainer(cm);
 
 			socket.emit('step', 'Starting containers... (3/4)');
-			await docker.getContainer('reddeploy-web').start();
+			await startContainer(web);
 
 			socket.emit('step', 'Starting containers... (4/4)');
 			// await docker.getContainer('reddeploy-proxy').start();
