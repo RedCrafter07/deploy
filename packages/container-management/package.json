@@ -1,7 +1,7 @@
 {
 	"name": "container-management",
 	"version": "1.0.0",
-	"description": "",
+	"description": "The container management for RedDeploy",
 	"main": "index.js",
 	"scripts": {
 		"build": "webpack -c webpack.config.ts --mode production",
@@ -9,6 +9,6 @@
 		"dev": "webpack watch -c webpack.config.ts --mode development"
 	},
 	"keywords": [],
-	"author": "",
-	"license": "ISC"
+	"author": "RedCrafter07",
+	"license": "GPL-3.0"
 }
