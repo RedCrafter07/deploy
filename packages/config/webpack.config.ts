@@ -10,6 +10,7 @@ export default {
 	output: {
 		filename: '[name]/[name].js',
 		path: __dirname + '/dist',
+		publicPath: '/.rd/',
 	},
 
 	resolve: {
