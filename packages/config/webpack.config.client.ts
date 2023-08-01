@@ -46,7 +46,7 @@ export default {
 				use: ['style-loader', 'css-loader', 'postcss-loader'],
 			},
 			{
-				test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+				test: /\.(png|jpg|gif|svg|eot|ttf)$/,
 				loader: 'url-loader',
 			},
 		],
