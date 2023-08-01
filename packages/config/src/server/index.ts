@@ -27,6 +27,32 @@ const docker = new Dockerode({
 			);
 
 			socket.emit('step', 'Pulling installer image...');
+
+			await docker.pull('ghcr.io/RedCrafter07/deploy/installer');
+
+			socket.emit('step', 'Starting installer container...');
+
+			const container = await docker.createContainer({
+				Image: 'ghcr.io/RedCrafter07/deploy/installer',
+				Env: [`INSTALL_DIR=${data.install}`, `HAS_PROXY=${data.proxy}`],
+				ExposedPorts: {
+					'9272/tcp': {
+						HostPort: '9272',
+					},
+				},
+				HostConfig: {
+					Binds: [
+						`${data.install}:/install`,
+						'/var/run/docker.sock:/var/run/docker.sock',
+					],
+				},
+			});
+
+			await terminator.terminate();
+
+			await container.start();
+
+			process.exit(0);
 		});
 	});
 
