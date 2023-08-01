@@ -16,7 +16,12 @@ function App() {
 					name, like <code>rd.example.com</code>.
 				</p>
 
-				<input type='text' name='domain' placeholder='rd.example.com' />
+				<input
+					type='text'
+					name='domain'
+					placeholder='rd.example.com'
+					className='input'
+				/>
 			</div>
 		</div>
 	);
