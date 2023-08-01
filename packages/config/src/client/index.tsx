@@ -10,8 +10,8 @@ function App() {
 	const socket = useSocket();
 
 	useEffect(() => {
-		socket.on('hello', (data) => {
-			console.log(data);
+		socket.on('connect', () => {
+			console.log('[SOCKET]: Connected!');
 		});
 
 		socket.connect();
