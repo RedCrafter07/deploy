@@ -32,6 +32,7 @@ export default {
 						},
 					},
 				} as Swcrc,
+				exclude: /node_modules/,
 			},
 		],
 	},
