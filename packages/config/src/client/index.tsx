@@ -45,6 +45,7 @@ function App() {
 						const password = data.get('password') as string;
 						const proxy = data.get('proxy') as string;
 						const prefix = data.get('prefix') as string;
+						const install = data.get('install') as string;
 
 						socket.emit('config', {
 							domain,
@@ -52,6 +53,7 @@ function App() {
 							password,
 							proxy,
 							prefix,
+							install,
 						});
 					}}
 				>
@@ -168,7 +170,22 @@ function App() {
 
 					<div className='my-4' />
 
-					<h3 className='text-xl'>5. Finish configuration!</h3>
+					<h3 className='text-xl'>5. Install URL</h3>
+					<p>The location on your server for the docker compose file</p>
+
+					<div className='my-2' />
+
+					<input
+						type='text'
+						name='install'
+						placeholder='/opt/reddeploy'
+						className='input'
+						defaultValue='/opt/reddeploy'
+					/>
+
+					<div className='my-4' />
+
+					<h3 className='text-xl'>6. Finish configuration!</h3>
 					<p>
 						You're almost done! Just click the button below to finish the
 						configuration.
