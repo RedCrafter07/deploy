@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import '@fontsource/figtree';
 import '@fontsource/figtree/700.css';
@@ -9,11 +9,11 @@ import useSocket from './util/useSocket';
 function App() {
 	const socket = useSocket();
 
+	const [view, setView] = useState<'config' | 'install'>('config');
+
 	useEffect(() => {
 		socket.on('connect', () => {
 			console.log('[SOCKET]: Connected!');
-
-			socket.emit('from', 'config');
 		});
 
 		socket.on('reload', () => {
