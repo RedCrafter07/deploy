@@ -4,7 +4,9 @@
 	"description": "The config for RedDeploy",
 	"main": "index.js",
 	"scripts": {
-		"dev": "webpack watch -c webpack.config.ts --mode development"
+		"dev": "webpack watch -c webpack.config.ts --mode development",
+		"build": "webpack -c webpack.config.ts --mode production",
+		"start": "node dist/server/server.js"
 	},
 	"keywords": [],
 	"author": "RedCrafter07",
