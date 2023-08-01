@@ -10,6 +10,8 @@ const docker = new Dockerode({
 	socketPath: '/var/run/docker.sock',
 });
 
+let blockConfig = false;
+
 (async () => {
 	const app = express();
 	const server = createServer(app);
@@ -20,39 +22,28 @@ const docker = new Dockerode({
 	const terminator = createHttpTerminator({ server });
 
 	io.on('connect', (socket) => {
+		if (blockConfig) return;
+		blockConfig = true;
+
 		socket.on('config', async (data) => {
+			socket.emit('view', 'install');
+
 			await writeFile(
 				path.join(__dirname, '..', '..', 'data', 'config.json'),
 				JSON.stringify(data, null, 2),
 			);
 
-			socket.emit('step', 'Pulling installer image...');
+			socket.emit('step', 'Pulling images... (1/4)');
+			await docker.pull('mongo:4.2.17');
 
-			await docker.pull('ghcr.io/RedCrafter07/deploy/installer');
+			socket.emit('step', 'Pulling images... (2/4)');
+			await docker.pull('ghcr.io/RedCrafter07/deploy/cm');
 
-			socket.emit('step', 'Starting installer container...');
+			socket.emit('step', 'Pulling images... (3/4)');
+			await docker.pull('ghcr.io/RedCrafter07/deploy/web');
 
-			const container = await docker.createContainer({
-				Image: 'ghcr.io/RedCrafter07/deploy/installer',
-				Env: [`INSTALL_DIR=${data.install}`, `HAS_PROXY=${data.proxy}`],
-				ExposedPorts: {
-					'9272/tcp': {
-						HostPort: '9272',
-					},
-				},
-				HostConfig: {
-					Binds: [
-						`${data.install}:/install`,
-						'/var/run/docker.sock:/var/run/docker.sock',
-					],
-				},
-			});
-
-			await terminator.terminate();
-
-			await container.start();
-
-			process.exit(0);
+			socket.emit('step', 'Pulling images... (4/4)');
+			await docker.pull('ghcr.io/RedCrafter07/deploy/proxy');
 		});
 	});
 
