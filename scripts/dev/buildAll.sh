@@ -1,3 +1,5 @@
+git pull
+
 cd packages/
 
 cd config/ && docker build -t reddeploy/config:latest -f Dockerfile.dev . && cd ..
