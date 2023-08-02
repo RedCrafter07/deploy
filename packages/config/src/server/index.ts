@@ -36,7 +36,7 @@ let step: string;
 			socket.emit('view', 'install');
 
 			await writeFile(
-				path.join(__dirname, '..', '..', 'data', 'config.json'),
+				path.resolve('/data/config.json'),
 				JSON.stringify(data, null, 2),
 			);
 
@@ -179,7 +179,7 @@ let step: string;
 			socket.emit('step', step);
 
 			await writeFile(
-				path.join(__dirname, '..', '..', 'data', 'containers.json'),
+				path.resolve('/data/containers.json'),
 				JSON.stringify({
 					db,
 					cm,
