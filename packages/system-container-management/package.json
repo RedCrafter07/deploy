@@ -1,7 +1,7 @@
 {
-	"name": "container-management",
+	"name": "system-container-management",
 	"version": "1.0.0",
-	"description": "The container management for RedDeploy",
+	"description": "The system container management for RedDeploy",
 	"main": "index.js",
 	"scripts": {
 		"start": "node dist/index.js",
