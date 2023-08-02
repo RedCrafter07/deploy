@@ -98,7 +98,10 @@ console.log('Checking config...');
 		console.log('Create new SCM container without volume...');
 
 		const id = await createContainer({
-			Image: 'ghcr.io/redcrafter07/deploy/scm:prod',
+			Image:
+				process.env.ENV == 'dev'
+					? 'reddeploy/scm:latest'
+					: 'ghcr.io/redcrafter07/deploy/scm:prod',
 			Name: 'reddeploy-scm',
 			HostConfig: {
 				NetworkMode: 'reddeploy',
