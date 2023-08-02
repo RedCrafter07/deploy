@@ -5,8 +5,9 @@
 	"main": "dist/index.js",
 	"scripts": {
 		"start": "node dist/index.js",
-		"build": "pnpm run build:client",
+		"build": "pnpm run build:client && pnpm run build:server",
 		"build:server": "esbuild ./src/index.ts --bundle --platform=node --packages=external --outfile=dist/index.js",
+		"build:client": "webpack --config ./webpack.config.ts --mode production",
 		"dev": "tsx watch --clear-screen=false ./src/index.ts"
 	},
 	"keywords": [],
