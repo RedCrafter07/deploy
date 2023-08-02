@@ -212,8 +212,9 @@ function App() {
 					<div className='flex flex-col gap-2 text-center'>
 						<h1 className='text-3xl'>Installation finished!</h1>
 						<p>
-							RedDeploy has been installed successfully. You can close this tab
-							now.
+							RedDeploy has been installed successfully. This tab will reload in
+							a few seconds, and you'll be prompted to log in to the RedDeploy
+							SCM.
 						</p>
 					</div>
 				</div>
