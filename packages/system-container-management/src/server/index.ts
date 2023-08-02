@@ -149,9 +149,9 @@ console.log('Checking config...');
 			await removeVolume('reddeploy_config');
 			console.log('Volume removed!');
 		} else console.log('Volume not detected! Skipping postinstall...');
-	}
 
-	await initWebServer();
+		await initWebServer();
+	}
 })();
 
 async function initWebServer() {
