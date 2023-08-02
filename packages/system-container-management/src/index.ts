@@ -13,11 +13,11 @@ import {
 } from '../lib/docker.js';
 
 const client = new MongoClient(
-	`mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`,
+	`mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}`,
 	{
 		auth: {
-			username: process.env.MONGO_USER,
-			password: process.env.MONGO_PASS,
+			username: process.env.DB_USER,
+			password: process.env.DB_PASS,
 		},
 	},
 );
