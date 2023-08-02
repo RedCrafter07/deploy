@@ -199,7 +199,7 @@ function App() {
 					<div className='flex flex-col gap-2 text-center'>
 						<h1 className='text-3xl'>Installing RedDeploy...</h1>
 						<p>RedDeploy is being installed. This might take a few minutes.</p>
-						<div className='w-32'>
+						<div className='w-32 mx-auto'>
 							<Spinner />
 						</div>
 						<p>{step}</p>
