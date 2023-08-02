@@ -3,7 +3,12 @@
 import { existsSync } from 'fs';
 import { readFile } from 'fs/promises';
 import mongo from 'mongodb';
-import { getVolume, removeVolume, renameContainer } from '../lib/docker.js';
+import {
+	createContainer,
+	getVolume,
+	removeVolume,
+	renameContainer,
+} from '../lib/docker.js';
 
 const client = new mongo.MongoClient(
 	`mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`,
@@ -85,6 +90,24 @@ if (await existsSync('/data/config.json')) {
 	console.log("Rename SCM container to 'reddeploy-scm-old'...");
 
 	await renameContainer('reddeploy-scm', 'reddeploy-scm-old');
+
+	console.log('Create new SCM container without volume...');
+
+	await createContainer({
+		Image: 'ghcr.io/redcrafter07/deploy/scm:prod',
+		Name: 'reddeploy-scm',
+		HostConfig: {
+			NetworkMode: 'reddeploy',
+			Binds: ['/var/run/docker.sock:/var/run/docker.sock'],
+		},
+		Env: [
+			'DB_HOST=reddeploy-mongo',
+			'DB_PORT=27017',
+			'DB_USER=root',
+			'DB_PASS=reddeploy',
+			'DB_NAME=reddeploy',
+		],
+	});
 } else {
 	console.log('Config not detected! Checking for volume...');
 
