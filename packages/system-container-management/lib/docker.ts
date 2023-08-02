@@ -49,4 +49,12 @@ async function getVolume(name: string) {
 	return req.data;
 }
 
-export { createContainer, startContainer, getVolume };
+async function removeVolume(name: string) {
+	await axios({
+		socketPath: '/var/run/docker.sock',
+		method: 'DELETE',
+		url: `/volumes/${name}`,
+	});
+}
+
+export { createContainer, startContainer, getVolume, removeVolume };
