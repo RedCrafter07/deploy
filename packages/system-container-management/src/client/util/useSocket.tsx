@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const { io } = await import('socket.io-client');
+import { io } from 'socket.io-client';
 
 export default function useSocket() {
 	const [socket] = useState(
