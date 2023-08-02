@@ -10,7 +10,7 @@ import Spinner from './components/Spinner';
 function App() {
 	const socket = useSocket();
 
-	type View = 'config' | 'install';
+	type View = 'config' | 'install' | 'done';
 	const [view, setView] = useState<View>('config');
 	const [step, setStep] = useState<string>('Initializing...');
 
@@ -195,7 +195,7 @@ function App() {
 		<div className='bg-zinc-800 text-zinc-100 min-h-screen'>
 			{view === 'config' && <Config />}
 			{view === 'install' && (
-				<div className='w-full h-full grid place-items-center'>
+				<div className='w-full h-screen grid place-items-center'>
 					<div className='flex flex-col gap-2'>
 						<h1 className='text-3xl'>Installing RedDeploy...</h1>
 						<p>RedDeploy is being installed. This might take a few minutes.</p>
