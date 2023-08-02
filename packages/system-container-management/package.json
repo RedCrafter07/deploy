@@ -17,6 +17,7 @@
 		"@types/node": "^20.4.5",
 		"axios": "^1.4.0",
 		"esbuild": "^0.18.17",
+		"mongodb": "^5.7.0",
 		"socket.io": "^4.7.1",
 		"swc-loader": "^0.2.3",
 		"ts-node": "^10.9.1",
