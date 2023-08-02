@@ -167,7 +167,30 @@ async function initWebServer() {
 	});
 
 	io.on('connect', (socket) => {
-		socket.on('login', (username: string, password: string) => {});
+		socket.on('login', async (username: string, password: string) => {
+			const u = await system
+				.collection('users')
+				.findOne({ username, password, admin: true });
+
+			if (!u) return socket.emit('login', false);
+
+			socket.emit('login', true);
+
+			socket.data.username = username;
+			socket.data.loggedIn = true;
+
+			socket.on('logout', () => {
+				socket.data = {};
+
+				socket.emit('logout');
+			});
+
+			socket.on('getContainers', async () => {
+				const containers = await system.collection('containers').findOne();
+
+				socket.emit('getContainers', containers);
+			});
+		});
 	});
 
 	app.use('/.rd-scm', express.static(path.join('..', 'client')));
