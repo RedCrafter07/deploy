@@ -40,19 +40,23 @@ let step: string;
 				JSON.stringify(data, null, 2),
 			);
 
-			step = 'Pulling images... (1/4)';
+			step = 'Pulling images... (1/5)';
 			socket.emit('step', step);
 			await pullImage('docker.io/mongo:4.2.17');
 
-			step = 'Pulling images... (2/4)';
+			step = 'Pulling images... (2/5)';
 			socket.emit('step', step);
 			await pullImage('ghcr.io/redcrafter07/deploy/cm:prod');
 
-			step = 'Pulling images... (3/4)';
+			step = 'Pulling images... (3/5)';
 			socket.emit('step', step);
 			await pullImage('ghcr.io/redcrafter07/deploy/web:prod');
 
-			step = 'Pulling images... (4/4)';
+			step = 'Pulling images... (4/5)';
+			socket.emit('step', step);
+			await pullImage('ghcr.io/redcrafter07/deploy/scm:prod');
+
+			step = 'Pulling images... (5/5)';
 			socket.emit('step', step);
 			// await pullImage('ghcr.io/redcrafter07/deploy/proxy:prod');
 
