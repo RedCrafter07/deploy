@@ -164,6 +164,9 @@ async function initWebServer() {
 	});
 
 	io.on('connect', (socket) => {
+		socket.on('from', (data: string) => {
+			if (data == 'config') socket.emit('reload');
+		});
 		socket.on('login', async (username: string, password: string) => {
 			const u = await system
 				.collection('users')
