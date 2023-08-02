@@ -141,7 +141,7 @@ let step: string;
 			socket.emit('step', step);
 			const scm = await createContainer({
 				Image: 'ghcr.io/redcrafter07/deploy/scm:prod',
-				Name: 'reddeploy-web',
+				Name: 'reddeploy-scm',
 				HostConfig: {
 					NetworkMode: 'reddeploy',
 					Binds: ['/var/run/docker.sock:/var/run/docker.sock'],
