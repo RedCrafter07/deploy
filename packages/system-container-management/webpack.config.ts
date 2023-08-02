@@ -1,3 +1,28 @@
 import { Configuration } from 'webpack';
+import HTMLWebpackPlugin from 'html-webpack-plugin';
 
-export default {} as Configuration;
+export default {
+	entry: './src/client/index.tsx',
+
+	output: {
+		filename: 'index.js',
+		path: __dirname + '/dist',
+	},
+
+	resolve: {
+		extensions: ['.ts', '.tsx', '.js', '.json'],
+	},
+
+	module: {
+		rules: [
+			{ test: /\.tsx?$/, use: 'esbuild-loader' },
+			{ test: /\.css$/, use: ['style-loader', 'css-loader'] },
+		],
+	},
+
+	plugins: [
+		new HTMLWebpackPlugin({
+			template: './src/client/index.html',
+		}),
+	],
+} as Configuration;
