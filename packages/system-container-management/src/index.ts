@@ -2,7 +2,7 @@
 
 import { existsSync } from 'fs';
 import { readFile } from 'fs/promises';
-import mongo from 'mongodb';
+import { MongoClient } from 'mongodb';
 import {
 	createContainer,
 	getVolume,
@@ -12,7 +12,7 @@ import {
 	startContainer,
 } from '../lib/docker.js';
 
-const client = new mongo.MongoClient(
+const client = new MongoClient(
 	`mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`,
 	{
 		auth: {
