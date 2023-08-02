@@ -68,17 +68,21 @@ let step: string;
 			socket.emit('step', step);
 			await createNetwork('reddeploy-proxy');
 
-			step = 'Creating volumes... (1/3)';
+			step = 'Creating volumes... (1/4)';
 			socket.emit('step', step);
 			await createVolume('reddeploy-mongo');
 
-			step = 'Creating volumes... (2/3)';
+			step = 'Creating volumes... (2/4)';
 			socket.emit('step', step);
 			await createVolume('reddeploy-cm-cache');
 
-			step = 'Creating volumes... (3/3)';
+			step = 'Creating volumes... (3/4)';
 			socket.emit('step', step);
 			await createVolume('reddeploy-scm-cache');
+
+			step = 'Creating volumes... (4/4)';
+			socket.emit('step', step);
+			await createVolume('reddeploy-mongo-config');
 
 			step = 'Creating containers... (1/5)';
 			socket.emit('step', step);
@@ -91,7 +95,10 @@ let step: string;
 				],
 				HostConfig: {
 					NetworkMode: 'reddeploy',
-					Binds: ['reddeploy-mongo:/data/db'],
+					Binds: [
+						'reddeploy-mongo:/data/db',
+						'reddeploy-mongo-config:/data/configdb',
+					],
 				},
 			});
 
