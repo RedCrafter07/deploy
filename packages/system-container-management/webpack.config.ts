@@ -7,7 +7,7 @@ export default {
 	output: {
 		filename: '[name].js',
 		path: __dirname + '/dist/client',
-		publicPath: '/.rd-scm',
+		publicPath: '/.rd-scm/',
 	},
 
 	resolve: {
