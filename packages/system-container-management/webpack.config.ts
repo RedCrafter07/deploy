@@ -21,10 +21,6 @@ export default {
 				test: /\.css$/,
 				use: ['style-loader', 'css-loader', 'postcss-loader'],
 			},
-			{
-				test: /\.(png|jpg|gif|svg|eot|ttf)$/,
-				loader: 'url-loader',
-			},
 		],
 	},
 
