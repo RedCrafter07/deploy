@@ -10,6 +10,7 @@ import {
 	removeVolume,
 	renameContainer,
 	startContainer,
+	stopContainer,
 } from '../lib/docker.js';
 
 const client = new MongoClient(
@@ -133,7 +134,7 @@ console.log('Checking config...');
 
 		client.close();
 
-		await removeContainer('reddeploy-scm-old');
+		process.exit(0);
 	} else {
 		console.log('Config not detected! Checking for volume...');
 
@@ -142,7 +143,8 @@ console.log('Checking config...');
 
 			console.log('Waiting for old container to stop...');
 
-			await timeout(5000);
+			await stopContainer('reddeploy-scm-old');
+			await removeContainer('reddeploy-scm-old');
 
 			console.log('Continuing...');
 
