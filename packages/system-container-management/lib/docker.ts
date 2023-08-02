@@ -89,6 +89,14 @@ async function getContainer(id: string) {
 	return req.data;
 }
 
+async function stopContainer(id: string) {
+	await axios({
+		socketPath: '/var/run/docker.sock',
+		method: 'POST',
+		url: `/containers/${id}/stop`,
+	});
+}
+
 export {
 	createContainer,
 	startContainer,
@@ -97,4 +105,5 @@ export {
 	removeVolume,
 	renameContainer,
 	removeContainer,
+	stopContainer,
 };
