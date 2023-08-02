@@ -26,6 +26,9 @@ const client = new MongoClient(
 	},
 );
 
+const system = client.db('rd-system');
+const project = client.db('project');
+
 // const io = new Server({
 // 	transports: ['websocket'],
 // });
@@ -66,14 +69,7 @@ console.log('Checking config...');
 
 		await client.connect();
 
-		console.log('Connected to database!');
-
 		console.log('Initializing databases...');
-
-		const system = client.db('rd-system');
-		const project = client.db('project');
-
-		console.log('Initialized databases!');
 
 		console.log('Writing system containers...');
 
@@ -170,6 +166,10 @@ async function initWebServer() {
 		transports: ['websocket'],
 	});
 
+	io.on('connect', (socket) => {
+		socket.on('login', (username: string, password: string) => {});
+	});
+
 	app.use('/.rd-scm', express.static(path.join('..', 'client')));
 
 	app.get('/', (_, res) => {
@@ -178,6 +178,12 @@ async function initWebServer() {
 
 	app.get('*', (_, res) => {
 		res.redirect('/');
+	});
+
+	console.log('Starting listening on port 9272...');
+
+	server.listen(9272, () => {
+		console.log('Started webserver!');
 	});
 }
 
