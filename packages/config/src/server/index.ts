@@ -59,11 +59,11 @@ const images = process.env.ENV == 'dev' ? devImages : prodImages;
 				JSON.stringify(data, null, 2),
 			);
 
-			if (process.env.ENV != 'dev') {
-				step = 'Pulling images... (1/5)';
-				io.emit('step', step);
-				await pullImage(images.mongo);
+			step = 'Pulling images... (1/5)';
+			io.emit('step', step);
+			await pullImage(images.mongo);
 
+			if (process.env.ENV != 'dev') {
 				step = 'Pulling images... (2/5)';
 				io.emit('step', step);
 				await pullImage(images.cm);
