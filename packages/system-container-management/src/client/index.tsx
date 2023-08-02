@@ -24,7 +24,7 @@ function App() {
 	return (
 		<div className='min-h-screen bg-zinc-800 text-zinc-100'>
 			<div className='h-screen grid place-items-center'>
-				<div className='p-4 border border-white border-opacity-10'>
+				<div className='p-4 border border-white border-opacity-10 rounded-lg'>
 					<h1 className='text-4xl font-bold text-center'>
 						RedDeploy System Container Management
 					</h1>
@@ -57,7 +57,7 @@ function App() {
 								required
 							/>
 						</label>
-						<button className='p-2 bg-zinc-700 rounded-md w-full'>
+						<button className='p-2 bg-zinc-700 rounded-lg w-full'>
 							Log in
 						</button>
 					</form>
