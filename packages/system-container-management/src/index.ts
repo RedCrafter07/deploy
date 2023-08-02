@@ -10,7 +10,6 @@ import {
 	removeVolume,
 	renameContainer,
 	startContainer,
-	stopContainer,
 } from '../lib/docker.js';
 
 const client = new MongoClient(
