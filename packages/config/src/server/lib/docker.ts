@@ -54,6 +54,7 @@ type Container = Partial<{
 			Name: string;
 		};
 	};
+	Cmd: string | string[];
 }>;
 
 async function createContainer(container: Container) {
