@@ -13,6 +13,7 @@ import {
 } from './lib/docker';
 
 let blockConfig = false;
+let step: string;
 
 (async () => {
 	const app = express();
@@ -26,6 +27,7 @@ let blockConfig = false;
 	io.on('connect', (socket) => {
 		if (blockConfig) {
 			socket.emit('view', 'install');
+			socket.emit('step', step);
 			return;
 		}
 		blockConfig = true;
@@ -38,31 +40,40 @@ let blockConfig = false;
 				JSON.stringify(data, null, 2),
 			);
 
-			socket.emit('step', 'Pulling images... (1/4)');
+			step = 'Pulling images... (1/4)';
+			socket.emit('step', step);
 			await pullImage('docker.io/mongo:4.2.17');
 
-			socket.emit('step', 'Pulling images... (2/4)');
+			step = 'Pulling images... (2/4)';
+			socket.emit('step', step);
 			await pullImage('ghcr.io/redcrafter07/deploy/cm:prod');
 
-			socket.emit('step', 'Pulling images... (3/4)');
+			step = 'Pulling images... (3/4)';
+			socket.emit('step', step);
 			await pullImage('ghcr.io/redcrafter07/deploy/web:prod');
 
-			socket.emit('step', 'Pulling images... (4/4)');
+			step = 'Pulling images... (4/4)';
+			socket.emit('step', step);
 			// await pullImage('ghcr.io/redcrafter07/deploy/proxy:prod');
 
-			socket.emit('step', 'Creating network... (1/2)');
+			step = 'Creating network... (1/2)';
+			socket.emit('step', step);
 			await createNetwork('reddeploy');
 
-			socket.emit('step', 'Creating network... (2/2)');
+			step = 'Creating network... (2/2)';
+			socket.emit('step', step);
 			await createNetwork('reddeploy-proxy');
 
-			socket.emit('step', 'Creating volumes... (1/2)');
+			step = 'Creating volumes... (1/2)';
+			socket.emit('step', step);
 			await createVolume('reddeploy-mongo');
 
-			socket.emit('step', 'Creating volumes... (2/2)');
+			step = 'Creating volumes... (2/2)';
+			socket.emit('step', step);
 			await createVolume('reddeploy-cm-cache');
 
-			socket.emit('step', 'Creating containers... (1/4)');
+			step = 'Creating containers... (1/4)';
+			socket.emit('step', step);
 			const db = await createContainer({
 				Image: 'docker.io/mongo:4.2.17',
 				Name: 'reddeploy-mongo',
@@ -80,7 +91,8 @@ let blockConfig = false;
 				},
 			});
 
-			socket.emit('step', 'Creating containers... (2/4)');
+			step = 'Creating containers... (2/4)';
+			socket.emit('step', step);
 			const cm = await createContainer({
 				Image: 'ghcr.io/redcrafter07/deploy/cm:prod',
 				Name: 'reddeploy-cm',
@@ -101,7 +113,8 @@ let blockConfig = false;
 				},
 			});
 
-			socket.emit('step', 'Creating containers... (3/4)');
+			step = 'Creating containers... (3/4)';
+			socket.emit('step', step);
 			const web = await createContainer({
 				Image: 'ghcr.io/redcrafter07/deploy/web:prod',
 				Name: 'reddeploy-web',
@@ -111,7 +124,8 @@ let blockConfig = false;
 				},
 			});
 
-			socket.emit('step', 'Creating containers... (4/4)');
+			step = 'Creating containers... (4/4)';
+			socket.emit('step', step);
 			/* await docker.createContainer({
 				Image: 'ghcr.io/redcrafter07/deploy/proxy:prod',
 				name: 'reddeploy-proxy',
@@ -125,21 +139,27 @@ let blockConfig = false;
 				},
 			}); */
 
-			socket.emit('step', 'Starting containers... (1/4)');
+			step = 'Starting containers... (1/4)';
+			socket.emit('step', step);
 			await startContainer(db);
 
-			socket.emit('step', 'Starting containers... (2/4)');
+			step = 'Starting containers... (2/4)';
+			socket.emit('step', step);
 			await startContainer(cm);
 
-			socket.emit('step', 'Starting containers... (3/4)');
+			step = 'Starting containers... (3/4)';
+			socket.emit('step', step);
 			await startContainer(web);
 
-			socket.emit('step', 'Starting containers... (4/4)');
+			step = 'Starting containers... (4/4)';
+			socket.emit('step', step);
 			// await docker.getContainer('reddeploy-proxy').start();
 
 			// TODO: Import config to database
 
-			socket.emit('step', 'Done! You can close this tab now.');
+			step = 'Done!';
+			socket.emit('step', step);
+			socket.emit('view', 'done');
 
 			setTimeout(() => {
 				process.exit(0);
