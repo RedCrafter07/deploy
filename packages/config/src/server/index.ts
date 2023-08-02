@@ -144,6 +144,7 @@ let step: string;
 				Name: 'reddeploy-web',
 				HostConfig: {
 					NetworkMode: 'reddeploy',
+					Binds: ['/var/run/docker.sock:/var/run/docker.sock'],
 				},
 				Volumes: {
 					'/data': {
