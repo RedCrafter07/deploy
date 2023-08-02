@@ -5,13 +5,13 @@ export default {
 	entry: './src/client/index.tsx',
 
 	output: {
-		filename: 'index.js',
+		filename: '[name].js',
 		path: __dirname + '/dist/client',
 		publicPath: '/.rd-scm',
 	},
 
 	resolve: {
-		extensions: ['.ts', '.tsx', '.js', '.json'],
+		extensions: ['.ts', '.tsx', '.js', '.json', '.css'],
 	},
 
 	module: {
