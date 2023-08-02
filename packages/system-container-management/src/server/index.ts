@@ -190,10 +190,10 @@ async function initWebServer() {
 		});
 	});
 
-	app.use('/.rd-scm', express.static(path.join('..', 'client')));
+	app.use('/.rd-scm', express.static(path.join(__dirname, '..', 'client')));
 
 	app.get('/', (_, res) => {
-		res.sendFile(path.resolve(__dirname, '..', 'client', 'index.html'));
+		res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
 	});
 
 	app.get('*', (_, res) => {
