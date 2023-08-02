@@ -68,4 +68,10 @@ async function renameContainer(id: string, newName: string) {
 	});
 }
 
-export { createContainer, startContainer, getVolume, removeVolume };
+export {
+	createContainer,
+	startContainer,
+	getVolume,
+	removeVolume,
+	renameContainer,
+};
