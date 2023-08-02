@@ -88,5 +88,7 @@ if (await existsSync('/data/config.json')) {
 		console.log('Volume found! Removing...');
 
 		await removeVolume('reddeploy_config');
+
+		console.log('Volume removed!');
 	} else console.log('Volume not detected! Skipping postinstall...');
 }
