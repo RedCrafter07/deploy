@@ -119,6 +119,7 @@ const images = process.env.ENV == 'dev' ? devImages : prodImages;
 						'reddeploy-mongo-config:/data/configdb',
 					],
 				},
+				Cmd: ['mongod', '--auth'],
 			});
 
 			step = 'Creating containers... (2/5)';
