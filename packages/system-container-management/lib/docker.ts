@@ -39,6 +39,14 @@ async function startContainer(id: string) {
 	});
 }
 
-async function getVolume(name: string) {}
+async function getVolume(name: string) {
+	const req = await axios({
+		socketPath: '/var/run/docker.sock',
+		method: 'GET',
+		url: `/volumes/${name}`,
+	});
 
-export { createContainer, startContainer };
+	return req.data;
+}
+
+export { createContainer, startContainer, getVolume };
