@@ -8,6 +8,7 @@ import {
 	getVolume,
 	removeVolume,
 	renameContainer,
+	startContainer,
 } from '../lib/docker.js';
 
 const client = new mongo.MongoClient(
@@ -93,7 +94,7 @@ if (await existsSync('/data/config.json')) {
 
 	console.log('Create new SCM container without volume...');
 
-	await createContainer({
+	const id = await createContainer({
 		Image: 'ghcr.io/redcrafter07/deploy/scm:prod',
 		Name: 'reddeploy-scm',
 		HostConfig: {
@@ -108,14 +109,38 @@ if (await existsSync('/data/config.json')) {
 			'DB_NAME=reddeploy',
 		],
 	});
+
+	console.log('Writing new container...');
+
+	const oldContainers = await system.collection('containers').findOne();
+	await system.collection('containers').deleteOne({});
+
+	await project
+		.collection('containers')
+		.insertOne({ ...oldContainers, scm: id });
+
+	await startContainer(id);
+
+	console.log('New container started!');
+
+	console.log('Removing...');
 } else {
 	console.log('Config not detected! Checking for volume...');
 
 	if (await getVolume('reddeploy_config')) {
 		console.log('Volume found! Removing...');
 
-		await removeVolume('reddeploy_config');
+		console.log('Waiting for old container to stop...');
 
+		await timeout(5000);
+
+		console.log('Continuing...');
+
+		await removeVolume('reddeploy_config');
 		console.log('Volume removed!');
 	} else console.log('Volume not detected! Skipping postinstall...');
+}
+
+async function timeout(ms: number) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
 }
