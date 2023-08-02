@@ -122,7 +122,16 @@ let step: string;
 			const web = await createContainer({
 				Image: 'ghcr.io/redcrafter07/deploy/web:prod',
 				Name: 'reddeploy-web',
-				Env: ['WEB_CM_HOST=reddeploy-cm', 'WEB_CM_PORT=8080', 'WEB_PORT=80'],
+				Env: [
+					'WEB_CM_HOST=reddeploy-cm',
+					'WEB_CM_PORT=8080',
+					'WEB_PORT=80',
+					'DB_HOST=reddeploy-mongo',
+					'DB_PORT=27017',
+					'DB_USER=root',
+					'DB_PASS=reddeploy',
+					'DB_NAME=reddeploy',
+				],
 				HostConfig: {
 					NetworkMode: 'reddeploy',
 				},
@@ -141,6 +150,13 @@ let step: string;
 						Name: 'reddeploy_config',
 					},
 				},
+				Env: [
+					'DB_HOST=reddeploy-mongo',
+					'DB_PORT=27017',
+					'DB_USER=root',
+					'DB_PASS=reddeploy',
+					'DB_NAME=reddeploy',
+				],
 			});
 
 			step = 'Creating containers... (4/5)';
