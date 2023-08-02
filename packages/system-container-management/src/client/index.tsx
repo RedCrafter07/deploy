@@ -9,7 +9,7 @@ function App() {
 	const socket = useSocket();
 
 	return (
-		<div className='min-h-screen bg-zinc-700 text-white'>
+		<div className='min-h-screen bg-zinc-800 text-zinc-100'>
 			<div className='container mx-auto p-2'>
 				<h1 className='text-3xl'>Hello</h1>
 			</div>
