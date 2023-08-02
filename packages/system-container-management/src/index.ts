@@ -66,7 +66,7 @@ console.log('Checking config...');
 
 		console.log('Initializing databases...');
 
-		const system = client.db('system');
+		const system = client.db('rd-system');
 		const project = client.db('project');
 
 		console.log('Initialized databases!');
