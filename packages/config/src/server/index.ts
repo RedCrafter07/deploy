@@ -59,25 +59,27 @@ const images = process.env.ENV == 'dev' ? devImages : prodImages;
 				JSON.stringify(data, null, 2),
 			);
 
-			step = 'Pulling images... (1/5)';
-			io.emit('step', step);
-			await pullImage(images.mongo);
+			if (process.env.ENV != 'dev') {
+				step = 'Pulling images... (1/5)';
+				io.emit('step', step);
+				await pullImage(images.mongo);
 
-			step = 'Pulling images... (2/5)';
-			io.emit('step', step);
-			await pullImage(images.cm);
+				step = 'Pulling images... (2/5)';
+				io.emit('step', step);
+				await pullImage(images.cm);
 
-			step = 'Pulling images... (3/5)';
-			io.emit('step', step);
-			await pullImage(images.web);
+				step = 'Pulling images... (3/5)';
+				io.emit('step', step);
+				await pullImage(images.web);
 
-			step = 'Pulling images... (4/5)';
-			io.emit('step', step);
-			await pullImage(images.scm);
+				step = 'Pulling images... (4/5)';
+				io.emit('step', step);
+				await pullImage(images.scm);
 
-			step = 'Pulling images... (5/5)';
-			io.emit('step', step);
-			// await pullImage('ghcr.io/redcrafter07/deploy/proxy:prod');
+				step = 'Pulling images... (5/5)';
+				io.emit('step', step);
+				// await pullImage('ghcr.io/redcrafter07/deploy/proxy:prod');
+			}
 
 			step = 'Creating network... (1/2)';
 			io.emit('step', step);
