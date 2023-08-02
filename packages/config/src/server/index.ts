@@ -68,13 +68,17 @@ let step: string;
 			socket.emit('step', step);
 			await createNetwork('reddeploy-proxy');
 
-			step = 'Creating volumes... (1/2)';
+			step = 'Creating volumes... (1/3)';
 			socket.emit('step', step);
 			await createVolume('reddeploy-mongo');
 
-			step = 'Creating volumes... (2/2)';
+			step = 'Creating volumes... (2/3)';
 			socket.emit('step', step);
 			await createVolume('reddeploy-cm-cache');
+
+			step = 'Creating volumes... (3/3)';
+			socket.emit('step', step);
+			await createVolume('reddeploy-scm-cache');
 
 			step = 'Creating containers... (1/5)';
 			socket.emit('step', step);
@@ -87,11 +91,7 @@ let step: string;
 				],
 				HostConfig: {
 					NetworkMode: 'reddeploy',
-				},
-				Volumes: {
-					'/data/db': {
-						Name: 'reddeploy-mongo',
-					},
+					Binds: ['reddeploy-mongo:/data/db'],
 				},
 			});
 
@@ -111,7 +111,7 @@ let step: string;
 				HostConfig: {
 					NetworkMode: 'reddeploy',
 					Binds: [
-						'reddeploy-cm-cache:/app/cache',
+						'reddeploy-cm-cache:/cache',
 						'/var/run/docker.sock:/var/run/docker.sock',
 					],
 				},
@@ -144,12 +144,11 @@ let step: string;
 				Name: 'reddeploy-scm',
 				HostConfig: {
 					NetworkMode: 'reddeploy',
-					Binds: ['/var/run/docker.sock:/var/run/docker.sock'],
-				},
-				Volumes: {
-					'/data': {
-						Name: 'reddeploy_config',
-					},
+					Binds: [
+						'/var/run/docker.sock:/var/run/docker.sock',
+						// 'reddeploy-scm-cache:/cache',
+						'reddeploy_config:/data',
+					],
 				},
 				Env: [
 					'DB_HOST=reddeploy-mongo',
