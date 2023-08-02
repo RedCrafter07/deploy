@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import useSocket from './util/useSocket';
-import '@fontsource/figtree';
 import './index.css';
+import '@fontsource/figtree';
 import { useEffect } from 'react';
 
 createRoot(document.getElementById('root')!).render(<App />);
