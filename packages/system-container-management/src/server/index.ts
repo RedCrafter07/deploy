@@ -171,6 +171,14 @@ async function initWebServer() {
 	});
 
 	app.use('/.rd-scm', express.static(path.join('..', 'client')));
+
+	app.get('/', (_, res) => {
+		res.sendFile(path.join('..', 'client', 'index.html'));
+	});
+
+	app.get('*', (_, res) => {
+		res.redirect('/');
+	});
 }
 
 async function timeout(ms: number) {
