@@ -126,6 +126,8 @@ if (await existsSync('/data/config.json')) {
 
 	console.log('Removing & exiting...');
 
+	client.close();
+
 	await removeContainer('reddeploy-scm-old');
 } else {
 	console.log('Config not detected! Checking for volume...');
