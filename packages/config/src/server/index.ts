@@ -111,8 +111,8 @@ const images = process.env.ENV == 'dev' ? devImages : prodImages;
 				Image: images.mongo,
 				Name: 'reddeploy-mongo',
 				Env: [
-					'MONGO_INITDB_ROOT_USERNAME=root',
-					'MONGO_INITDB_ROOT_PASSWORD=reddeploy',
+					'MONGODB_INITDB_ROOT_USERNAME=root',
+					'MONGODB_INITDB_ROOT_PASSWORD=reddeploy',
 				],
 				HostConfig: {
 					NetworkMode: 'reddeploy',
@@ -121,7 +121,6 @@ const images = process.env.ENV == 'dev' ? devImages : prodImages;
 						'reddeploy-mongo-config:/data/configdb',
 					],
 				},
-				Cmd: ['mongod', '--auth'],
 			});
 
 			step = 'Creating containers... (2/5)';
