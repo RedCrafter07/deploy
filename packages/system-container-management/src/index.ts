@@ -143,7 +143,6 @@ console.log('Checking config...');
 
 			console.log('Waiting for old container to stop...');
 
-			await stopContainer('reddeploy-scm-old');
 			await removeContainer('reddeploy-scm-old');
 
 			console.log('Continuing...');
