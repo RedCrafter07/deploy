@@ -62,7 +62,7 @@ async function renameContainer(id: string, newName: string) {
 		socketPath: '/var/run/docker.sock',
 		method: 'POST',
 		url: `/containers/${id}/rename`,
-		data: {
+		params: {
 			name: newName,
 		},
 	});
