@@ -11,4 +11,6 @@ COPY . .
 
 RUN pnpm build
 
+EXPOSE 9272
+
 CMD [ "pnpm", "start" ]
