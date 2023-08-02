@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 * {
-	font-family: 'Figtree', sans-serif;
+	font-family: 'Figtree';
 }
 
 .input {
