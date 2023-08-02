@@ -1,5 +1,3 @@
-// import { Server } from 'socket.io';
-
 import { existsSync } from 'fs';
 import { readFile } from 'fs/promises';
 import { MongoClient } from 'mongodb';
@@ -28,17 +26,6 @@ const client = new MongoClient(
 
 const system = client.db('rd-system');
 const project = client.db('project');
-
-// const io = new Server({
-// 	transports: ['websocket'],
-// });
-
-// io.on('connect', (socket) => {
-// 	console.log('A socket connected!');
-// });
-
-// io.listen(8080);
-// console.log('SCM socket listening');
 
 console.log('SCM started.');
 
