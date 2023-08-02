@@ -43,7 +43,7 @@ let step: string;
 
 			step = 'Pulling images... (1/5)';
 			socket.emit('step', step);
-			await pullImage('docker.io/mongo:4.4.18');
+			await pullImage('docker.io/mongo:4.4.6');
 
 			step = 'Pulling images... (2/5)';
 			socket.emit('step', step);
@@ -88,7 +88,7 @@ let step: string;
 			step = 'Creating containers... (1/5)';
 			socket.emit('step', step);
 			const db = await createContainer({
-				Image: 'docker.io/mongo:4.4.18',
+				Image: 'docker.io/mongo:4.4.6',
 				Name: 'reddeploy-mongo',
 				Env: [
 					'MONGO_INITDB_ROOT_USERNAME=root',
