@@ -25,6 +25,8 @@ jobs:
             dir: ./packages/web
           - image: cm
             dir: ./packages/container-management
+          - image: scm
+            dir: ./packages/system-container-management
     steps:
       - name: Checkout
         uses: actions/checkout@v2
