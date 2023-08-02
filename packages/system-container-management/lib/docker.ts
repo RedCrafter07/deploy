@@ -10,11 +10,9 @@ type Container = Partial<{
 		NetworkMode?: string;
 		Binds?: string[];
 		PortBindings?: {
-			[key: string]: [
-				{
-					HostPort: string;
-				},
-			];
+			[key: string]: {
+				HostPort: string;
+			}[];
 		};
 		RestartPolicy?: {
 			Name: '' | 'no' | 'always' | 'unless-stopped' | 'on-failure';
