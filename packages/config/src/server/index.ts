@@ -173,7 +173,6 @@ const images = process.env.ENV == 'dev' ? devImages : prodImages;
 					NetworkMode: 'reddeploy',
 					Binds: [
 						'/var/run/docker.sock:/var/run/docker.sock',
-						// 'reddeploy-scm-cache:/cache',
 						'reddeploy_config:/data',
 					],
 				},
