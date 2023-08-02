@@ -79,10 +79,21 @@ async function removeContainer(id: string) {
 	});
 }
 
+async function getContainer(id: string) {
+	const req = await axios({
+		socketPath: '/var/run/docker.sock',
+		method: 'GET',
+		url: `/containers/${id}/json`,
+	});
+
+	return req.data;
+}
+
 export {
 	createContainer,
 	startContainer,
 	getVolume,
+	getContainer,
 	removeVolume,
 	renameContainer,
 	removeContainer,
