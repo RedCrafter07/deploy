@@ -3,6 +3,7 @@
 import { existsSync } from 'fs';
 import { readFile } from 'fs/promises';
 import mongo from 'mongodb';
+import { getVolume, removeVolume } from '../lib/docker.js';
 
 const client = new mongo.MongoClient(
 	`mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`,
@@ -82,4 +83,10 @@ if (await existsSync('/data/config.json')) {
 	});
 } else {
 	console.log('Config not detected! Checking for volume...');
+
+	if (await getVolume('reddeploy_config')) {
+		console.log('Volume found! Removing...');
+
+		await removeVolume('reddeploy_config');
+	} else console.log('Volume not detected! Skipping postinstall...');
 }
