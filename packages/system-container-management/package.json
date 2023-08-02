@@ -2,13 +2,13 @@
 	"name": "system-container-management",
 	"version": "1.0.0",
 	"description": "The system container management for RedDeploy",
-	"main": "dist/index.js",
+	"main": "dist/server/index.js",
 	"scripts": {
-		"start": "node dist/index.js",
+		"start": "node dist/server/index.js",
 		"build": "pnpm run build:client && pnpm run build:server",
-		"build:server": "esbuild ./src/index.ts --bundle --platform=node --packages=external --outfile=dist/index.js",
-		"build:client": "webpack --config ./webpack.config.ts --mode production",
-		"dev": "tsx watch --clear-screen=false ./src/index.ts"
+		"build:server": "esbuild ./src/server/index.ts --bundle --platform=node --packages=external --outfile=dist/server/index.js",
+		"build:client": "webpack -c webpack.config.ts --mode production",
+		"dev": "concurrently \"tsx watch --clear-screen=false ./src/index.ts\" \"webpack watch -c webpack.config.ts --mode development\""
 	},
 	"keywords": [],
 	"author": "RedCrafter07",
