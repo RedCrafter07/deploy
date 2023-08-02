@@ -62,6 +62,9 @@ async function createContainer(container: Container) {
 		method: 'POST',
 		url: '/containers/create',
 		data: container,
+		params: {
+			name: container.Name,
+		},
 	});
 
 	return req.data.Id;
