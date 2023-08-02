@@ -68,10 +68,22 @@ async function renameContainer(id: string, newName: string) {
 	});
 }
 
+async function removeContainer(id: string) {
+	await axios({
+		socketPath: '/var/run/docker.sock',
+		method: 'DELETE',
+		url: `/containers/${id}`,
+		data: {
+			force: true,
+		},
+	});
+}
+
 export {
 	createContainer,
 	startContainer,
 	getVolume,
 	removeVolume,
 	renameContainer,
+	removeContainer,
 };
