@@ -11,9 +11,7 @@ type Container = Partial<{
 		Binds?: string[];
 	};
 	Volumes: {
-		[key: string]: {
-			Name: string;
-		};
+		[key: string]: {};
 	};
 }>;
 
