@@ -113,7 +113,6 @@ let step: string;
 					'CM_MONGO_PORT=27017',
 					'CM_MONGO_USER=root',
 					'CM_MONGO_PASS=reddeploy',
-					'CM_MONGO_DB=reddeploy',
 					'CM_PORT=8080',
 				],
 				HostConfig: {
@@ -163,7 +162,6 @@ let step: string;
 					'DB_PORT=27017',
 					'DB_USER=root',
 					'DB_PASS=reddeploy',
-					'DB_NAME=reddeploy',
 				],
 			});
 
