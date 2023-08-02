@@ -46,7 +46,7 @@ function App() {
 					>
 						<label className='flex flex-col gap-1'>
 							<span>Username</span>
-							<input type='text' className='input' required />
+							<input name='username' type='text' className='input' required />
 						</label>
 						<label className='flex flex-col gap-1'>
 							<span>Password</span>
