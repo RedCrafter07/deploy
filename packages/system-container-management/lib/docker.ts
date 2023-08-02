@@ -57,4 +57,15 @@ async function removeVolume(name: string) {
 	});
 }
 
+async function renameContainer(id: string, newName: string) {
+	await axios({
+		socketPath: '/var/run/docker.sock',
+		method: 'POST',
+		url: `/containers/${id}/rename`,
+		data: {
+			name: newName,
+		},
+	});
+}
+
 export { createContainer, startContainer, getVolume, removeVolume };
