@@ -6,6 +6,7 @@ import mongo from 'mongodb';
 import {
 	createContainer,
 	getVolume,
+	removeContainer,
 	removeVolume,
 	renameContainer,
 	startContainer,
@@ -124,6 +125,8 @@ if (await existsSync('/data/config.json')) {
 	console.log('New container started!');
 
 	console.log('Removing...');
+
+	await removeContainer('reddeploy-scm-old');
 } else {
 	console.log('Config not detected! Checking for volume...');
 
