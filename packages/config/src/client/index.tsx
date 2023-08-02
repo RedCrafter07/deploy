@@ -17,6 +17,7 @@ function App() {
 	useEffect(() => {
 		socket.on('connect', () => {
 			console.log('[SOCKET]: Connected!');
+			socket.emit('from', 'config');
 		});
 
 		socket.on('reload', () => {
