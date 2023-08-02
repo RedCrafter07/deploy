@@ -80,9 +80,6 @@ dependencies:
   typescript:
     specifier: ^5.1.6
     version: 5.1.6
-  url-loader:
-    specifier: ^4.1.1
-    version: 4.1.1(webpack@5.88.2)
   webpack:
     specifier: ^5.88.2
     version: 5.88.2(esbuild@0.18.17)(webpack-cli@5.1.4)
@@ -3427,22 +3424,6 @@ packages:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
     dependencies:
       punycode: 2.3.0
-    dev: false
-
-  /url-loader@4.1.1(webpack@5.88.2):
-    resolution: {integrity: sha512-3BTV812+AVHHOJQO8O5MkWgZ5aosP7GnROJwvzLS9hWDj00lZ6Z0wNak423Lp9PBZN05N+Jk/N5Si8jRAlGyWA==}
-    engines: {node: '>= 10.13.0'}
-    peerDependencies:
-      file-loader: '*'
-      webpack: ^4.0.0 || ^5.0.0
-    peerDependenciesMeta:
-      file-loader:
-        optional: true
-    dependencies:
-      loader-utils: 2.0.4
-      mime-types: 2.1.35
-      schema-utils: 3.3.0
-      webpack: 5.88.2(esbuild@0.18.17)(webpack-cli@5.1.4)
     dev: false
 
   /util-deprecate@1.0.2:
