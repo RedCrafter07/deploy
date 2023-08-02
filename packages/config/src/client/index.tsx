@@ -196,10 +196,12 @@ function App() {
 			{view === 'config' && <Config />}
 			{view === 'install' && (
 				<div className='w-full h-screen grid place-items-center'>
-					<div className='flex flex-col gap-2'>
+					<div className='flex flex-col gap-2 text-center'>
 						<h1 className='text-3xl'>Installing RedDeploy...</h1>
 						<p>RedDeploy is being installed. This might take a few minutes.</p>
-						<Spinner />
+						<div className='w-32'>
+							<Spinner />
+						</div>
 						<p>{step}</p>
 					</div>
 				</div>
