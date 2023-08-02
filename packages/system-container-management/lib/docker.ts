@@ -47,13 +47,17 @@ async function startContainer(id: string) {
 }
 
 async function getVolume(name: string) {
-	const req = await axios({
-		socketPath: '/var/run/docker.sock',
-		method: 'GET',
-		url: `/volumes/${name}`,
-	});
+	try {
+		const req = await axios({
+			socketPath: '/var/run/docker.sock',
+			method: 'GET',
+			url: `/volumes/${name}`,
+		});
 
-	return req.data;
+		return req.data;
+	} catch {
+		return null;
+	}
 }
 
 async function removeVolume(name: string) {
