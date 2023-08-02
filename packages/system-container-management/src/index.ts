@@ -106,7 +106,10 @@ console.log('Checking config...');
 			Name: 'reddeploy-scm',
 			HostConfig: {
 				NetworkMode: 'reddeploy',
-				Binds: ['/var/run/docker.sock:/var/run/docker.sock'],
+				Binds: [
+					'/var/run/docker.sock:/var/run/docker.sock',
+					'reddeploy-scm-cache:/cache',
+				],
 			},
 			Env: [
 				'DB_HOST=reddeploy-mongo',
