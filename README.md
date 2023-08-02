@@ -12,7 +12,8 @@ This repository contains the following packages:
 - **Updater** - The updater for easy RedDeploy updates
 - **Web** - The web interface, including front- and backend
 - **Container Management** - The container management container to handle the deployed containers
-- **Proxy** - The proxy container, ran on top of Nginx, handles routing for projects
+- **Proxy** - The proxy container, ran on top of Nginx or Nginx Proxy Manager, handles routing for projects
+- **System Container Management** - The system container management, or scm, which handles the starting of needed system containers (Web, CM, Proxy, DB)
 
 ### As well as...
 
