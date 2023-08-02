@@ -96,6 +96,16 @@ console.log('Checking config...');
 					'/var/run/docker.sock:/var/run/docker.sock',
 					'reddeploy-scm-cache:/cache',
 				],
+				RestartPolicy: {
+					Name: 'always',
+				},
+				PortBindings: {
+					'9272/tcp': [
+						{
+							HostPort: '9272',
+						},
+					],
+				},
 			},
 			Env: [
 				'DB_HOST=reddeploy-mongo',
