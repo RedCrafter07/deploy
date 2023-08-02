@@ -39,4 +39,6 @@ async function startContainer(id: string) {
 	});
 }
 
+async function getVolume(name: string) {}
+
 export { createContainer, startContainer };
