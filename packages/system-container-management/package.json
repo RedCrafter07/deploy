@@ -37,6 +37,7 @@
 		"webpack-cli": "^5.1.4"
 	},
 	"devDependencies": {
+		"concurrently": "^8.2.0",
 		"tsx": "^3.12.7"
 	}
 }
