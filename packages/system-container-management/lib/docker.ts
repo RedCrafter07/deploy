@@ -9,6 +9,17 @@ type Container = Partial<{
 	HostConfig: {
 		NetworkMode?: string;
 		Binds?: string[];
+		PortBindings?: {
+			[key: string]: [
+				{
+					HostPort: string;
+				},
+			];
+		};
+		RestartPolicy?: {
+			Name: '' | 'no' | 'always' | 'unless-stopped' | 'on-failure';
+			MaximumRetryCount?: number;
+		};
 	};
 	Volumes: {
 		[key: string]: {};
