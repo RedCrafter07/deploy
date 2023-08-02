@@ -72,7 +72,7 @@ let step: string;
 			socket.emit('step', step);
 			await createVolume('reddeploy-cm-cache');
 
-			step = 'Creating containers... (1/4)';
+			step = 'Creating containers... (1/5)';
 			socket.emit('step', step);
 			const db = await createContainer({
 				Image: 'docker.io/mongo:4.2.17',
@@ -91,7 +91,7 @@ let step: string;
 				},
 			});
 
-			step = 'Creating containers... (2/4)';
+			step = 'Creating containers... (2/5)';
 			socket.emit('step', step);
 			const cm = await createContainer({
 				Image: 'ghcr.io/redcrafter07/deploy/cm:prod',
@@ -113,7 +113,7 @@ let step: string;
 				},
 			});
 
-			step = 'Creating containers... (3/4)';
+			step = 'Creating containers... (3/5)';
 			socket.emit('step', step);
 			const web = await createContainer({
 				Image: 'ghcr.io/redcrafter07/deploy/web:prod',
@@ -124,7 +124,22 @@ let step: string;
 				},
 			});
 
-			step = 'Creating containers... (4/4)';
+			step = 'Creating containers... (4/5)';
+			socket.emit('step', step);
+			const scm = await createContainer({
+				Image: 'ghcr.io/redcrafter07/deploy/scm:prod',
+				Name: 'reddeploy-web',
+				HostConfig: {
+					NetworkMode: 'reddeploy',
+				},
+				Volumes: {
+					'/data': {
+						Name: 'reddeploy_config',
+					},
+				},
+			});
+
+			step = 'Creating containers... (4/5)';
 			socket.emit('step', step);
 			/* await docker.createContainer({
 				Image: 'ghcr.io/redcrafter07/deploy/proxy:prod',
@@ -139,19 +154,37 @@ let step: string;
 				},
 			}); */
 
-			step = 'Starting containers... (1/4)';
+			step = "Writing container ID's to file...";
+			socket.emit('step', step);
+
+			await writeFile(
+				path.join(__dirname, '..', '..', 'data', 'containers.json'),
+				JSON.stringify({
+					db,
+					cm,
+					web,
+					scm,
+					// proxy: proxy.id,
+				}),
+			);
+
+			step = 'Starting containers... (1/5)';
 			socket.emit('step', step);
 			await startContainer(db);
 
-			step = 'Starting containers... (2/4)';
+			step = 'Starting containers... (2/5)';
 			socket.emit('step', step);
 			await startContainer(cm);
 
-			step = 'Starting containers... (3/4)';
+			step = 'Starting containers... (3/5)';
 			socket.emit('step', step);
 			await startContainer(web);
 
-			step = 'Starting containers... (4/4)';
+			step = 'Starting containers... (4/5)';
+			socket.emit('step', step);
+			await startContainer(scm);
+
+			step = 'Starting containers... (5/5)';
 			socket.emit('step', step);
 			// await docker.getContainer('reddeploy-proxy').start();
 
