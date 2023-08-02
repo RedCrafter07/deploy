@@ -28,11 +28,12 @@ let step: string;
 		if (blockConfig) {
 			socket.emit('view', 'install');
 			socket.emit('step', step);
-			return;
 		}
-		blockConfig = true;
 
 		socket.on('config', async (data) => {
+			if (blockConfig) return;
+
+			blockConfig = true;
 			socket.emit('view', 'install');
 
 			await writeFile(
