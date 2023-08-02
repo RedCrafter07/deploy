@@ -2,10 +2,11 @@
 	"name": "system-container-management",
 	"version": "1.0.0",
 	"description": "The system container management for RedDeploy",
-	"main": "dist/index.js",
+	"main": "dist/server/index.js",
 	"scripts": {
-		"start": "node dist/index.js",
-		"build": "esbuild ./src/index.ts --bundle --platform=node --packages=external --outfile=dist/index.js",
+		"start": "node dist/server/index.js",
+		"build": "pnpm run build:client",
+		"build:server": "esbuild ./src/server/index.ts --bundle --platform=node --packages=external --outfile=dist/server/index.js",
 		"dev": "tsx watch --clear-screen=false ./src/index.ts"
 	},
 	"keywords": [],
