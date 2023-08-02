@@ -193,7 +193,7 @@ async function initWebServer() {
 	app.use('/.rd-scm', express.static(path.join('..', 'client')));
 
 	app.get('/', (_, res) => {
-		res.sendFile(path.resolve('..', 'client', 'index.html'));
+		res.sendFile(path.resolve(__dirname, '..', 'client', 'index.html'));
 	});
 
 	app.get('*', (_, res) => {
