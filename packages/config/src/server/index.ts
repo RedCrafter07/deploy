@@ -52,7 +52,7 @@ const images = process.env.ENV == 'dev' ? devImages : prodImages;
 			if (blockConfig) return;
 
 			blockConfig = true;
-			socket.emit('view', 'install');
+			io.emit('view', 'install');
 
 			await writeFile(
 				path.resolve('/data/config.json'),
@@ -60,51 +60,51 @@ const images = process.env.ENV == 'dev' ? devImages : prodImages;
 			);
 
 			step = 'Pulling images... (1/5)';
-			socket.emit('step', step);
+			io.emit('step', step);
 			await pullImage(images.mongo);
 
 			step = 'Pulling images... (2/5)';
-			socket.emit('step', step);
+			io.emit('step', step);
 			await pullImage(images.cm);
 
 			step = 'Pulling images... (3/5)';
-			socket.emit('step', step);
+			io.emit('step', step);
 			await pullImage(images.web);
 
 			step = 'Pulling images... (4/5)';
-			socket.emit('step', step);
+			io.emit('step', step);
 			await pullImage(images.scm);
 
 			step = 'Pulling images... (5/5)';
-			socket.emit('step', step);
+			io.emit('step', step);
 			// await pullImage('ghcr.io/redcrafter07/deploy/proxy:prod');
 
 			step = 'Creating network... (1/2)';
-			socket.emit('step', step);
+			io.emit('step', step);
 			await createNetwork('reddeploy');
 
 			step = 'Creating network... (2/2)';
-			socket.emit('step', step);
+			io.emit('step', step);
 			await createNetwork('reddeploy-proxy');
 
 			step = 'Creating volumes... (1/4)';
-			socket.emit('step', step);
+			io.emit('step', step);
 			await createVolume('reddeploy-mongo');
 
 			step = 'Creating volumes... (2/4)';
-			socket.emit('step', step);
+			io.emit('step', step);
 			await createVolume('reddeploy-cm-cache');
 
 			step = 'Creating volumes... (3/4)';
-			socket.emit('step', step);
+			io.emit('step', step);
 			await createVolume('reddeploy-scm-cache');
 
 			step = 'Creating volumes... (4/4)';
-			socket.emit('step', step);
+			io.emit('step', step);
 			await createVolume('reddeploy-mongo-config');
 
 			step = 'Creating containers... (1/5)';
-			socket.emit('step', step);
+			io.emit('step', step);
 			const db = await createContainer({
 				Image: images.mongo,
 				Name: 'reddeploy-mongo',
@@ -122,7 +122,7 @@ const images = process.env.ENV == 'dev' ? devImages : prodImages;
 			});
 
 			step = 'Creating containers... (2/5)';
-			socket.emit('step', step);
+			io.emit('step', step);
 			const cm = await createContainer({
 				Image: images.cm,
 				Name: 'reddeploy-cm',
@@ -143,7 +143,7 @@ const images = process.env.ENV == 'dev' ? devImages : prodImages;
 			});
 
 			step = 'Creating containers... (3/5)';
-			socket.emit('step', step);
+			io.emit('step', step);
 			const web = await createContainer({
 				Image: images.web,
 				Name: 'reddeploy-web',
@@ -163,7 +163,7 @@ const images = process.env.ENV == 'dev' ? devImages : prodImages;
 			});
 
 			step = 'Creating containers... (4/5)';
-			socket.emit('step', step);
+			io.emit('step', step);
 			const scm = await createContainer({
 				Image: images.scm,
 				Name: 'reddeploy-scm',
@@ -184,7 +184,7 @@ const images = process.env.ENV == 'dev' ? devImages : prodImages;
 			});
 
 			step = 'Creating containers... (4/5)';
-			socket.emit('step', step);
+			io.emit('step', step);
 			/* await docker.createContainer({
 				Image: 'ghcr.io/redcrafter07/deploy/proxy:prod',
 				name: 'reddeploy-proxy',
@@ -199,7 +199,7 @@ const images = process.env.ENV == 'dev' ? devImages : prodImages;
 			}); */
 
 			step = "Writing container ID's to file...";
-			socket.emit('step', step);
+			io.emit('step', step);
 
 			await writeFile(
 				path.resolve('/data/containers.json'),
@@ -213,29 +213,29 @@ const images = process.env.ENV == 'dev' ? devImages : prodImages;
 			);
 
 			step = 'Starting containers... (1/5)';
-			socket.emit('step', step);
+			io.emit('step', step);
 			await startContainer(db);
 
 			step = 'Starting containers... (2/5)';
-			socket.emit('step', step);
+			io.emit('step', step);
 			await startContainer(cm);
 
 			step = 'Starting containers... (3/5)';
-			socket.emit('step', step);
+			io.emit('step', step);
 			await startContainer(web);
 
 			step = 'Starting containers... (4/5)';
-			socket.emit('step', step);
+			io.emit('step', step);
 			await startContainer(scm);
 
 			step = 'Starting containers... (5/5)';
-			socket.emit('step', step);
+			io.emit('step', step);
 			// await docker.getContainer('reddeploy-proxy').start();
 
 			// TODO: Import config to database
 
 			step = 'Done!';
-			socket.emit('step', step);
+			io.emit('step', step);
 			socket.emit('view', 'done');
 
 			setTimeout(() => {
