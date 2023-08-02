@@ -17,7 +17,7 @@ export default {
 	module: {
 		rules: [
 			{ test: /\.tsx?$/, use: 'esbuild-loader' },
-			{ test: /\.css$/, use: ['style-loader', 'css-loader'] },
+			{ test: /\.css$/, use: ['style-loader', 'css-loader', 'postcss-loader'] },
 		],
 	},
 
