@@ -7,6 +7,7 @@ export default {
 	output: {
 		filename: 'index.js',
 		path: __dirname + '/dist',
+		publicPath: '/.rd-scm',
 	},
 
 	resolve: {
