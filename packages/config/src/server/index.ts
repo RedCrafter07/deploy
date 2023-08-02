@@ -15,6 +15,24 @@ import {
 let blockConfig = false;
 let step: string;
 
+const prodImages = {
+	web: 'ghcr.io/redcrafter07/deploy/web:prod',
+	cm: 'ghcr.io/redcrafter07/deploy/cm:prod',
+	scm: 'ghcr.io/redcrafter07/deploy/scm:prod',
+	proxy: 'ghcr.io/redcrafter07/deploy/proxy:prod',
+	mongo: 'docker.io/mongodb/mongodb-community-server:4.4.10-ubi8',
+};
+
+const devImages = {
+	web: 'reddeploy/web:latest',
+	cm: 'reddeploy/cm:latest',
+	scm: 'reddeploy/scm:latest',
+	proxy: 'reddeploy/proxy:latest',
+	mongo: 'docker.io/mongodb/mongodb-community-server:4.4.10-ubi8',
+};
+
+const images = process.env.ENV == 'dev' ? devImages : prodImages;
+
 (async () => {
 	const app = express();
 	const server = createServer(app);
@@ -43,19 +61,19 @@ let step: string;
 
 			step = 'Pulling images... (1/5)';
 			socket.emit('step', step);
-			await pullImage('docker.io/mongo:4.4.6');
+			await pullImage(images.mongo);
 
 			step = 'Pulling images... (2/5)';
 			socket.emit('step', step);
-			await pullImage('ghcr.io/redcrafter07/deploy/cm:prod');
+			await pullImage(images.cm);
 
 			step = 'Pulling images... (3/5)';
 			socket.emit('step', step);
-			await pullImage('ghcr.io/redcrafter07/deploy/web:prod');
+			await pullImage(images.web);
 
 			step = 'Pulling images... (4/5)';
 			socket.emit('step', step);
-			await pullImage('ghcr.io/redcrafter07/deploy/scm:prod');
+			await pullImage(images.scm);
 
 			step = 'Pulling images... (5/5)';
 			socket.emit('step', step);
@@ -88,7 +106,7 @@ let step: string;
 			step = 'Creating containers... (1/5)';
 			socket.emit('step', step);
 			const db = await createContainer({
-				Image: 'docker.io/mongo:4.4.6',
+				Image: images.mongo,
 				Name: 'reddeploy-mongo',
 				Env: [
 					'MONGO_INITDB_ROOT_USERNAME=root',
@@ -106,7 +124,7 @@ let step: string;
 			step = 'Creating containers... (2/5)';
 			socket.emit('step', step);
 			const cm = await createContainer({
-				Image: 'ghcr.io/redcrafter07/deploy/cm:prod',
+				Image: images.cm,
 				Name: 'reddeploy-cm',
 				Env: [
 					'CM_MONGO_HOST=reddeploy-mongo',
@@ -127,7 +145,7 @@ let step: string;
 			step = 'Creating containers... (3/5)';
 			socket.emit('step', step);
 			const web = await createContainer({
-				Image: 'ghcr.io/redcrafter07/deploy/web:prod',
+				Image: images.web,
 				Name: 'reddeploy-web',
 				Env: [
 					'WEB_CM_HOST=reddeploy-cm',
@@ -147,7 +165,7 @@ let step: string;
 			step = 'Creating containers... (4/5)';
 			socket.emit('step', step);
 			const scm = await createContainer({
-				Image: 'ghcr.io/redcrafter07/deploy/scm:prod',
+				Image: images.scm,
 				Name: 'reddeploy-scm',
 				HostConfig: {
 					NetworkMode: 'reddeploy',
