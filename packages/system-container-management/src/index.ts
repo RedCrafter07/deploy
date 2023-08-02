@@ -124,7 +124,7 @@ if (await existsSync('/data/config.json')) {
 
 	console.log('New container started!');
 
-	console.log('Removing...');
+	console.log('Removing & exiting...');
 
 	await removeContainer('reddeploy-scm-old');
 } else {
