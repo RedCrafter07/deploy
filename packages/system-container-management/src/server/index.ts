@@ -11,6 +11,10 @@ import {
 	renameContainer,
 	startContainer,
 } from '../../lib/docker.js';
+import express from 'express';
+import { createServer } from 'http';
+import { Server as SocketServer } from 'socket.io';
+import path from 'path';
 
 const client = new MongoClient(
 	`mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}`,
@@ -153,7 +157,21 @@ console.log('Checking config...');
 			console.log('Volume removed!');
 		} else console.log('Volume not detected! Skipping postinstall...');
 	}
+
+	await initWebServer();
 })();
+
+async function initWebServer() {
+	console.log('Initializing web server...');
+
+	const app = express();
+	const server = createServer(app);
+	const io = new SocketServer(server, {
+		transports: ['websocket'],
+	});
+
+	app.use('/.rd-scm', express.static(path.join('..', 'client')));
+}
 
 async function timeout(ms: number) {
 	return new Promise((resolve) => setTimeout(resolve, ms));
