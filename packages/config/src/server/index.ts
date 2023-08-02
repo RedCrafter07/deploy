@@ -4,7 +4,6 @@ import { createServer } from 'http';
 import { createHttpTerminator } from 'http-terminator';
 import path from 'path';
 import { Server as SocketServer } from 'socket.io';
-import Dockerode from 'dockerode';
 import {
 	createContainer,
 	createNetwork,
@@ -12,10 +11,6 @@ import {
 	pullImage,
 	startContainer,
 } from './lib/docker';
-
-const docker = new Dockerode({
-	socketPath: '/var/run/docker.sock',
-});
 
 let blockConfig = false;
 
