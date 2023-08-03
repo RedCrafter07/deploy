@@ -125,6 +125,7 @@ class NPMApi {
 	url: string;
 
 	constructor(url: string) {
+		console.log(url);
 		this.url = url;
 	}
 
