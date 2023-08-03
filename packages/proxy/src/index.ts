@@ -115,7 +115,8 @@ async function proxyServer() {
 				certReq.data.id,
 			);
 			console.log('Added access url to proxy!');
-		} catch {
+		} catch (e) {
+			console.log(e);
 			console.log("Couldn't get SSL certificate for access url!");
 		}
 	} else {
