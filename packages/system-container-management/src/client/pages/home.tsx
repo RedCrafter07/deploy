@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { Socket } from 'socket.io-client';
 import useSocket from '../util/useSocket';
+import { IconReload } from '@tabler/icons-react';
 
 export default function Home() {
 	const socket = useSocket();
@@ -57,7 +58,15 @@ function Panel(props: { socket: Socket }) {
 			<div className='container mx-auto p-2'>
 				<h1 className='text-3xl'>Welcome to the RedDeploy SCM Panel</h1>
 
-				<h3 className='text-xl'>Container Overview</h3>
+				<div className='flex flex-row justify-between'>
+					<h3 className='text-xl'>Container Overview</h3>
+					<IconReload
+						onClick={() => {
+							socket.emit('getContainers');
+						}}
+						className='cursor-pointer hover:text-zinc-200 active:scale-95 transition-all duration-100 my-auto'
+					/>
+				</div>
 
 				<div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
 					{containers.map(({ id, name, running }) => {
