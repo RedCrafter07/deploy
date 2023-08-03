@@ -70,7 +70,7 @@ function Panel(props: { socket: Socket }) {
 											running ? 'bg-green-600' : 'bg-red-600'
 										}`}
 									/>
-									<span className='text-sm'>
+									<span className='text-sm my-auto'>
 										{running ? 'Running' : 'Stopped'}
 									</span>
 								</div>
