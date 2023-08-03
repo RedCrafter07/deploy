@@ -157,6 +157,8 @@ console.log('Checking config...');
 async function initWebServer() {
 	console.log('Initializing web server...');
 
+	await client.connect();
+
 	const app = express();
 	const server = createServer(app);
 	const io = new SocketServer(server, {
