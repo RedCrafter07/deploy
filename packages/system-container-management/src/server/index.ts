@@ -297,12 +297,12 @@ async function initWebServer() {
 	app.use('/.rd-scm', express.static(path.join(__dirname, '..', 'client')));
 
 	app.get('/', (_, res) => {
-		if (!proxySetUp) res.redirect('/setup-proxy');
+		if (!proxySetUp) return res.redirect('/setup-proxy');
 		res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
 	});
 
 	app.get('/setup-proxy', (_, res) => {
-		if (proxySetUp) res.redirect('/');
+		if (proxySetUp) return res.redirect('/');
 		res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
 	});
 
