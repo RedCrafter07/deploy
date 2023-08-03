@@ -4,6 +4,7 @@ import '@fontsource/figtree';
 import './index.css';
 import { useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
+import { AnimatePresence, motion } from 'framer-motion';
 
 createRoot(document.getElementById('root')!).render(<App />);
 
@@ -24,8 +25,19 @@ function App() {
 		socket.connect();
 	}, []);
 
-	if (view == 'home') return <Home socket={socket} />;
-	else return <Login socket={socket} />;
+	return (
+		<AnimatePresence initial={false} mode='wait'>
+			<motion.div
+				key={view}
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				exit={{ opacity: 0 }}
+				transition={{ duration: 0.3 }}
+			>
+				{view == 'home' ? <Home socket={socket} /> : <Login socket={socket} />}
+			</motion.div>
+		</AnimatePresence>
+	);
 }
 
 function Home(props: { socket: Socket }) {
