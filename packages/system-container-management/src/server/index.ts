@@ -312,7 +312,7 @@ async function initWebServer() {
 						Env: [
 							`MONGO_URL=${mongoURI}`,
 							`MONGO_USER=${process.env.MONGO_USER}`,
-							`MONGO_PASSWORD=${process.env.MONGO_PASSWORD}`,
+							`MONGO_PASSWORD=${process.env.MONGO_PASS}`,
 							`WEB_IP=${webIP}`,
 						],
 						HostConfig: {
