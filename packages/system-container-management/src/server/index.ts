@@ -300,6 +300,9 @@ async function initWebServer() {
 
 					proxySetUp = true;
 
+					const webIP = (await getContainer('reddeploy-web'))!.NetworkSettings
+						.IPAddress;
+
 					const proxyContainer = await createContainer({
 						Name: 'reddeploy-proxy',
 						Image:
@@ -310,6 +313,7 @@ async function initWebServer() {
 							`MONGO_URL=${mongoURI}`,
 							`MONGO_USER=${process.env.MONGO_USER}`,
 							`MONGO_PASSWORD=${process.env.MONGO_PASSWORD}`,
+							`WEB_IP=${webIP}`,
 						],
 					});
 
