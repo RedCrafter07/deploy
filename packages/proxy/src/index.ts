@@ -92,7 +92,9 @@ async function proxyServer() {
 	const io = new Server();
 
 	io.on('connection', (socket) => {
-		socket.on('addProject', (url: string, port: string) => {});
+		socket.on('addProject', async (url: string, port: string) => {
+			await addEntry(url, port, socket.id, token);
+		});
 	});
 
 	io.listen(3000);
