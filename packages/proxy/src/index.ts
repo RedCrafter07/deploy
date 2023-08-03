@@ -51,7 +51,29 @@ async function proxyServer() {
 		scope: 'user',
 	});
 
-	const token = tokenReq.data.token;
+	let token: string = tokenReq.data.token;
+
+	setInterval(async () => {
+		try {
+			const tokenReq = await axios.get(`${url}/api/tokens/refresh`, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+
+			token = tokenReq.data.token;
+		} catch {
+			console.error('Failed to refresh API token!');
+			console.log('Getting new one...');
+
+			const tokenReq = await axios.post(`${url}/api/tokens`, {
+				email,
+				password,
+			});
+
+			token = tokenReq.data.token;
+		}
+	}, 1 * 60 * 1000);
 
 	console.log('API token received!');
 
