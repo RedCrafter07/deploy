@@ -19,7 +19,9 @@ console.log('Environment variables are set!');
 
 console.log('Starting...');
 
-proxyServer();
+(async () => {
+	await proxyServer();
+})();
 
 async function proxyServer() {
 	const db = new MongoClient(uri!, {
