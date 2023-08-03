@@ -2,12 +2,15 @@ import { createRoot } from 'react-dom/client';
 import useSocket from './util/useSocket';
 import '@fontsource/figtree';
 import './index.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Socket } from 'socket.io-client';
 
 createRoot(document.getElementById('root')!).render(<App />);
 
 function App() {
 	const socket = useSocket();
+
+	const [view, setView] = useState<'login' | 'home'>('login');
 
 	useEffect(() => {
 		socket.on('connect', () => {
@@ -15,12 +18,30 @@ function App() {
 		});
 
 		socket.on('login', (success: boolean) => {
-			console.log('Login', success);
+			if (success) setView('home');
 		});
 
 		socket.connect();
 	}, []);
 
+	if (view == 'home') return <Home socket={socket} />;
+	else return <Login socket={socket} />;
+}
+
+function Home(props: { socket: Socket }) {
+	const { socket } = props;
+
+	useEffect(() => {}, []);
+
+	return (
+		<div className='min-h-screen bg-zinc-800 text-zinc-100'>
+			<h1 className='text-3xl'>Welcome to the RedDeploy Admin Panel</h1>
+		</div>
+	);
+}
+
+function Login(props: { socket: Socket }) {
+	const { socket } = props;
 	return (
 		<div className='min-h-screen bg-zinc-800 text-zinc-100'>
 			<div className='h-screen grid place-items-center'>
