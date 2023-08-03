@@ -7,9 +7,9 @@
 }
 
 .input {
-	@apply w-full p-2 bg-zinc-700 text-white placeholder:text-white placeholder:opacity-50 rounded-lg focus:outline-none border-2 border-opacity-10 border-white;
+	@apply w-full p-2 bg-zinc-700 text-zinc-100 placeholder:text-white placeholder:opacity-50 rounded-lg focus:outline-none border-2 border-opacity-10 border-white;
 }
 
 body {
-	@apply bg-zinc-900;
+	@apply bg-zinc-900 text-zinc-100;
 }
