@@ -78,6 +78,8 @@ async function proxyServer() {
 
 	console.log('API token received!');
 
+	const { addEntry, deleteEntry, getEntry, updateEntry } = new NPMApi(url);
+
 	console.log('Checking for access url in proxy...');
 
 	const entry = await getEntry(accessURL, token);
@@ -117,66 +119,64 @@ async function proxyServer() {
 	console.log('Socket server started!');
 }
 
-async function getEntry(domain: string, token: string) {
-	const { data } = await axios.get('/nginx/proxy-hosts', {
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-	});
+class NPMApi {
+	url: string;
 
-	return data.find((d: any) => d.domain_names.includes(domain));
-}
+	constructor(url: string) {
+		this.url = url;
+	}
 
-async function addEntry(
-	url: string,
-	port: string,
-	domain: string,
-	token: string,
-) {
-	await axios.post(
-		'/nginx/proxy-hosts',
-		{
-			domain_names: [domain],
-			forward_host: url,
-			forward_port: port,
-		},
-		{
+	async getEntry(domain: string, token: string) {
+		const { data } = await axios.get(`${this.url}/nginx/proxy-hosts`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
-		},
-	);
-}
+		});
 
-async function updateEntry(
-	domain: string,
-	url: string,
-	port: string,
-	token: string,
-) {
-	const { id } = await getEntry(domain, token);
+		return data.find((d: any) => d.domain_names.includes(domain));
+	}
 
-	await axios.put(
-		`/nginx/proxy-hosts/${id}`,
-		{
-			domain_names: [domain],
-			forward_host: url,
-			forward_port: port,
-		},
-		{
+	async addEntry(url: string, port: string, domain: string, token: string) {
+		await axios.post(
+			`${this.url}/nginx/proxy-hosts`,
+			{
+				domain_names: [domain],
+				forward_host: url,
+				forward_port: port,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		);
+	}
+
+	async updateEntry(domain: string, url: string, port: string, token: string) {
+		const { id } = await this.getEntry(domain, token);
+
+		await axios.put(
+			`${this.url}/nginx/proxy-hosts/${id}`,
+			{
+				domain_names: [domain],
+				forward_host: url,
+				forward_port: port,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			},
+		);
+	}
+
+	async deleteEntry(domain: string, token: string) {
+		const { id } = await this.getEntry(domain, token);
+
+		await axios.delete(`${this.url}/nginx/proxy-hosts/${id}`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
-		},
-	);
-}
-
-async function deleteEntry(domain: string, token: string) {
-	const { id } = await getEntry(domain, token);
-
-	await axios.delete(`/nginx/proxy-hosts/${id}`, {
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-	});
+		});
+	}
 }
