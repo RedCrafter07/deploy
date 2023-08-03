@@ -41,6 +41,8 @@ async function proxyServer() {
 
 	const { npm, accessURL } = (await system.collection('config').findOne({}))!;
 
+	console.log(npm);
+
 	const { url, email, password } = npm as { [key: string]: string };
 
 	console.log('Getting API token...');
@@ -127,6 +129,8 @@ class NPMApi {
 	}
 
 	async getEntry(domain: string, token: string) {
+		console.log(this.url);
+
 		const { data } = await axios.get(`${this.url}/nginx/proxy-hosts`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
