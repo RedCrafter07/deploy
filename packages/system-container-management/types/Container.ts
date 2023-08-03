@@ -153,7 +153,7 @@ export interface NetworkSettings {
 }
 
 export interface Networks {
-	bridge: Bridge;
+	[key: string]: Bridge;
 }
 
 export interface Bridge {
