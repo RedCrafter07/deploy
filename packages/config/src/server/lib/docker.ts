@@ -129,4 +129,5 @@ export {
 	startContainer,
 	getContainer,
 	getVolume,
+	getNetwork,
 };
