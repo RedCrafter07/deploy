@@ -64,14 +64,16 @@ function Panel(props: { socket: Socket }) {
 						return (
 							<div className='p-4 rounded-lg bg-zinc-700'>
 								<p title={id}>{name}</p>
-								<p className='text-sm'>
+								<div className='flex flex-row gap-2'>
 									<span
-										className={`aspect-square h-2 w-2 rounded-full ${
+										className={`h-2 w-2 rounded-full ${
 											running ? 'bg-green-600' : 'bg-red-600'
 										}`}
 									/>
-									<span>{running ? 'Running' : 'Stopped'}</span>
-								</p>
+									<span className='text-sm'>
+										{running ? 'Running' : 'Stopped'}
+									</span>
+								</div>
 							</div>
 						);
 					})}
