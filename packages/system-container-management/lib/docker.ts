@@ -125,6 +125,14 @@ async function stopContainer(id: string) {
 	});
 }
 
+async function restartContainer(id: string) {
+	await axios({
+		socketPath: '/var/run/docker.sock',
+		method: 'POST',
+		url: `/containers/${id}/restart`,
+	});
+}
+
 export {
 	createContainer,
 	startContainer,
