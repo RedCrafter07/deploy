@@ -120,9 +120,9 @@ console.log('Checking config...');
 		console.log('Writing new container...');
 
 		const oldContainers = await system.collection('containers').findOne();
-		await system.collection('containers').deleteOne({});
+		await system.collection('containers').deleteOne();
 
-		await project
+		await system
 			.collection('containers')
 			.insertOne({ ...oldContainers, scm: id });
 
