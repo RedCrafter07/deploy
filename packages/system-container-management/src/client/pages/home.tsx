@@ -59,7 +59,7 @@ function Panel(props: { socket: Socket }) {
 
 				<h3 className='text-xl'>Container Overview</h3>
 
-				<div className='grid grid-cols-1 lg:grid-cols-3'>
+				<div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
 					{containers.map(({ id, name, running }) => {
 						return (
 							<div className='p-4 rounded-lg bg-zinc-700'>
