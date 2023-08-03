@@ -265,13 +265,13 @@ async function initWebServer() {
 
 				const { _id, ...c } = containers!;
 
-				const containerData = await Promise.all(c.map(getContainer));
-
-				containerData.map((c) => ({
-					name: c?.Name,
-					id: c?.Id,
-					running: c?.State.Running,
-				}));
+				const containerData = (await Promise.all(c.map(getContainer))).map(
+					(c) => ({
+						name: c?.Name,
+						id: c?.Id,
+						running: c?.State.Running,
+					}),
+				);
 
 				socket.emit('getContainers', containerData);
 			});
