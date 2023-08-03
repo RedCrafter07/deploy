@@ -41,7 +41,7 @@ function App() {
 
 							if (username.length <= 0 || password.length <= 0) return;
 
-							socket.emit('login', { username, password });
+							socket.emit('login', username, password);
 						}}
 					>
 						<label className='flex flex-col gap-1'>
