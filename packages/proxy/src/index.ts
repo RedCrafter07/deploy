@@ -89,15 +89,23 @@ async function proxyServer() {
 		console.log('Getting SSL certificate for access url...');
 
 		try {
-			const certReq = await axios.post(`${url}/api/nginx/certificates`, {
-				domain_names: ['rd.r07.dev'],
-				meta: {
-					letsencrypt_email: process.env.MAIL!,
-					letsencrypt_agree: true,
-					dns_challenge: false,
+			const certReq = await axios.post(
+				`${url}/api/nginx/certificates`,
+				{
+					domain_names: [accessURL],
+					meta: {
+						letsencrypt_email: process.env.MAIL!,
+						letsencrypt_agree: true,
+						dns_challenge: false,
+					},
+					provider: 'letsencrypt',
 				},
-				provider: 'letsencrypt',
-			});
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				},
+			);
 
 			await npmApi.addEntry(
 				process.env.WEB_IP!,
