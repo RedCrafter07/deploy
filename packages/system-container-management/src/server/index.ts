@@ -18,16 +18,15 @@ import { createServer } from 'http';
 import { Server as SocketServer } from 'socket.io';
 import path from 'path';
 
-const client = new MongoClient(
-	`mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}`,
-	{
-		auth: {
-			username: process.env.DB_USER,
-			password: process.env.DB_PASS,
-		},
-		directConnection: true,
+const mongoURI = `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}`;
+
+const client = new MongoClient(mongoURI, {
+	auth: {
+		username: process.env.DB_USER,
+		password: process.env.DB_PASS,
 	},
-);
+	directConnection: true,
+});
 
 const system = client.db('rd-system');
 const project = client.db('project');
@@ -307,7 +306,11 @@ async function initWebServer() {
 							process.env.ENV == 'dev'
 								? 'reddeploy/proxy:latest'
 								: 'ghcr.io/redcrafter07/deploy/proxy:prod',
-						Env: [`URL=${url}`, `EMAIL=${email}`, `PASSWORD=${password}`],
+						Env: [
+							`MONGO_URL=${mongoURI}`,
+							`MONGO_USER=${process.env.MONGO_USER}`,
+							`MONGO_PASSWORD=${process.env.MONGO_PASSWORD}`,
+						],
 					});
 
 					await startContainer(proxyContainer);
