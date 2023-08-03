@@ -79,15 +79,6 @@ function LoggedIn(props: { socket: Socket }) {
 
 				<div className='my-4' />
 
-				<input
-					type='text'
-					className='input'
-					placeholder='127.0.0.1:81'
-					name='url'
-				/>
-
-				<div className='my-2' />
-
 				<form
 					onSubmit={(e) => {
 						e.preventDefault();
@@ -101,6 +92,15 @@ function LoggedIn(props: { socket: Socket }) {
 						});
 					}}
 				>
+					<input
+						type='text'
+						className='input'
+						placeholder='127.0.0.1:81'
+						name='url'
+					/>
+
+					<div className='my-2' />
+
 					<input
 						type='text'
 						className='input'
