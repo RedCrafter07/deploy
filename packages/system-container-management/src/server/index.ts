@@ -301,6 +301,26 @@ async function initWebServer() {
 
 					proxySetUp = true;
 
+					const proxyContainer = await createContainer({
+						Name: 'reddeploy-proxy',
+						Image:
+							process.env.ENV == 'dev'
+								? 'reddeploy/proxy:latest'
+								: 'ghcr.io/redcrafter07/deploy/proxy:prod',
+						Env: [`URL=${url}`, `EMAIL=${email}`, `PASSWORD=${password}`],
+					});
+
+					await startContainer(proxyContainer);
+
+					await system.collection('containers').updateOne(
+						{},
+						{
+							$set: {
+								proxy: proxyContainer,
+							},
+						},
+					);
+
 					socket.emit('reload');
 				},
 			);
