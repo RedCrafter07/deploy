@@ -295,6 +295,8 @@ const checkContainers = async () => {
 
 	console.log('[PRE-INSTALL]: Container names are available');
 
+	console.log();
+
 	console.log('[PRE-INSTALL]: Checking volume names...');
 
 	const volumes = [
@@ -326,6 +328,8 @@ const checkContainers = async () => {
 
 	console.log('[PRE-INSTALL]: Volume names are available');
 
+	console.log();
+
 	console.log('[PRE-INSTALL]: Checking network names...');
 
 	const networks = ['reddeploy', 'reddeploy-proxy'];
@@ -353,6 +357,8 @@ const checkContainers = async () => {
 	console.log('[PRE-INSTALL]: Network names are available');
 
 	console.log('[PRE-INSTALL]: Finished! Starting web interface...');
+
+	console.log('\n\n\n');
 
 	webServer();
 };
