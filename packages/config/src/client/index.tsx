@@ -53,6 +53,7 @@ function App() {
 						const password = data.get('password') as string;
 						const proxy = data.get('proxy') as string;
 						const prefix = data.get('prefix') as string;
+						const mail = data.get('mail') as string;
 
 						socket.emit('config', {
 							domain,
@@ -60,6 +61,7 @@ function App() {
 							password,
 							proxy,
 							prefix,
+							mail,
 						});
 					}}
 				>
@@ -94,8 +96,22 @@ function App() {
 
 					<input
 						type='text'
-						name='username'
-						placeholder='Username'
+						name='mail'
+						placeholder='mail@example.com'
+						className='input'
+					/>
+
+					<div className='my-2' />
+					<p className='opacity-50 text-sm'>
+						[!] You should have access to this mail!
+					</p>
+
+					<div className='my-2' />
+
+					<input
+						type='password'
+						name='password'
+						placeholder='Password'
 						className='input'
 					/>
 
