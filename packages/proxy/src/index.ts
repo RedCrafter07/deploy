@@ -80,16 +80,16 @@ async function proxyServer() {
 
 	console.log('API token received!');
 
-	const npm = new NPMApi(url);
+	const npmApi = new NPMApi(url);
 
 	console.log('Checking for access url in proxy...');
 
-	const entry = await npm.getEntry(accessURL, token);
+	const entry = await npmApi.getEntry(accessURL, token);
 
 	if (!entry) {
-		await npm.addEntry(process.env.WEB_IP!, '80', accessURL, token);
+		await npmApi.addEntry(process.env.WEB_IP!, '80', accessURL, token);
 	} else {
-		await npm.updateEntry(accessURL, process.env.WEB_IP!, '80', token);
+		await npmApi.updateEntry(accessURL, process.env.WEB_IP!, '80', token);
 	}
 
 	console.log('Starting socket server...');
@@ -100,19 +100,19 @@ async function proxyServer() {
 		socket.on(
 			'addProject',
 			async (ip: string, port: string, domain: string) => {
-				await npm.addEntry(ip, port, domain, token);
+				await npmApi.addEntry(ip, port, domain, token);
 			},
 		);
 
 		socket.on(
 			'updateProject',
 			async (ip: string, port: string, domain: string) => {
-				await npm.updateEntry(domain, ip, port, token);
+				await npmApi.updateEntry(domain, ip, port, token);
 			},
 		);
 
 		socket.on('deleteProject', async (url: string) => {
-			await npm.deleteEntry(url, token);
+			await npmApi.deleteEntry(url, token);
 		});
 	});
 
