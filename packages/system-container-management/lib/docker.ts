@@ -143,4 +143,5 @@ export {
 	removeContainer,
 	stopContainer,
 	waitForContainer,
+	restartContainer,
 };
