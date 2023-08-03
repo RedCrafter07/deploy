@@ -125,18 +125,17 @@ class NPMApi {
 	url: string;
 
 	constructor(url: string) {
-		console.log(url);
 		this.url = url;
 	}
 
 	async getEntry(domain: string, token: string) {
-		console.log(this.url);
-
 		const { data } = await axios.get(`${this.url}/nginx/proxy-hosts`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
 		});
+
+		console.log(data);
 
 		return data.find((d: any) => d.domain_names.includes(domain));
 	}
