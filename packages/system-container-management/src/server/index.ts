@@ -125,7 +125,7 @@ console.log('Checking config...');
 
 		await system
 			.collection('containers')
-			.findOneAndUpdate({}, { ...oldContainers, scm: id });
+			.findOneAndUpdate({ _id }, { scm: id });
 
 		await startContainer(id);
 
