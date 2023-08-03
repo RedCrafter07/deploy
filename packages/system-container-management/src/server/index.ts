@@ -279,6 +279,8 @@ async function initWebServer() {
 			socket.on(
 				'npm config',
 				async (data: { url: string; email: string; password: string }) => {
+					if (proxySetUp) return socket.emit('reload');
+
 					const { url, email, password } = data;
 
 					await system.collection('config').updateOne(
