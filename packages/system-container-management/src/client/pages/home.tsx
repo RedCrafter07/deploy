@@ -66,7 +66,7 @@ function Panel(props: { socket: Socket }) {
 								<p title={id}>{name}</p>
 								<div className='flex flex-row gap-2'>
 									<span
-										className={`h-2 w-2 rounded-full ${
+										className={`h-2 w-2 rounded-full my-auto ${
 											running ? 'bg-green-600' : 'bg-red-600'
 										}`}
 									/>
