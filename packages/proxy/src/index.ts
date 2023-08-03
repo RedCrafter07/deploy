@@ -86,8 +86,10 @@ async function proxyServer() {
 
 	if (!entry) {
 		await npmApi.addEntry(process.env.WEB_IP!, '80', accessURL, token);
+		console.log('Added access url to proxy!');
 	} else {
 		await npmApi.updateEntry(accessURL, process.env.WEB_IP!, '80', token);
+		console.log('Updated access url in proxy!');
 	}
 
 	console.log('Starting socket server...');
