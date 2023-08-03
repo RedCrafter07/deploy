@@ -25,6 +25,9 @@ const client = new MongoClient(
 	},
 );
 
+const system = client.db('rd-system');
+const project = client.db('project');
+
 console.log('SCM started.');
 
 console.log('Checking config...');
@@ -53,9 +56,6 @@ console.log('Checking config...');
 		console.log('Connecting to database...');
 
 		await client.connect();
-
-		const system = client.db('rd-system');
-		const project = client.db('project');
 
 		console.log('Initializing databases...');
 
@@ -160,9 +160,6 @@ async function initWebServer() {
 
 	await client.connect();
 
-	const system = client.db('rd-system');
-	const project = client.db('project');
-
 	const app = express();
 	const server = createServer(app);
 	const io = new SocketServer(server, {
@@ -178,7 +175,7 @@ async function initWebServer() {
 				.collection('users')
 				.findOne({ username, password, admin: true });
 
-			console.log(system.collection('users').find());
+			console.log(system.collection('users').find().toArray());
 
 			if (!u) return socket.emit('login', false);
 
