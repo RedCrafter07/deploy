@@ -301,7 +301,7 @@ async function initWebServer() {
 					proxySetUp = true;
 
 					const webIP = (await getContainer('reddeploy-web'))!.NetworkSettings
-						.IPAddress;
+						.Networks.reddeploy.IPAddress;
 
 					const proxyContainer = await createContainer({
 						Name: 'reddeploy-proxy',
