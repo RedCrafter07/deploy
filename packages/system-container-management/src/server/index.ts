@@ -1,5 +1,5 @@
 import { existsSync } from 'fs';
-import { readFile } from 'fs/promises';
+import { readFile, writeFile } from 'fs/promises';
 import { MongoClient } from 'mongodb';
 import {
 	createContainer,
@@ -8,6 +8,7 @@ import {
 	removeVolume,
 	renameContainer,
 	startContainer,
+	stopContainer,
 	waitForContainer,
 } from '../../lib/docker.js';
 import express from 'express';
@@ -140,7 +141,7 @@ console.log('Checking config...');
 
 		client.close();
 
-		process.exit(0);
+		await stopContainer('reddeploy-scm-old');
 	} else {
 		console.log('Config not detected! Checking for volume...');
 
