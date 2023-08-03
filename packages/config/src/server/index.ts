@@ -8,6 +8,9 @@ import {
 	createContainer,
 	createNetwork,
 	createVolume,
+	getContainer,
+	getNetwork,
+	getVolume,
 	pullImage,
 	startContainer,
 } from './lib/docker';
@@ -33,7 +36,7 @@ const devImages = {
 
 const images = process.env.ENV == 'dev' ? devImages : prodImages;
 
-(async () => {
+const webServer = async () => {
 	const app = express();
 	const server = createServer(app);
 	const io = new SocketServer(server, {
@@ -261,4 +264,97 @@ const images = process.env.ENV == 'dev' ? devImages : prodImages;
 	server.listen(9272, () => {
 		console.log('Config interface running on port 9272');
 	});
-})();
+};
+
+const checkContainers = async () => {
+	console.log('[PRE-INSTALL]: Checking container availability');
+
+	const containers = ['scm', 'cm', 'mongo', 'web', 'proxy'].map(
+		(c) => `reddeploy-${c}`,
+	);
+
+	console.log(`Checking container names: ${containers.join(', ')}`);
+
+	const containersAvailable =
+		(
+			await Promise.all(
+				containers.map(async (name) => {
+					const c = await getContainer(name);
+
+					if (!c) return true;
+				}),
+			)
+		).filter((c) => c).length == containers.length;
+
+	if (!containersAvailable) {
+		console.error(
+			'[PRE-INSTALL]: Container names are not available. Please remove them before installing',
+		);
+		process.exit(1);
+	}
+
+	console.log('[PRE-INSTALL]: Container names are available');
+
+	console.log('[PRE-INSTALL]: Checking volume names...');
+
+	const volumes = [
+		'reddeploy-mongo',
+		'reddeploy-mongo-config',
+		'cm-cache',
+		'scm-cache',
+	].map((v) => `reddeploy-${v}`);
+
+	console.log(`Checking volume names: ${volumes.join(', ')}`);
+
+	const volumesAvailable =
+		(
+			await Promise.all(
+				volumes.map(async (name) => {
+					const v = await getVolume(name);
+
+					if (!v) return true;
+				}),
+			)
+		).filter((v) => v).length == volumes.length;
+
+	if (!volumesAvailable) {
+		console.error(
+			'[PRE-INSTALL]: Volume names are not available. Please remove them before installing',
+		);
+		process.exit(1);
+	}
+
+	console.log('[PRE-INSTALL]: Volume names are available');
+
+	console.log('[PRE-INSTALL]: Checking network names...');
+
+	const networks = ['reddeploy', 'reddeploy-proxy'];
+
+	console.log(`Checking network names: ${networks.join(', ')}`);
+
+	const networksAvailable =
+		(
+			await Promise.all(
+				networks.map(async (name) => {
+					const n = await getNetwork(name);
+
+					if (!n) return true;
+				}),
+			)
+		).filter((n) => n).length == networks.length;
+
+	if (!networksAvailable) {
+		console.error(
+			'[PRE-INSTALL]: Network names are not available. Please remove them before installing',
+		);
+		process.exit(1);
+	}
+
+	console.log('[PRE-INSTALL]: Network names are available');
+
+	console.log('[PRE-INSTALL]: Finished! Starting web interface...');
+
+	webServer();
+};
+
+checkContainers();
