@@ -214,6 +214,8 @@ async function initWebServer() {
 
 	await client.connect();
 
+	console.log(await system.collection('config').findOne());
+
 	console.log('Writing containers to cache...');
 
 	await writeFile(
