@@ -109,9 +109,9 @@ function App() {
 					<div className='my-2' />
 
 					<input
-						type='password'
-						name='password'
-						placeholder='Password'
+						type='text'
+						name='username'
+						placeholder='Username'
 						className='input'
 					/>
 
