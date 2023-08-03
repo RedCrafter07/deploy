@@ -77,6 +77,7 @@ console.log('Checking config...');
 			accessURL: config.domain,
 			proxy: config.proxy,
 			prefix: config.prefix,
+			proxyConfigured: false,
 		});
 
 		console.log("Rename SCM container to 'reddeploy-scm-old'...");
