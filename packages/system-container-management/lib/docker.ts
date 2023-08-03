@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { InspectedContainer } from '../types/Container';
 
 // query socket
 
@@ -110,7 +111,7 @@ async function getContainer(id: string) {
 			url: `/containers/${id}/json`,
 		});
 
-		return req.data;
+		return req.data as InspectedContainer;
 	} catch {
 		return null;
 	}
