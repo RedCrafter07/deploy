@@ -46,12 +46,12 @@ function Login(props: { socket: Socket }) {
 		<div className='min-h-screen bg-zinc-800 text-zinc-100'>
 			<div className='h-screen grid place-items-center'>
 				<div className='p-4 border border-white border-opacity-10 rounded-lg'>
-					<h1 className='text-4xl font-bold text-center'>
+					<h1 className='text-3xl font-bold text-center'>
 						RedDeploy System Container Management
 					</h1>
 					<h3 className='text-xl'>Please log in</h3>
 					<form
-						className='flex flex-col gap-2 mt-4'
+						className='flex flex-col gap-4 mt-4'
 						onSubmit={(e) => {
 							e.preventDefault();
 
