@@ -3,10 +3,12 @@ import { readFile, writeFile } from 'fs/promises';
 import { MongoClient } from 'mongodb';
 import {
 	createContainer,
+	getContainer,
 	getVolume,
 	removeContainer,
 	removeVolume,
 	renameContainer,
+	restartContainer,
 	startContainer,
 	stopContainer,
 	waitForContainer,
@@ -161,6 +163,42 @@ console.log('Checking config...');
 			await removeVolume('reddeploy_config');
 			console.log('Volume removed!');
 		} else console.log('Volume not detected! Skipping postinstall...');
+
+		console.log('Checking database availability...');
+
+		const dbContainer = await getContainer('reddeploy-mongo');
+
+		if (!dbContainer?.State.Running) {
+			console.log('Running startup mode...');
+
+			console.log('Getting cached containers...');
+
+			const containers = JSON.parse(
+				await readFile('/cache/containers.json', 'utf-8'),
+			);
+
+			const containerArray = ['db', ...new Set(Object.keys(containers))];
+
+			console.log(
+				`Starting ${containerArray} containers: ${containerArray.join(', ')}`,
+			);
+
+			await Promise.all(
+				containerArray.map(async (c) => {
+					const id = containers[c];
+
+					console.log(`Starting ${c} with ID ${c}...`);
+
+					await startContainer(id);
+				}),
+			);
+
+			console.log('Containers started! Restarting SCM container...');
+
+			await restartContainer('reddeploy-scm');
+
+			return;
+		}
 
 		await initWebServer();
 	}
