@@ -90,6 +90,18 @@ async function removeContainer(id: string) {
 	});
 }
 
+async function waitForContainer(id: string) {
+	try {
+		await axios({
+			socketPath: '/var/run/docker.sock',
+			method: 'POST',
+			url: `/containers/${id}/wait`,
+		});
+	} catch {
+		return null;
+	}
+}
+
 async function getContainer(id: string) {
 	try {
 		const req = await axios({
@@ -121,4 +133,5 @@ export {
 	renameContainer,
 	removeContainer,
 	stopContainer,
+	waitForContainer,
 };
