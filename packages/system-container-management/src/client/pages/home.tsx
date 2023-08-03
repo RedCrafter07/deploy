@@ -66,7 +66,7 @@ function Panel(props: { socket: Socket }) {
 								<p title={id}>{name}</p>
 								<p className='text-sm'>
 									<span
-										className={`aspect-square h-full rounded-full ${
+										className={`aspect-square h-2 w-2 rounded-full ${
 											running ? 'bg-green-600' : 'bg-red-600'
 										}`}
 									/>
