@@ -27,6 +27,8 @@ jobs:
             dir: ./packages/container-management
           - image: scm
             dir: ./packages/system-container-management
+          - image: proxy
+            dir: ./packages/proxy
     steps:
       - name: Checkout
         uses: actions/checkout@v2
