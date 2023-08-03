@@ -143,6 +143,7 @@ class NPMApi {
 				domain_names: [domain],
 				forward_host: url,
 				forward_port: port,
+				forward_scheme: 'http',
 			},
 			{
 				headers: {
@@ -161,6 +162,7 @@ class NPMApi {
 				domain_names: [domain],
 				forward_host: url,
 				forward_port: port,
+				forward_scheme: 'http',
 			},
 			{
 				headers: {
