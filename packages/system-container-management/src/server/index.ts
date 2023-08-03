@@ -177,7 +177,10 @@ console.log('Checking config...');
 				await readFile('/cache/containers.json', 'utf-8'),
 			);
 
-			const containerArray = ['db', ...new Set(Object.keys(containers))];
+			const containerArray = [
+				'db',
+				...new Set(Object.keys(containers).filter((c) => c != 'scm')),
+			];
 
 			console.log(
 				`Starting ${containerArray} containers: ${containerArray.join(', ')}`,
