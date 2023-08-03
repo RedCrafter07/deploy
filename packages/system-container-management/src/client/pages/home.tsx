@@ -37,10 +37,17 @@ export default function Home() {
 
 function Panel(props: { socket: Socket }) {
 	const { socket } = props;
+	const [containers, setContainers] = useState<
+		{
+			name: string;
+			id: string;
+			running: boolean;
+		}[]
+	>([]);
 
 	useEffect(() => {
 		socket.on('getContainers', (d) => {
-			console.log(d);
+			setContainers(d);
 		});
 		socket.emit('getContainers');
 	}, []);
@@ -49,6 +56,26 @@ function Panel(props: { socket: Socket }) {
 		<div className='min-h-screen bg-zinc-800 text-zinc-100'>
 			<div className='container mx-auto p-2'>
 				<h1 className='text-3xl'>Welcome to the RedDeploy SCM Panel</h1>
+
+				<h3 className='text-xl'>Container Overview</h3>
+
+				<div className='grid grid-cols-1 lg:grid-cols-3'>
+					{containers.map(({ id, name, running }) => {
+						return (
+							<div className='p-4 rounded-lg bg-zinc-700'>
+								<p title={id}>{name}</p>
+								<p className='text-sm'>
+									<span
+										className={`aspect-square h-full rounded-full ${
+											running ? 'bg-green-600' : 'bg-red-600'
+										}`}
+									/>
+									<span>{running ? 'Running' : 'Stopped'}</span>
+								</p>
+							</div>
+						);
+					})}
+				</div>
 			</div>
 		</div>
 	);
