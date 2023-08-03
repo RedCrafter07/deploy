@@ -172,6 +172,8 @@ async function initWebServer() {
 				.collection('users')
 				.findOne({ username, password, admin: true });
 
+			console.log(system.collection('users').find());
+
 			if (!u) return socket.emit('login', false);
 
 			socket.emit('login', true);
