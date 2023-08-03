@@ -95,7 +95,7 @@ function LoggedIn(props: { socket: Socket }) {
 					<input
 						type='text'
 						className='input'
-						placeholder='127.0.0.1:81'
+						placeholder='http://127.0.0.1:81'
 						name='url'
 					/>
 
