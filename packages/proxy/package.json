@@ -1,0 +1,13 @@
+{
+	"name": "proxy",
+	"version": "1.0.0",
+	"description": "The proxy for RedDeploy",
+	"main": "index.js",
+	"scripts": {
+		"start": "node dist/index.js",
+		"build": "esbuild ./src/index.ts --bundle --platform=node --packages=external --outfile=dist/index.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC"
+}
