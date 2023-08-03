@@ -171,6 +171,13 @@ async function initWebServer() {
 
 	await client.connect();
 
+	console.log('Writing containers to cache...');
+
+	await writeFile(
+		'/cache/containers.json',
+		JSON.stringify(await system.collection('containers').findOne()),
+	);
+
 	console.log('Checking if Proxy is set up...');
 
 	let proxySetUp = false;
