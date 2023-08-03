@@ -107,6 +107,20 @@ async function getVolume(name: string) {
 	}
 }
 
+async function getNetwork(name: string) {
+	try {
+		const req = await axios({
+			socketPath: '/var/run/docker.sock',
+			method: 'GET',
+			url: `/networks/${name}`,
+		});
+
+		return req.data;
+	} catch {
+		return null;
+	}
+}
+
 export {
 	pullImage,
 	createNetwork,
