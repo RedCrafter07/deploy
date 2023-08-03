@@ -92,8 +92,22 @@ async function proxyServer() {
 	const io = new Server();
 
 	io.on('connection', (socket) => {
-		socket.on('addProject', async (url: string, port: string) => {
-			await addEntry(url, port, socket.id, token);
+		socket.on(
+			'addProject',
+			async (ip: string, port: string, domain: string) => {
+				await addEntry(ip, port, domain, token);
+			},
+		);
+
+		socket.on(
+			'updateProject',
+			async (ip: string, port: string, domain: string) => {
+				await updateEntry(domain, ip, port, token);
+			},
+		);
+
+		socket.on('deleteProject', async (url: string) => {
+			await deleteEntry(url, token);
 		});
 	});
 
@@ -154,4 +168,14 @@ async function updateEntry(
 			},
 		},
 	);
+}
+
+async function deleteEntry(domain: string, token: string) {
+	const { id } = await getEntry(domain, token);
+
+	await axios.delete(`/nginx/proxy-hosts/${id}`, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
 }
