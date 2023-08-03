@@ -45,7 +45,7 @@ function LoggedIn(props: { socket: Socket }) {
 	const { socket } = props;
 
 	return (
-		<div className='bg-zinc-800'>
+		<div className='bg-zinc-800 min-h-screen'>
 			<div className='container mx-auto p-2'>
 				<h1 className='text-3xl'>Proxy Setup</h1>
 				<h3 className='text-xl'>
