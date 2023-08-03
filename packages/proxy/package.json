@@ -9,5 +9,13 @@
 	},
 	"keywords": [],
 	"author": "",
-	"license": "ISC"
+	"license": "ISC",
+	"dependencies": {
+		"@types/node": "^20.4.6",
+		"axios": "^1.4.0",
+		"esbuild": "^0.18.17",
+		"mongodb": "^5.7.0",
+		"socket.io": "^4.7.2",
+		"typescript": "^5.1.6"
+	}
 }
