@@ -230,6 +230,8 @@ async function initWebServer() {
 						},
 					);
 
+					proxySetUp = true;
+
 					socket.emit('reload');
 				},
 			);
