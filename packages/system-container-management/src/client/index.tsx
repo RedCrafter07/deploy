@@ -78,7 +78,7 @@ function Login(props: { socket: Socket }) {
 								required
 							/>
 						</label>
-						<button className='p-2 bg-zinc-700 rounded-lg w-full'>
+						<button className='p-2 bg-zinc-700 rounded-lg w-full hover:bg-green-600 active:scale-95 transition-all duration-100'>
 							Log in
 						</button>
 					</form>
