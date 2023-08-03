@@ -165,6 +165,16 @@ async function initWebServer() {
 
 	await client.connect();
 
+	console.log('Checking if Proxy is set up...');
+
+	let proxySetUp = false;
+
+	const config = await system.collection('config').findOne();
+
+	if (config?.proxyConfigured) proxySetUp = true;
+
+	if (!proxySetUp) console.log('Setup not detected!');
+
 	console.log('Initializing web server...');
 
 	const app = express();
@@ -200,12 +210,41 @@ async function initWebServer() {
 
 				socket.emit('getContainers', containers);
 			});
+
+			socket.on(
+				'npm config',
+				async (data: { url: string; email: string; password: string }) => {
+					const { url, email, password } = data;
+
+					await system.collection('config').updateOne(
+						{},
+						{
+							$set: {
+								npm: {
+									url,
+									email,
+									password,
+								},
+								proxyConfigured: true,
+							},
+						},
+					);
+
+					socket.emit('reload');
+				},
+			);
 		});
 	});
 
 	app.use('/.rd-scm', express.static(path.join(__dirname, '..', 'client')));
 
 	app.get('/', (_, res) => {
+		if (!proxySetUp) res.redirect('/setup-proxy');
+		res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
+	});
+
+	app.get('/setup-proxy', (_, res) => {
+		if (proxySetUp) res.redirect('/');
 		res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
 	});
 
