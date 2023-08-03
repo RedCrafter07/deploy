@@ -156,9 +156,11 @@ console.log('Checking config...');
 })();
 
 async function initWebServer() {
-	console.log('Initializing web server...');
+	console.log('Connecting to database...');
 
 	await client.connect();
+
+	console.log('Initializing web server...');
 
 	const app = express();
 	const server = createServer(app);
