@@ -307,7 +307,7 @@ async function initWebServer() {
 					const webIP = (await getContainer('reddeploy-web'))!.NetworkSettings
 						.Networks.reddeploy.IPAddress;
 
-					const { mail } = (await system.collection('config').findOne())!;
+					const { adminEmail } = (await system.collection('config').findOne())!;
 
 					const proxyContainer = await createContainer({
 						Name: 'reddeploy-proxy',
@@ -320,7 +320,7 @@ async function initWebServer() {
 							`MONGO_USER=${process.env.DB_USER}`,
 							`MONGO_PASSWORD=${process.env.DB_PASS}`,
 							`WEB_IP=${webIP}`,
-							`MAIL=${mail}`,
+							`MAIL=${adminEmail}`,
 						],
 						HostConfig: {
 							NetworkMode: 'reddeploy',
