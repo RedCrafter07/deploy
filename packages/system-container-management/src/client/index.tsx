@@ -52,7 +52,9 @@ function Home(props: { socket: Socket }) {
 
 	return (
 		<div className='min-h-screen bg-zinc-800 text-zinc-100'>
-			<h1 className='text-3xl'>Welcome to the RedDeploy Admin Panel</h1>
+			<div className='container mx-auto p-2'>
+				<h1 className='text-3xl'>Welcome to the RedDeploy SCM Panel</h1>
+			</div>
 		</div>
 	);
 }
