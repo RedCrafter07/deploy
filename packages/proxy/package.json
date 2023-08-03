@@ -8,8 +8,8 @@
 		"build": "esbuild ./src/index.ts --bundle --platform=node --packages=external --outfile=dist/index.js"
 	},
 	"keywords": [],
-	"author": "",
-	"license": "ISC",
+	"author": "RedCrafter07",
+	"license": "GPL-3.0",
 	"dependencies": {
 		"@types/node": "^20.4.6",
 		"axios": "^1.4.0",
