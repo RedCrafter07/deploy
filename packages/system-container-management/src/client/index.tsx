@@ -43,7 +43,12 @@ function App() {
 function Home(props: { socket: Socket }) {
 	const { socket } = props;
 
-	useEffect(() => {}, []);
+	useEffect(() => {
+		socket.on('getContainers', (d) => {
+			console.log(d);
+		});
+		socket.emit('getContainers');
+	}, []);
 
 	return (
 		<div className='min-h-screen bg-zinc-800 text-zinc-100'>
