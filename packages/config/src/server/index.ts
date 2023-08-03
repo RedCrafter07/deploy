@@ -81,7 +81,7 @@ const webServer = async () => {
 
 				step = 'Pulling images... (5/5)';
 				io.emit('step', step);
-				// await pullImage('ghcr.io/redcrafter07/deploy/proxy:prod');
+				await pullImage(images.proxy);
 			}
 
 			step = 'Creating network... (1/2)';
@@ -108,7 +108,7 @@ const webServer = async () => {
 			io.emit('step', step);
 			await createVolume('reddeploy-mongo-config');
 
-			step = 'Creating containers... (1/5)';
+			step = 'Creating containers... (1/4)';
 			io.emit('step', step);
 			const db = await createContainer({
 				Image: images.mongo,
@@ -126,7 +126,7 @@ const webServer = async () => {
 				},
 			});
 
-			step = 'Creating containers... (2/5)';
+			step = 'Creating containers... (2/4)';
 			io.emit('step', step);
 			const cm = await createContainer({
 				Image: images.cm,
@@ -147,7 +147,7 @@ const webServer = async () => {
 				},
 			});
 
-			step = 'Creating containers... (3/5)';
+			step = 'Creating containers... (3/4)';
 			io.emit('step', step);
 			const web = await createContainer({
 				Image: images.web,
@@ -167,7 +167,7 @@ const webServer = async () => {
 				},
 			});
 
-			step = 'Creating containers... (4/5)';
+			step = 'Creating containers... (4/4)';
 			io.emit('step', step);
 			const scm = await createContainer({
 				Image: images.scm,
@@ -187,21 +187,6 @@ const webServer = async () => {
 				],
 			});
 
-			step = 'Creating containers... (4/5)';
-			io.emit('step', step);
-			/* await docker.createContainer({
-				Image: 'ghcr.io/redcrafter07/deploy/proxy:prod',
-				name: 'reddeploy-proxy',
-				Env: [
-					'PROXY_WEB_HOST=reddeploy-web',
-					'PROXY_WEB_PORT=80',
-					'PROXY_PORT=80',
-				],
-				HostConfig: {
-					NetworkMode: 'reddeploy-proxy',
-				},
-			}); */
-
 			step = "Writing container ID's to file...";
 			io.emit('step', step);
 
@@ -216,25 +201,21 @@ const webServer = async () => {
 				}),
 			);
 
-			step = 'Starting containers... (1/5)';
+			step = 'Starting containers... (1/4)';
 			io.emit('step', step);
 			await startContainer(db);
 
-			step = 'Starting containers... (2/5)';
+			step = 'Starting containers... (2/4)';
 			io.emit('step', step);
 			await startContainer(cm);
 
-			step = 'Starting containers... (3/5)';
+			step = 'Starting containers... (3/4)';
 			io.emit('step', step);
 			await startContainer(web);
 
-			step = 'Starting containers... (4/5)';
+			step = 'Starting containers... (4/4)';
 			io.emit('step', step);
 			await startContainer(scm);
-
-			step = 'Starting containers... (5/5)';
-			io.emit('step', step);
-			// await docker.getContainer('reddeploy-proxy').start();
 
 			// TODO: Import config to database
 
