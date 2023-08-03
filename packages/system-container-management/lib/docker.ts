@@ -91,13 +91,17 @@ async function removeContainer(id: string) {
 }
 
 async function getContainer(id: string) {
-	const req = await axios({
-		socketPath: '/var/run/docker.sock',
-		method: 'GET',
-		url: `/containers/${id}/json`,
-	});
+	try {
+		const req = await axios({
+			socketPath: '/var/run/docker.sock',
+			method: 'GET',
+			url: `/containers/${id}/json`,
+		});
 
-	return req.data;
+		return req.data;
+	} catch {
+		return null;
+	}
 }
 
 async function stopContainer(id: string) {
