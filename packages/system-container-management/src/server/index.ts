@@ -315,6 +315,9 @@ async function initWebServer() {
 							`MONGO_PASSWORD=${process.env.MONGO_PASSWORD}`,
 							`WEB_IP=${webIP}`,
 						],
+						HostConfig: {
+							NetworkMode: 'reddeploy',
+						},
 					});
 
 					await startContainer(proxyContainer);
