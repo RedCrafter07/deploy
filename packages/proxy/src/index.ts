@@ -85,8 +85,31 @@ async function proxyServer() {
 	const entry = await npmApi.getEntry(accessURL, token);
 
 	if (!entry) {
-		await npmApi.addEntry(process.env.WEB_IP!, '80', accessURL, token);
-		console.log('Added access url to proxy!');
+		console.log("Access url doesn't exist in proxy!");
+		console.log('Getting SSL certificate for access url...');
+
+		try {
+			const certReq = await axios.post(`${url}/api/nginx/certificates`, {
+				domain_names: ['rd.r07.dev'],
+				meta: {
+					letsencrypt_email: process.env.MAIL!,
+					letsencrypt_agree: true,
+					dns_challenge: false,
+				},
+				provider: 'letsencrypt',
+			});
+
+			await npmApi.addEntry(
+				process.env.WEB_IP!,
+				'80',
+				accessURL,
+				token,
+				certReq.data.id,
+			);
+			console.log('Added access url to proxy!');
+		} catch {
+			console.log("Couldn't get SSL certificate for access url!");
+		}
 	} else {
 		await npmApi.updateEntry(accessURL, process.env.WEB_IP!, '80', token);
 		console.log('Updated access url in proxy!');
@@ -138,7 +161,13 @@ class NPMApi {
 		return data.find((d: any) => d.domain_names.includes(domain));
 	}
 
-	async addEntry(url: string, port: string, domain: string, token: string) {
+	async addEntry(
+		url: string,
+		port: string,
+		domain: string,
+		token: string,
+		certID?: number,
+	) {
 		await axios.post(
 			`${this.url}/nginx/proxy-hosts`,
 			{
@@ -146,6 +175,7 @@ class NPMApi {
 				forward_host: url,
 				forward_port: port,
 				forward_scheme: 'http',
+				certificate_id: certID,
 			},
 			{
 				headers: {
