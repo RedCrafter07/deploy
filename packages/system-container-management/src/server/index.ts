@@ -311,8 +311,8 @@ async function initWebServer() {
 								: 'ghcr.io/redcrafter07/deploy/proxy:prod',
 						Env: [
 							`MONGO_URL=${mongoURI}`,
-							`MONGO_USER=${process.env.MONGO_USER}`,
-							`MONGO_PASSWORD=${process.env.MONGO_PASS}`,
+							`MONGO_USER=${process.env.DB_USER}`,
+							`MONGO_PASSWORD=${process.env.DB_PASS}`,
 							`WEB_IP=${webIP}`,
 						],
 						HostConfig: {
