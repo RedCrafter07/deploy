@@ -133,8 +133,6 @@ class NPMApi {
 			},
 		});
 
-		console.log(data);
-
 		return data.find((d: any) => d.domain_names.includes(domain));
 	}
 
