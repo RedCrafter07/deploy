@@ -123,7 +123,7 @@ class NPMApi {
 	url: string;
 
 	constructor(url: string) {
-		this.url = url;
+		this.url = url.endsWith('/') ? url.slice(0, -1) : url;
 	}
 
 	async getEntry(domain: string, token: string) {
