@@ -64,7 +64,7 @@ function Login(props: { socket: Socket }) {
 	return (
 		<div className='min-h-screen bg-zinc-800 text-zinc-100'>
 			<div className='h-screen grid place-items-center'>
-				<div className='p-4 border border-white border-opacity-10 rounded-lg'>
+				<div className='p-8 border border-white border-opacity-10 rounded-lg'>
 					<h1 className='text-3xl font-bold text-center'>
 						RedDeploy System Container Management
 					</h1>
