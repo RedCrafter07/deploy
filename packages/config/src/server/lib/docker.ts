@@ -93,6 +93,20 @@ async function getContainer(id: string) {
 	}
 }
 
+async function getVolume(name: string) {
+	try {
+		const req = await axios({
+			socketPath: '/var/run/docker.sock',
+			method: 'GET',
+			url: `/volumes/${name}`,
+		});
+
+		return req.data;
+	} catch {
+		return null;
+	}
+}
+
 export {
 	pullImage,
 	createNetwork,
@@ -100,4 +114,5 @@ export {
 	createContainer,
 	startContainer,
 	getContainer,
+	getVolume,
 };
