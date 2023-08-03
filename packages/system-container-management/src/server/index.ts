@@ -47,6 +47,7 @@ console.log('Checking config...');
 			password: string;
 			proxy: 'NGINX Proxy Manager' | 'NGINX';
 			prefix: string;
+			mail: string;
 		}
 
 		const config = JSON.parse(
@@ -81,6 +82,7 @@ console.log('Checking config...');
 			proxy: config.proxy,
 			prefix: config.prefix,
 			proxyConfigured: false,
+			adminEmail: config.mail,
 		});
 
 		console.log("Rename SCM container to 'reddeploy-scm-old'...");
