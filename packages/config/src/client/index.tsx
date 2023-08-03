@@ -184,7 +184,7 @@ function App() {
 
 					<div className='my-2' />
 
-					<button type='submit' className=''>
+					<button type='submit' className='px-4 py-2 rounded-lg bg-green-600'>
 						Finish configuration
 					</button>
 				</form>
