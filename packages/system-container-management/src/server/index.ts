@@ -8,6 +8,7 @@ import {
 	removeVolume,
 	renameContainer,
 	startContainer,
+	waitForContainer,
 } from '../../lib/docker.js';
 import express from 'express';
 import { createServer } from 'http';
@@ -148,9 +149,13 @@ console.log('Checking config...');
 
 			console.log('Waiting for old container to stop...');
 
+			await waitForContainer('reddeploy-scm-old');
+
+			console.log('Removing old container...');
+
 			await removeContainer('reddeploy-scm-old');
 
-			console.log('Continuing...');
+			console.log('Removing volume...');
 
 			await removeVolume('reddeploy_config');
 			console.log('Volume removed!');
