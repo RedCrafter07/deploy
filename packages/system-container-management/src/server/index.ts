@@ -122,10 +122,13 @@ console.log('Checking config...');
 		const { _id, ...oldContainers } = (await system
 			.collection('containers')
 			.findOne())!;
+		const newContainers = {
+			...oldContainers,
+			scm: id,
+		};
 
-		await system
-			.collection('containers')
-			.findOneAndUpdate({ _id }, { scm: id });
+		await system.collection('containers').deleteMany();
+		await system.collection('containers').insertOne(newContainers);
 
 		await startContainer(id);
 
