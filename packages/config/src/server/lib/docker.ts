@@ -79,10 +79,25 @@ async function startContainer(id: string) {
 	});
 }
 
+async function getContainer(id: string) {
+	try {
+		const req = await axios({
+			socketPath: '/var/run/docker.sock',
+			method: 'GET',
+			url: `/containers/${id}/json`,
+		});
+
+		return req.data;
+	} catch {
+		return null;
+	}
+}
+
 export {
 	pullImage,
 	createNetwork,
 	createVolume,
 	createContainer,
 	startContainer,
+	getContainer,
 };
