@@ -104,6 +104,7 @@ async function proxyServer() {
 					headers: {
 						Authorization: `Bearer ${token}`,
 						Connection: 'keep-alive',
+						'Keep-Alive': 'timeout=60',
 					},
 				},
 			);
