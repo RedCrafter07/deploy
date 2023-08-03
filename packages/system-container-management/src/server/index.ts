@@ -200,9 +200,8 @@ console.log('Checking config...');
 
 			console.log('Containers started! Restarting SCM container...');
 
-			await restartContainer('reddeploy-scm');
-
-			return;
+			// await restartContainer('reddeploy-scm');
+			process.exit(0);
 		}
 
 		await initWebServer();
