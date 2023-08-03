@@ -54,7 +54,7 @@ function Panel(props: { socket: Socket }) {
 	);
 }
 
-function Login(props: { socket: Socket }) {
+export function Login(props: { socket: Socket }) {
 	const { socket } = props;
 	return (
 		<div className='min-h-screen bg-zinc-800 text-zinc-100'>
