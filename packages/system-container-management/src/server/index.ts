@@ -267,7 +267,7 @@ async function initWebServer() {
 
 				const containerData = (
 					await Promise.all(
-						Object.keys(c).map(async (c) => (await getContainer(c))!),
+						Object.values(c).map(async (c) => (await getContainer(c))!),
 					)
 				).map((c) => ({
 					name: c?.Name,
