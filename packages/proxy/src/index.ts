@@ -103,6 +103,7 @@ async function proxyServer() {
 				{
 					headers: {
 						Authorization: `Bearer ${token}`,
+						Connection: 'keep-alive',
 					},
 				},
 			);
