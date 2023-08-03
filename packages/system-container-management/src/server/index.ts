@@ -275,7 +275,7 @@ async function initWebServer() {
 					running: c?.State.Running,
 				}));
 
-				console.log(containerData, mappedData);
+				console.log(containerData, mappedData, containers);
 
 				socket.emit('getContainers', mappedData);
 			});
