@@ -46,8 +46,8 @@ async function proxyServer() {
 	console.log('Getting API token...');
 
 	const tokenReq = await axios.post(`${url}/api/tokens`, {
-		email,
-		password,
+		identity: email,
+		secret: password,
 		scope: 'user',
 	});
 
@@ -55,7 +55,7 @@ async function proxyServer() {
 
 	setInterval(async () => {
 		try {
-			const tokenReq = await axios.get(`${url}/api/tokens/refresh`, {
+			const tokenReq = await axios.get(`${url}/api/tokens`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
@@ -67,8 +67,9 @@ async function proxyServer() {
 			console.log('Getting new one...');
 
 			const tokenReq = await axios.post(`${url}/api/tokens`, {
-				email,
-				password,
+				identity: email,
+				secret: password,
+				scope: 'user',
 			});
 
 			token = tokenReq.data.token;
