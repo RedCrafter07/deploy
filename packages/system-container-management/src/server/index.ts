@@ -265,17 +265,19 @@ async function initWebServer() {
 
 				const { _id, ...c } = containers!;
 
-				const containerData = (
-					await Promise.all(
-						Object.values(c).map(async (c) => (await getContainer(c))!),
-					)
-				).map((c) => ({
+				const containerData = await Promise.all(
+					Object.values(c).map(async (c) => (await getContainer(c))!),
+				);
+
+				const mappedData = containerData.map((c) => ({
 					name: c?.Name,
 					id: c?.Id,
 					running: c?.State.Running,
 				}));
 
-				socket.emit('getContainers', containerData);
+				console.log(containerData, mappedData);
+
+				socket.emit('getContainers', mappedData);
 			});
 
 			socket.on(
