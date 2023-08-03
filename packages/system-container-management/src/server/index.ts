@@ -178,10 +178,10 @@ console.log('Checking config...');
 			);
 
 			const containerArray = [
-				'db',
-				...new Set(
-					Object.keys(containers).filter((c) => c != 'scm' && c != '_id'),
-				),
+				...new Set([
+					'db',
+					...Object.keys(containers).filter((c) => c != 'scm' && c != '_id'),
+				]),
 			];
 
 			console.log(
