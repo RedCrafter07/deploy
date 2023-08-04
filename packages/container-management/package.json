@@ -17,6 +17,7 @@
 		"axios": "^1.4.0",
 		"esbuild": "^0.18.17",
 		"mongodb": "^5.7.0",
+		"simple-git": "^3.19.1",
 		"socket.io": "^4.7.1",
 		"socket.io-client": "^4.7.2",
 		"swc-loader": "^0.2.3",
