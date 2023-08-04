@@ -213,6 +213,10 @@ console.log('Checking config...');
 				},
 			);
 
+			console.log('Starting proxy...');
+
+			await startContainer(containers.proxy);
+
 			console.log('Containers started! Restarting SCM container...');
 
 			// await restartContainer('reddeploy-scm');
