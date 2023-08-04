@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { MongoClient } from 'mongodb';
 import { Server } from 'socket.io';
+import { Certificate } from '../types/Certs';
 
 console.log('Welcome to the RedDeploy Proxy');
 
@@ -86,41 +87,65 @@ async function proxyServer() {
 
 	if (!entry) {
 		console.log("Access url doesn't exist in proxy!");
-		console.log('Getting SSL certificate for access url...');
 
-		try {
-			const certReq = await axios.post(
-				`${url}/api/nginx/certificates`,
-				{
-					domain_names: [accessURL],
-					meta: {
-						letsencrypt_email: process.env.MAIL!,
-						letsencrypt_agree: true,
-						dns_challenge: false,
-					},
-					provider: 'letsencrypt',
-				},
-				{
-					headers: {
-						Authorization: `Bearer ${token}`,
-						Connection: 'Keep-Alive',
-						'Keep-Alive': 'timeout=60, max=1000',
-					},
-				},
-			);
+		console.log('Checking for SSL certificate...');
 
-			await npmApi.addEntry(
-				process.env.WEB_IP!,
-				'80',
-				accessURL,
-				token,
-				certReq.data.id,
-			);
-			console.log('Added access url to proxy!');
-		} catch (e) {
-			console.log(e);
-			console.log("Couldn't get SSL certificate for access url!");
+		// get certificate, check for wildcard and normal
+
+		const certCheck = await axios.get(`${url}/api/certificates`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+
+		const cert = (certCheck.data as Certificate[]).find((c) => {
+			const normalCheck = c.domain_names.includes(accessURL);
+
+			const normalDomain = accessURL.split('.').slice(-2).join('.');
+
+			const wildcardCheck = c.domain_names.includes(`*.${normalDomain}`);
+
+			return normalCheck || wildcardCheck;
+		});
+
+		let certID: number | undefined;
+
+		if (!cert) {
+			console.log('Getting SSL certificate for access url...');
+
+			try {
+				const certReq = await axios.post(
+					`${url}/api/nginx/certificates`,
+					{
+						domain_names: [accessURL],
+						meta: {
+							letsencrypt_email: process.env.MAIL!,
+							letsencrypt_agree: true,
+							dns_challenge: false,
+						},
+						provider: 'letsencrypt',
+					},
+					{
+						headers: {
+							Authorization: `Bearer ${token}`,
+							Connection: 'Keep-Alive',
+							'Keep-Alive': 'timeout=60, max=1000',
+						},
+					},
+				);
+
+				certID = certReq.data.id;
+			} catch (e) {
+				console.log(e);
+				console.log("Couldn't get SSL certificate for access url!");
+			}
+		} else {
+			certID = cert.id;
+			console.log('Certificate found');
 		}
+
+		await npmApi.addEntry(process.env.WEB_IP!, '80', accessURL, token, certID);
+		console.log('Added access url to proxy!');
 	} else {
 		await npmApi.updateEntry(accessURL, process.env.WEB_IP!, '80', token);
 		console.log('Updated access url in proxy!');
