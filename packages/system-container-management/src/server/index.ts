@@ -181,7 +181,9 @@ console.log('Checking config...');
 			const containerArray = [
 				...new Set([
 					'db',
-					...Object.keys(containers).filter((c) => c != 'scm' && c != '_id'),
+					...Object.keys(containers).filter(
+						(c) => c != 'scm' && c != '_id' && c != 'proxy',
+					),
 				]),
 			];
 
@@ -197,6 +199,18 @@ console.log('Checking config...');
 
 					await startContainer(id);
 				}),
+			);
+
+			const webIP = (await getContainer(containers.web))!.NetworkSettings
+				.Networks.reddeploy.IPAddress;
+
+			await system.collection('config').findOneAndUpdate(
+				{},
+				{
+					$set: {
+						webIP,
+					},
+				},
 			);
 
 			console.log('Containers started! Restarting SCM container...');
@@ -309,6 +323,15 @@ async function initWebServer() {
 
 					const { adminEmail } = (await system.collection('config').findOne())!;
 
+					await system.collection('config').findOneAndUpdate(
+						{},
+						{
+							$set: {
+								webIP,
+							},
+						},
+					);
+
 					const proxyContainer = await createContainer({
 						Name: 'reddeploy-proxy',
 						Image:
@@ -319,7 +342,6 @@ async function initWebServer() {
 							`MONGO_URL=${mongoURI}`,
 							`MONGO_USER=${process.env.DB_USER}`,
 							`MONGO_PASSWORD=${process.env.DB_PASS}`,
-							`WEB_IP=${webIP}`,
 							`MAIL=${adminEmail}`,
 						],
 						HostConfig: {
