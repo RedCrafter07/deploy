@@ -133,6 +133,22 @@ async function restartContainer(id: string) {
 	});
 }
 
+async function buildImage(data: {
+	name: string;
+	path?: string;
+	remote?: string;
+}) {
+	await axios({
+		socketPath: '/var/run/docker.sock',
+		method: 'POST',
+		url: `/build`,
+		params: {
+			t: data.name,
+			remote: data.remote,
+		},
+	});
+}
+
 export {
 	createContainer,
 	startContainer,
