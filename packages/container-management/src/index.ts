@@ -70,7 +70,7 @@ interface Project {
 			}) => {
 				const { host: preBuildHost, repo } = data;
 
-				console.log('Building image for project "' + data.name + '"');
+				console.log(`Building image for project "${data.name}"`);
 
 				const image = await buildGithub(
 					repo.name,
