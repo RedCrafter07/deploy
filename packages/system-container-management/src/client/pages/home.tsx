@@ -62,6 +62,7 @@ function Stopping(props: { socket: Socket }) {
 		props.socket.on('stop', (s) => {
 			setState(s);
 		});
+		props.socket.emit('stop all');
 	}, []);
 
 	return (
@@ -148,7 +149,6 @@ function Panel(props: { socket: Socket; stopView: () => void }) {
 						<button
 							className='w-full p-2 rounded-lg bg-red-500 bg-opacity-100 hover:bg-opacity-90 active:scale-95 transition-all duration-100'
 							onClick={() => {
-								socket.emit('stop all');
 								props.stopView();
 							}}
 						>
