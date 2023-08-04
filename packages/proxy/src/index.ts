@@ -92,7 +92,7 @@ async function proxyServer() {
 
 		// get certificate, check for wildcard and normal
 
-		const certCheck = await axios.get(`${url}/api/certificates`, {
+		const certCheck = await axios.get(`${url}/api/nginx/certificates`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
