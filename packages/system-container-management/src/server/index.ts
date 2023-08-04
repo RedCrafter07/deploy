@@ -316,9 +316,11 @@ async function initWebServer() {
 
 				console.log('Shutting down SCM...');
 
-				await stopContainer('reddeploy-scm');
-
 				socket.emit('stop all');
+
+				console.log('Bye!');
+
+				await stopContainer('reddeploy-scm');
 			});
 
 			socket.on(
