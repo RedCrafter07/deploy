@@ -299,6 +299,26 @@ async function initWebServer() {
 				socket.emit('getContainers', mappedData);
 			});
 
+			socket.on('stop all', async () => {
+				console.log('Stop all requested by user. Stopping all containers...');
+
+				const containers = await system.collection('containers').findOne();
+
+				const { _id, ...c } = containers!;
+
+				await Promise.all(
+					Object.values(c)
+						.filter((c) => c != 'scm')
+						.map(async (c) => await stopContainer(c)),
+				);
+
+				console.log('Shutting down SCM...');
+
+				await stopContainer('reddeploy-scm');
+
+				socket.emit('stop all');
+			});
+
 			socket.on(
 				'npm config',
 				async (data: { url: string; email: string; password: string }) => {
