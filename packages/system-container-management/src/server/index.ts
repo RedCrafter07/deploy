@@ -304,6 +304,8 @@ async function initWebServer() {
 
 				const containers = await system.collection('containers').findOne();
 
+				await writeFile('/cache/containers.json', JSON.stringify(containers));
+
 				const { _id, ...c } = containers!;
 
 				await Promise.all(
