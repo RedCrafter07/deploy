@@ -311,8 +311,12 @@ async function initWebServer() {
 				await Promise.all(
 					Object.keys(c)
 						.filter((c) => c != 'scm')
-						.map((name) => c[name])
-						.map(async (c) => await stopContainer(c)),
+						.map((name) => ({ id: c[name], name }))
+						.map(async ({ name, id }) => {
+							socket.emit('stop', `Stopping ${name}...`);
+							console.log(`Stopping ${name}...`);
+							await stopContainer(id);
+						}),
 				);
 
 				console.log('Shutting down SCM...');
