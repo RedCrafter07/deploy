@@ -7,7 +7,7 @@ import { IconReload } from '@tabler/icons-react';
 export default function Home() {
 	const socket = useSocket();
 
-	const [view, setView] = useState<'login' | 'home'>('login');
+	const [view, setView] = useState<'login' | 'home' | 'stop'>('login');
 
 	useEffect(() => {
 		socket.on('connect', () => {
@@ -16,6 +16,10 @@ export default function Home() {
 
 		socket.on('login', (success: boolean) => {
 			if (success) setView('home');
+		});
+
+		socket.on('stop all', () => {
+			setView('stop');
 		});
 
 		socket.connect();
@@ -30,9 +34,32 @@ export default function Home() {
 				exit={{ opacity: 0 }}
 				transition={{ duration: 0.2 }}
 			>
-				{view == 'home' ? <Panel socket={socket} /> : <Login socket={socket} />}
+				{view == 'home' ? (
+					<Panel socket={socket} />
+				) : view == 'stop' ? (
+					<Stop />
+				) : (
+					<Login socket={socket} />
+				)}
 			</motion.div>
 		</AnimatePresence>
+	);
+}
+
+function Stop() {
+	return (
+		<div className='bg-zinc-800 min-h-screen grid place-items-center'>
+			<div className='flex flex-col gap-2'>
+				<h1 className='text-3xl'>RedDeploy has been stopped!</h1>
+				<p>To start, just run the following command:</p>
+				<div className='p-4 bg-zinc-700 rounded-lg'>
+					<code>sudo docker start reddeploy-scm</code>
+				</div>
+				<p>
+					The SCM will handle the start of the other containers automatically.
+				</p>
+			</div>
+		</div>
 	);
 }
 
