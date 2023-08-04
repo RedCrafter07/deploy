@@ -41,6 +41,16 @@ interface Project {
 
 	console.log('Connected to database!');
 
+	console.log('Starting projects...');
+
+	const projectDb = mongo.db('project');
+	const projects = await projectDb.collection('projects').find();
+
+	for await (const project of projects) {
+		console.log(`Starting container ${project.container}`);
+		await startContainer(project.container);
+	}
+
 	const io = new Server({
 		transports: ['websocket'],
 	});
@@ -166,6 +176,21 @@ interface Project {
 
 	io.listen(parseInt(process.env.CM_PORT!));
 	console.log('CM socket listening');
+
+	// prevent stop until containers are stopped
+	process.on('SIGINT', async () => {
+		const projectDb = mongo.db('project');
+		const projects = await projectDb.collection('projects').find();
+
+		console.log('Stopping all containers...');
+
+		for await (const project of projects) {
+			console.log(`Stopping container ${project.container}`);
+			await stopContainer(project.container);
+		}
+
+		process.exit(0);
+	});
 })();
 
 async function buildGithub(
