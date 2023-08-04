@@ -5,7 +5,9 @@ import {
 	buildImage,
 	createContainer,
 	getContainer,
+	removeContainer,
 	startContainer,
+	stopContainer,
 } from '../lib/docker';
 
 const proxySocket = SocketClient('http://reddeploy-proxy:3000', {
@@ -21,6 +23,18 @@ const mongo = new MongoClient(mongoURI, {
 		password: process.env.CM_MONGO_PASS!,
 	},
 });
+
+interface Project {
+	_id: string;
+	name: string;
+	image: string;
+	container: string;
+	host: {
+		ip: string;
+		port: string;
+		domain: string;
+	};
+}
 
 (async () => {
 	await mongo.connect();
@@ -62,10 +76,10 @@ const mongo = new MongoClient(mongoURI, {
 
 				console.log('Creating container...');
 
-				const container = await createContainer({
+				const container = (await createContainer({
 					Image: image,
 					Name: `${prefix}-${data.name.replace(' ', '_').toLowerCase()}`,
-				});
+				})) as string;
 
 				console.log('Starting container...');
 
@@ -92,18 +106,62 @@ const mongo = new MongoClient(mongoURI, {
 					host,
 				};
 
-				await project.collection('projects').insertOne(mongoData);
+				const { insertedId } = await project
+					.collection('projects')
+					.insertOne(mongoData);
 
 				console.log('Sending data to proxy...');
 
 				proxySocket.emit('addProject', host.ip, host.port, host.domain);
 
-				socket.emit(
-					'add',
-					await project.collection('projects').findOne(mongoData),
-				);
+				socket.emit('add', insertedId);
 			},
 		);
+
+		socket.on('remove', async (id: string) => {
+			const projectDb = mongo.db('project');
+			const project = (await projectDb.collection('projects').findOne({
+				_id: {
+					equals: id,
+				},
+			})) as Project | null;
+
+			if (!project) {
+				socket.emit('remove', false);
+				return;
+			}
+
+			const { container, host } = project;
+
+			console.log('Checking for container...');
+
+			const containerData = await getContainer(container);
+
+			if (!containerData) {
+				console.log("Container doesn't exist");
+				socket.emit('remove', false);
+				return;
+			}
+
+			console.log('Stopping container...');
+			await stopContainer(container);
+
+			console.log('Removing container...');
+			await removeContainer(container);
+
+			console.log('Removing project from database...');
+			await projectDb.collection('projects').deleteOne({
+				_id: {
+					equals: id,
+				},
+			});
+
+			console.log('Sending data to proxy...');
+
+			proxySocket.emit('deleteProject', host.domain);
+
+			socket.emit('remove', true);
+		});
 	});
 
 	io.listen(parseInt(process.env.CM_PORT!));
