@@ -1,14 +1,7 @@
 import { Server } from 'socket.io';
 import { io as SocketClient } from 'socket.io-client';
 import { MongoClient } from 'mongodb';
-import { simpleGit } from 'simple-git';
-import { URLSearchParams } from 'url';
-import { existsSync } from 'fs';
-
-const git = simpleGit({
-	baseDir: '/tmp',
-	binary: 'git',
-});
+import { buildImage } from '../lib/docker';
 
 const proxySocket = SocketClient('http://reddeploy-proxy:3000', {
 	autoConnect: true,
@@ -48,22 +41,22 @@ const mongo = new MongoClient(mongoURI, {
 	console.log('CM socket listening');
 })();
 
-async function cloneGithub(repo: string, username: string, token: string) {
+async function buildGithub(
+	repo: string,
+	branch: string,
+	username: string,
+	token: string,
+) {
 	const encodedToken = encodeURIComponent(token);
-	const gitUrl = `https://${username}:${encodedToken}@github.com${repo}`;
+	const gitUrl = `https://${username}:${encodedToken}@github.com/${repo}#${branch}`;
+	const imageName = `rd-${repo.replace('/', '-')}:latest`;
 
-	const dirname = `/tmp/${generateToken(20)}`;
+	await buildImage({
+		name: imageName,
+		remote: gitUrl,
+	});
 
-	await git.clone(gitUrl, dirname);
-
-	// check if Dockerfile exists
-	const hasDockerfile = await existsSync(`${dirname}/Dockerfile`);
-
-	if (!hasDockerfile) {
-		console.log("No Dockerfile found, can't build image");
-	}
-
-	return dirname;
+	return imageName;
 }
 
 function generateToken(length: number) {
