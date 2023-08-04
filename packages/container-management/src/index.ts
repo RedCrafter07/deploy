@@ -1,7 +1,12 @@
 import { Server } from 'socket.io';
 import { io as SocketClient } from 'socket.io-client';
 import { MongoClient } from 'mongodb';
-import { buildImage } from '../lib/docker';
+import {
+	buildImage,
+	createContainer,
+	getContainer,
+	startContainer,
+} from '../lib/docker';
 
 const proxySocket = SocketClient('http://reddeploy-proxy:3000', {
 	autoConnect: true,
@@ -29,10 +34,74 @@ const mongo = new MongoClient(mongoURI, {
 	io.on('connect', (socket) => {
 		socket.on(
 			'add',
-			(data: { ip: string; port: string; domain: string; name: string }) => {
-				proxySocket.emit('addProject', data.ip, data.port, data.domain);
+			async (data: {
+				name: string;
+				repo: {
+					name: string;
+					branch: string;
+					token: string;
+					username: string;
+				};
+				host: { port: string; domain: string };
+			}) => {
+				const { host: preBuildHost, repo } = data;
 
-				socket.emit('add', data);
+				console.log('Building image for project "' + data.name + '"');
+
+				const image = await buildGithub(
+					repo.name,
+					repo.branch,
+					repo.username,
+					repo.token,
+				);
+
+				const prefix = (await mongo
+					.db('rd-system')
+					.collection('config')
+					.findOne())!.prefix as string;
+
+				console.log('Creating container...');
+
+				const container = await createContainer({
+					Image: image,
+					Name: `${prefix}-${data.name.replace(' ', '_').toLowerCase()}`,
+				});
+
+				console.log('Starting container...');
+
+				await startContainer(container);
+
+				console.log('Getting IP...');
+
+				const containerData = (await getContainer(container))!;
+				const ip = containerData.NetworkSettings.Networks.bridge.IPAddress;
+
+				const host = {
+					...preBuildHost,
+					ip,
+				};
+
+				console.log('Writing new project to database...');
+
+				const project = mongo.db('project');
+
+				const mongoData = {
+					name: data.name,
+					image,
+					container,
+					host,
+				};
+
+				await project.collection('projects').insertOne(mongoData);
+
+				console.log('Sending data to proxy...');
+
+				proxySocket.emit('addProject', host.ip, host.port, host.domain);
+
+				socket.emit(
+					'add',
+					await project.collection('projects').findOne(mongoData),
+				);
 			},
 		);
 	});
