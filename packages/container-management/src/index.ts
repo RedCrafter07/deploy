@@ -3,6 +3,7 @@ import { io as SocketClient } from 'socket.io-client';
 import { MongoClient } from 'mongodb';
 import { simpleGit } from 'simple-git';
 import { URLSearchParams } from 'url';
+import { existsSync } from 'fs';
 
 const git = simpleGit({
 	baseDir: '/tmp',
@@ -54,6 +55,13 @@ async function cloneGithub(repo: string, username: string, token: string) {
 	const dirname = `/tmp/${generateToken(20)}`;
 
 	await git.clone(gitUrl, dirname);
+
+	// check if Dockerfile exists
+	const hasDockerfile = await existsSync(`${dirname}/Dockerfile`);
+
+	if (!hasDockerfile) {
+		console.log("No Dockerfile found, can't build image");
+	}
 
 	return dirname;
 }
