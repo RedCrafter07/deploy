@@ -313,7 +313,7 @@ async function initWebServer() {
 						.filter((c) => c != 'scm')
 						.map((name) => ({ id: c[name], name }))
 						.map(async ({ name, id }) => {
-							socket.emit('stop', `Stopping ${name}...`);
+							io.emit('stop', `Stopping ${name}...`);
 							console.log(`Stopping ${name}...`);
 							await stopContainer(id);
 						}),
