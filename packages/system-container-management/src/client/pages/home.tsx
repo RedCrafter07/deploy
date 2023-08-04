@@ -20,10 +20,6 @@ export default function Home() {
 			if (success) setView('home');
 		});
 
-		socket.on('stop all', () => {
-			setView('stop');
-		});
-
 		socket.connect();
 	}, []);
 
@@ -46,7 +42,12 @@ export default function Home() {
 				) : view == 'stopped' ? (
 					<Stop />
 				) : view == 'stop' ? (
-					<Stopping socket={socket} />
+					<Stopping
+						socket={socket}
+						stoppedView={() => {
+							setView('stopped');
+						}}
+					/>
 				) : (
 					<Login socket={socket} />
 				)}
@@ -55,7 +56,7 @@ export default function Home() {
 	);
 }
 
-function Stopping(props: { socket: Socket }) {
+function Stopping(props: { socket: Socket; stoppedView: () => void }) {
 	const [state, setState] = useState('Stopping RedDeploy...');
 
 	useEffect(() => {
@@ -63,6 +64,10 @@ function Stopping(props: { socket: Socket }) {
 			setState(s);
 		});
 		props.socket.emit('stop all');
+
+		props.socket.on('disconnect', () => {
+			props.stoppedView();
+		});
 	}, []);
 
 	return (
