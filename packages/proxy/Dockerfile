@@ -20,6 +20,4 @@ COPY . .
 # build
 RUN pnpm build
 
-EXPOSE 8080
-
 CMD [ "pnpm", "start" ]
