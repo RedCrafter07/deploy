@@ -113,6 +113,19 @@ function Panel(props: { socket: Socket }) {
 							</div>
 						);
 					})}
+					<div className='p-4 rounded-lg bg-zinc-700'>
+						<p className='text-xl'>Stop RedDeploy</p>
+						<p>This will stop all system and project containers.</p>
+
+						<button
+							className='w-full p-2 rounded-lg bg-red-500 bg-opacity-100 hover:bg-opacity-90 active:scale-95 transition-all duration-100'
+							onClick={() => {
+								socket.emit('stop all');
+							}}
+						>
+							Stop
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
