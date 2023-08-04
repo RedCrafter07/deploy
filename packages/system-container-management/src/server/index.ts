@@ -323,6 +323,8 @@ async function initWebServer() {
 
 				socket.emit('stop all');
 
+				await timeout(500);
+
 				console.log('Bye!');
 
 				await stopContainer('reddeploy-scm');
