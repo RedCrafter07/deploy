@@ -160,4 +160,5 @@ export {
 	stopContainer,
 	waitForContainer,
 	restartContainer,
+	buildImage,
 };
