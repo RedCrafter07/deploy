@@ -9,6 +9,7 @@ import {
 	startContainer,
 	stopContainer,
 } from '../lib/docker';
+import { writeFile } from 'fs/promises';
 
 const proxySocket = SocketClient('http://reddeploy-proxy:3000', {
 	autoConnect: true,
@@ -124,6 +125,15 @@ interface Project {
 
 				proxySocket.emit('addProject', host.ip, host.port, host.domain);
 
+				console.log('Writing to cache...');
+
+				await writeFile(
+					'/cache/cache.json',
+					JSON.stringify(
+						await projectDb.collection('projects').find().toArray(),
+					),
+				);
+
 				socket.emit('add', insertedId);
 			},
 		);
@@ -169,6 +179,13 @@ interface Project {
 			console.log('Sending data to proxy...');
 
 			proxySocket.emit('deleteProject', host.domain);
+
+			console.log('Writing to cache...');
+
+			await writeFile(
+				'/cache/cache.json',
+				JSON.stringify(await projectDb.collection('projects').find().toArray()),
+			);
 
 			socket.emit('remove', true);
 		});
