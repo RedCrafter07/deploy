@@ -40,7 +40,9 @@ async function proxyServer() {
 
 	console.log('Getting access credentials...');
 
-	const { npm, accessURL } = (await system.collection('config').findOne({}))!;
+	const { npm, accessURL, webIP } = (await system
+		.collection('config')
+		.findOne({}))!;
 
 	const { url, email, password } = npm as { [key: string]: string };
 
@@ -144,10 +146,10 @@ async function proxyServer() {
 			console.log('Certificate found');
 		}
 
-		await npmApi.addEntry(process.env.WEB_IP!, '80', accessURL, token, certID);
+		await npmApi.addEntry(webIP, '80', accessURL, token, certID);
 		console.log('Added access url to proxy!');
 	} else {
-		await npmApi.updateEntry(accessURL, process.env.WEB_IP!, '80', token);
+		await npmApi.updateEntry(accessURL, webIP, '80', token);
 		console.log('Updated access url in proxy!');
 	}
 
