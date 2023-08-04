@@ -9,7 +9,7 @@ import {
 	startContainer,
 	stopContainer,
 } from '../lib/docker';
-import { writeFile } from 'fs/promises';
+import { readFile, writeFile } from 'fs/promises';
 
 const proxySocket = SocketClient('http://reddeploy-proxy:3000', {
 	autoConnect: true,
@@ -196,8 +196,7 @@ interface Project {
 
 	// prevent stop until containers are stopped
 	process.on('SIGINT', async () => {
-		const projectDb = mongo.db('project');
-		const projects = await projectDb.collection('projects').find();
+		const projects = JSON.parse(await readFile('/cache/cache.json', 'utf-8'));
 
 		console.log('Stopping all containers...');
 
