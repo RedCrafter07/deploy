@@ -7,7 +7,9 @@ import { IconReload } from '@tabler/icons-react';
 export default function Home() {
 	const socket = useSocket();
 
-	const [view, setView] = useState<'login' | 'home' | 'stop'>('login');
+	const [view, setView] = useState<'login' | 'home' | 'stop' | 'stopped'>(
+		'login',
+	);
 
 	useEffect(() => {
 		socket.on('connect', () => {
@@ -35,14 +37,40 @@ export default function Home() {
 				transition={{ duration: 0.2 }}
 			>
 				{view == 'home' ? (
-					<Panel socket={socket} />
-				) : view == 'stop' ? (
+					<Panel
+						socket={socket}
+						stopView={() => {
+							setView('stop');
+						}}
+					/>
+				) : view == 'stopped' ? (
 					<Stop />
+				) : view == 'stop' ? (
+					<Stopping socket={socket} />
 				) : (
 					<Login socket={socket} />
 				)}
 			</motion.div>
 		</AnimatePresence>
+	);
+}
+
+function Stopping(props: { socket: Socket }) {
+	const [state, setState] = useState('Stopping RedDeploy...');
+
+	useEffect(() => {
+		props.socket.on('stop', (s) => {
+			setState(s);
+		});
+	}, []);
+
+	return (
+		<div className='bg-zinc-800 min-h-screen grid place-items-center'>
+			<div className='flex-col gap-2 text-center'>
+				<h1 className='text-3xl'>Stopping RedDeploy...</h1>
+				<p>{state}</p>
+			</div>
+		</div>
 	);
 }
 
@@ -63,7 +91,7 @@ function Stop() {
 	);
 }
 
-function Panel(props: { socket: Socket }) {
+function Panel(props: { socket: Socket; stopView: () => void }) {
 	const { socket } = props;
 	const [containers, setContainers] = useState<
 		{
@@ -121,6 +149,7 @@ function Panel(props: { socket: Socket }) {
 							className='w-full p-2 rounded-lg bg-red-500 bg-opacity-100 hover:bg-opacity-90 active:scale-95 transition-all duration-100'
 							onClick={() => {
 								socket.emit('stop all');
+								props.stopView();
 							}}
 						>
 							Stop
