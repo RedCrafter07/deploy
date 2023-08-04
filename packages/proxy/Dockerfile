@@ -1,8 +1,5 @@
 FROM node:20.2.0-alpine3.18
 
-# install git
-RUN apk add --no-cache git
-
 # install pnpm
 RUN npm i -g pnpm
 
