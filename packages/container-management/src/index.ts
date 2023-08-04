@@ -128,7 +128,7 @@ interface Project {
 				console.log('Writing to cache...');
 
 				await writeFile(
-					'/cache/cache.json',
+					'/cache/projects.json',
 					JSON.stringify(
 						await projectDb.collection('projects').find().toArray(),
 					),
@@ -183,7 +183,7 @@ interface Project {
 			console.log('Writing to cache...');
 
 			await writeFile(
-				'/cache/cache.json',
+				'/cache/projects.json',
 				JSON.stringify(await projectDb.collection('projects').find().toArray()),
 			);
 
@@ -196,7 +196,9 @@ interface Project {
 
 	// prevent stop until containers are stopped
 	process.on('SIGINT', async () => {
-		const projects = JSON.parse(await readFile('/cache/cache.json', 'utf-8'));
+		const projects = JSON.parse(
+			await readFile('/cache/projects.json', 'utf-8'),
+		);
 
 		console.log('Stopping all containers...');
 
