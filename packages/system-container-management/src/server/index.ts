@@ -364,6 +364,11 @@ async function initWebServer() {
 						},
 					);
 
+					await writeFile(
+						'/cache/containers.json',
+						JSON.stringify(await system.collection('containers').findOne()),
+					);
+
 					socket.emit('reload');
 				},
 			);
