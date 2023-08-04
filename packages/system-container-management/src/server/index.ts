@@ -309,8 +309,9 @@ async function initWebServer() {
 				const { _id, ...c } = containers!;
 
 				await Promise.all(
-					Object.values(c)
+					Object.keys(c)
 						.filter((c) => c != 'scm')
+						.map((name) => c[name])
 						.map(async (c) => await stopContainer(c)),
 				);
 
