@@ -110,7 +110,7 @@ const scheduler = new Scheduler();
 
 	io.on('connect', (socket) => {
 		socket.on('add', async (data: ProjectData) => {
-			await addProject(data);
+			scheduler.addTask(addProject(data));
 		});
 
 		socket.on('remove', async (id: string) => {
