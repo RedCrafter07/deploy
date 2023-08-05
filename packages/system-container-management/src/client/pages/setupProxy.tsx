@@ -20,6 +20,8 @@ export default function SetupProxy() {
 		socket.on('reload', () => {
 			window.location.reload();
 		});
+
+		socket.connect();
 	}, []);
 
 	return (
