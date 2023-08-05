@@ -10,6 +10,7 @@ import {
 	stopContainer,
 } from '../lib/docker';
 import { readFile, writeFile } from 'fs/promises';
+import Scheduler from '../lib/scheduler';
 
 const proxySocket = SocketClient('http://reddeploy-proxy:3000', {
 	autoConnect: true,
@@ -37,6 +38,8 @@ interface Project {
 		domain: string;
 	};
 }
+
+const scheduler = new Scheduler();
 
 (async () => {
 	await mongo.connect();
