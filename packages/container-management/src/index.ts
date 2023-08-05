@@ -106,7 +106,9 @@ interface Project {
 	}
 
 	io.on('connect', (socket) => {
-		socket.on('add', async (data: ProjectData) => {});
+		socket.on('add', async (data: ProjectData) => {
+			await addProject(data);
+		});
 
 		socket.on('remove', async (id: string) => {
 			const projectDb = mongo.db('project');
