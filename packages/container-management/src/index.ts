@@ -93,95 +93,20 @@ interface Project {
 		transports: ['websocket'],
 	});
 
+	interface ProjectData {
+		name: string;
+		repo: {
+			name: string;
+			branch: string;
+			token: string;
+			username: string;
+		};
+		withProxy: boolean;
+		host?: { port: string; domain: string };
+	}
+
 	io.on('connect', (socket) => {
-		socket.on(
-			'add',
-			async (data: {
-				name: string;
-				repo: {
-					name: string;
-					branch: string;
-					token: string;
-					username: string;
-				};
-				withProxy: boolean;
-				host?: { port: string; domain: string };
-			}) => {
-				const { host: preBuildHost, repo } = data;
-
-				console.log(`Building image for project "${data.name}"`);
-
-				const image = await buildGithub(
-					repo.name,
-					repo.branch,
-					repo.username,
-					repo.token,
-				);
-
-				const prefix = (await mongo
-					.db('rd-system')
-					.collection('config')
-					.findOne())!.prefix as string;
-
-				console.log('Creating container...');
-
-				const container = (await createContainer({
-					Image: image,
-					Name: `${prefix}-${data.name.replace(' ', '_').toLowerCase()}`,
-				})) as string;
-
-				console.log('Starting container...');
-
-				await startContainer(container);
-
-				let host: Project['host'] | undefined;
-
-				if (data.withProxy && preBuildHost) {
-					console.log('Getting IP...');
-
-					const containerData = (await getContainer(container))!;
-					const ip = containerData.NetworkSettings.Networks.bridge.IPAddress;
-
-					host = {
-						...preBuildHost,
-						ip,
-					};
-				}
-
-				console.log('Writing new project to database...');
-
-				const project = mongo.db('project');
-
-				const mongoData = {
-					name: data.name,
-					image,
-					container,
-					host,
-					withProxy: data.withProxy,
-				};
-
-				const { insertedId } = await project
-					.collection('projects')
-					.insertOne(mongoData);
-
-				if (data.withProxy && host) {
-					console.log('Sending data to proxy...');
-
-					proxySocket.emit('addProject', host.ip, host.port, host.domain);
-				}
-
-				console.log('Writing to cache...');
-
-				await writeFile(
-					'/cache/projects.json',
-					JSON.stringify(
-						await projectDb.collection('projects').find().toArray(),
-					),
-				);
-
-				socket.emit('add', insertedId);
-			},
-		);
+		socket.on('add', async (data: ProjectData) => {});
 
 		socket.on('remove', async (id: string) => {
 			const projectDb = mongo.db('project');
@@ -256,6 +181,78 @@ interface Project {
 
 		process.exit(0);
 	});
+
+	async function addProject(data: ProjectData) {
+		const { host: preBuildHost, repo } = data;
+
+		console.log(`Building image for project "${data.name}"`);
+
+		const image = await buildGithub(
+			repo.name,
+			repo.branch,
+			repo.username,
+			repo.token,
+		);
+
+		const prefix = (await mongo.db('rd-system').collection('config').findOne())!
+			.prefix as string;
+
+		console.log('Creating container...');
+
+		const container = (await createContainer({
+			Image: image,
+			Name: `${prefix}-${data.name.replace(' ', '_').toLowerCase()}`,
+		})) as string;
+
+		console.log('Starting container...');
+
+		await startContainer(container);
+
+		let host: Project['host'] | undefined;
+
+		if (data.withProxy && preBuildHost) {
+			console.log('Getting IP...');
+
+			const containerData = (await getContainer(container))!;
+			const ip = containerData.NetworkSettings.Networks.bridge.IPAddress;
+
+			host = {
+				...preBuildHost,
+				ip,
+			};
+		}
+
+		console.log('Writing new project to database...');
+
+		const project = mongo.db('project');
+
+		const mongoData = {
+			name: data.name,
+			image,
+			container,
+			host,
+			withProxy: data.withProxy,
+		};
+
+		const { insertedId } = await project
+			.collection('projects')
+			.insertOne(mongoData);
+
+		if (data.withProxy && host) {
+			console.log('Sending data to proxy...');
+
+			proxySocket.emit('addProject', host.ip, host.port, host.domain);
+		}
+
+		console.log('Writing to cache...');
+
+		await writeFile(
+			'/cache/projects.json',
+			JSON.stringify(await projectDb.collection('projects').find().toArray()),
+		);
+
+		io.emit('add', insertedId);
+	}
 })();
 
 async function buildGithub(
