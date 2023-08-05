@@ -10,6 +10,24 @@ const cmSocket = io(`http://${cmURL}`, {
 });
 cmSocket.connect();
 
+interface ProjectData {
+	name: string;
+	repo: {
+		name: string;
+		branch: string;
+		token: string;
+		username: string;
+	};
+	withProxy: boolean;
+	host?: { port: string; domain: string };
+}
+
+app.post('/api/cm', (req, res) => {
+	const data = req.body as ProjectData;
+
+	cmSocket.emit('add', data);
+});
+
 app.get('*', (req, res) => {
 	res.send('Coming soon!');
 });
