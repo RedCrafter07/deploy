@@ -1,7 +1,7 @@
 class Scheduler<T> {
 	private readonly tasks: T[];
 
-	constructor(tasks: T[]) {
+	constructor(tasks: T[] = []) {
 		this.tasks = tasks;
 	}
 
