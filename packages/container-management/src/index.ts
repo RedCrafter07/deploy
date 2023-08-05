@@ -51,6 +51,42 @@ interface Project {
 	for await (const project of projects) {
 		console.log(`Starting container ${project.container}`);
 		await startContainer(project.container);
+
+		if (project.withProxy && project.host) {
+			console.log("Getting container's IP...");
+
+			const containerData = (await getContainer(project.container))!;
+			const ip = containerData.NetworkSettings.Networks.bridge.IPAddress;
+
+			console.log('Sending data to proxy...');
+
+			proxySocket.emit(
+				'editProject',
+				ip,
+				project.host.port,
+				project.host.domain,
+			);
+
+			console.log("Updating project's IP...");
+
+			await projectDb.collection('projects').updateOne(
+				{
+					_id: {
+						equals: project._id,
+					},
+				},
+				{
+					$set: {
+						host: {
+							...project.host,
+							ip,
+						},
+					},
+				},
+			);
+		}
+
+		console.log('Done!');
 	}
 
 	const io = new Server({
