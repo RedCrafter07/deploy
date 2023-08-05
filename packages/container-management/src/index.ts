@@ -30,7 +30,8 @@ interface Project {
 	name: string;
 	image: string;
 	container: string;
-	host: {
+	withProxy: boolean;
+	host?: {
 		ip: string;
 		port: string;
 		domain: string;
@@ -67,7 +68,8 @@ interface Project {
 					token: string;
 					username: string;
 				};
-				host: { port: string; domain: string };
+				withProxy: boolean;
+				host?: { port: string; domain: string };
 			}) => {
 				const { host: preBuildHost, repo } = data;
 
@@ -96,15 +98,19 @@ interface Project {
 
 				await startContainer(container);
 
-				console.log('Getting IP...');
+				let host: Project['host'] | undefined;
 
-				const containerData = (await getContainer(container))!;
-				const ip = containerData.NetworkSettings.Networks.bridge.IPAddress;
+				if (data.withProxy && preBuildHost) {
+					console.log('Getting IP...');
 
-				const host = {
-					...preBuildHost,
-					ip,
-				};
+					const containerData = (await getContainer(container))!;
+					const ip = containerData.NetworkSettings.Networks.bridge.IPAddress;
+
+					host = {
+						...preBuildHost,
+						ip,
+					};
+				}
 
 				console.log('Writing new project to database...');
 
@@ -115,15 +121,18 @@ interface Project {
 					image,
 					container,
 					host,
+					withProxy: data.withProxy,
 				};
 
 				const { insertedId } = await project
 					.collection('projects')
 					.insertOne(mongoData);
 
-				console.log('Sending data to proxy...');
+				if (data.withProxy && host) {
+					console.log('Sending data to proxy...');
 
-				proxySocket.emit('addProject', host.ip, host.port, host.domain);
+					proxySocket.emit('addProject', host.ip, host.port, host.domain);
+				}
 
 				console.log('Writing to cache...');
 
@@ -176,9 +185,11 @@ interface Project {
 				},
 			});
 
-			console.log('Sending data to proxy...');
+			if (host) {
+				console.log('Sending data to proxy...');
 
-			proxySocket.emit('deleteProject', host.domain);
+				proxySocket.emit('deleteProject', host.domain);
+			}
 
 			console.log('Writing to cache...');
 
