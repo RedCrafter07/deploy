@@ -32,6 +32,14 @@ app.post('/api/cm', (req, res) => {
 	res.sendStatus(200);
 });
 
+app.delete('/api/cm/:id', (req, res) => {
+	const id = req.params.id;
+
+	cmSocket.emit('remove', id);
+
+	res.sendStatus(200);
+});
+
 app.get('*', (req, res) => {
 	res.send('Coming soon!');
 });
