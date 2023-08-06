@@ -1,7 +1,9 @@
 import express from 'express';
 import { io } from 'socket.io-client';
+import bodyParser from 'body-parser';
 
 const app = express();
+app.use(bodyParser.json());
 
 const cmURL = `${process.env.WEB_CM_HOST}:${process.env.WEB_CM_PORT}`;
 const cmSocket = io(`http://${cmURL}`, {
