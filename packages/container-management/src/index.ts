@@ -1,6 +1,6 @@
 import { Server } from 'socket.io';
 import { io as SocketClient } from 'socket.io-client';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import {
 	buildImage,
 	createContainer,
@@ -124,7 +124,7 @@ const scheduler = new Scheduler();
 			const projectDb = mongo.db('project');
 			const project = (await projectDb.collection('projects').findOne({
 				_id: {
-					equals: id,
+					equals: new ObjectId(id),
 				},
 			})) as Project | null;
 
