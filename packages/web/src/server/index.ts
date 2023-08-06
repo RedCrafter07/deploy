@@ -32,6 +32,14 @@ app.post('/api/cm', (req, res) => {
 	res.sendStatus(200);
 });
 
+app.get('/api/cm', (req, res) => {
+	cmSocket.emit('get all');
+
+	cmSocket.once('get all', (data: any) => {
+		res.json(data);
+	});
+});
+
 app.delete('/api/cm/:id', (req, res) => {
 	const id = req.params.id;
 
