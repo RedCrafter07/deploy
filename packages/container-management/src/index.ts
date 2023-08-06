@@ -125,7 +125,7 @@ const scheduler = new Scheduler();
 			const projectDb = mongo.db('project');
 			const project = (await projectDb.collection('projects').findOne({
 				_id: {
-					equals: new ObjectId(id),
+					$eq: new ObjectId(id),
 				},
 			})) as Project | null;
 
