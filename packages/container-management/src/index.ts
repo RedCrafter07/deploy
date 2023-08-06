@@ -268,7 +268,7 @@ async function buildGithub(
 ) {
 	const encodedToken = encodeURIComponent(token);
 	const gitUrl = `https://${username}:${encodedToken}@github.com/${repo}.git#${branch}`;
-	const imageName = `rd-${repo.replace('/', '-')}:latest`;
+	const imageName = `rd-${repo.replace('/', '-').toLowerCase()}:latest`;
 
 	await buildImage({
 		name: imageName,
