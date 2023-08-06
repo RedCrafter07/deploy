@@ -113,6 +113,13 @@ const scheduler = new Scheduler();
 			scheduler.addTask(addProject(data));
 		});
 
+		socket.on('get all', async () => {
+			const projectDb = mongo.db('project');
+			const projects = await projectDb.collection('projects').find();
+
+			socket.emit('get all', projects);
+		});
+
 		socket.on('remove', async (id: string) => {
 			const projectDb = mongo.db('project');
 			const project = (await projectDb.collection('projects').findOne({
