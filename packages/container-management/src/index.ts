@@ -115,7 +115,7 @@ const scheduler = new Scheduler();
 
 		socket.on('get all', async () => {
 			const projectDb = mongo.db('project');
-			const projects = await projectDb.collection('projects').find();
+			const projects = await projectDb.collection('projects').find().toArray();
 
 			socket.emit('get all', projects);
 		});
