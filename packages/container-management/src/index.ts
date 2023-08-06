@@ -121,6 +121,7 @@ const scheduler = new Scheduler();
 		});
 
 		socket.on('remove', async (id: string) => {
+			console.log(id);
 			const projectDb = mongo.db('project');
 			const project = (await projectDb.collection('projects').findOne({
 				_id: {
