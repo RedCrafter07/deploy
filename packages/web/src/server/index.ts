@@ -28,6 +28,8 @@ app.post('/api/cm', (req, res) => {
 	const data = req.body as ProjectData;
 
 	cmSocket.emit('add', data);
+
+	res.sendStatus(200);
 });
 
 app.get('*', (req, res) => {
