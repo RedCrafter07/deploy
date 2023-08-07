@@ -3,6 +3,7 @@ import { io as SocketClient } from 'socket.io-client';
 import { Server as SocketServer } from 'socket.io';
 import bodyParser from 'body-parser';
 import { createServer } from 'http';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 const server = createServer(app);
@@ -11,6 +12,7 @@ const io = new SocketServer(server, {
 });
 
 app.use(bodyParser.json());
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
 const cmURL = `${process.env.WEB_CM_HOST}:${process.env.WEB_CM_PORT}`;
 const cmSocket = SocketClient(`http://${cmURL}`, {
@@ -31,7 +33,7 @@ interface ProjectData {
 	host?: { port: string; domain: string };
 }
 
-app.post('/api/cm', (req, res) => {
+/* app.post('/api/cm', (req, res) => {
 	const data = req.body as ProjectData;
 
 	cmSocket.emit('add', data);
@@ -53,8 +55,9 @@ app.delete('/api/cm/:id', (req, res) => {
 	cmSocket.emit('remove', id);
 
 	res.sendStatus(200);
-});
+}); */
 
+app.get('/', (req, res) => {});
 app.get('*', (req, res) => {
 	res.send('Coming soon!');
 });
