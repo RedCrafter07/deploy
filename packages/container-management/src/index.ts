@@ -110,7 +110,7 @@ const scheduler = new Scheduler();
 
 	io.on('connect', (socket) => {
 		socket.on('add', async (data: ProjectData) => {
-			scheduler.addTask(addProject(data));
+			scheduler.addTask(data.name, addProject(data));
 		});
 
 		socket.on('get all', async () => {
@@ -118,6 +118,10 @@ const scheduler = new Scheduler();
 			const projects = await projectDb.collection('projects').find().toArray();
 
 			socket.emit('get all', projects);
+		});
+
+		socket.on('get tasks', async () => {
+			socket.emit('get tasks', scheduler.getTasks());
 		});
 
 		socket.on('remove', async (id: string) => {
