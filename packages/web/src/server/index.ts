@@ -1,12 +1,19 @@
 import express from 'express';
-import { io } from 'socket.io-client';
+import { io as SocketClient } from 'socket.io-client';
+import { Server as SocketServer } from 'socket.io';
 import bodyParser from 'body-parser';
+import { createServer } from 'http';
 
 const app = express();
+const server = createServer(app);
+const io = new SocketServer(server, {
+	transports: ['websocket'],
+});
+
 app.use(bodyParser.json());
 
 const cmURL = `${process.env.WEB_CM_HOST}:${process.env.WEB_CM_PORT}`;
-const cmSocket = io(`http://${cmURL}`, {
+const cmSocket = SocketClient(`http://${cmURL}`, {
 	transports: ['websocket'],
 	reconnection: true,
 });
@@ -52,6 +59,6 @@ app.get('*', (req, res) => {
 	res.send('Coming soon!');
 });
 
-app.listen(process.env.WEB_PORT, () => {
+server.listen(process.env.WEB_PORT, () => {
 	console.log(`Web interface listening on port ${process.env.WEB_PORT}`);
 });
