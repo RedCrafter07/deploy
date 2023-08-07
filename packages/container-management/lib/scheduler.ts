@@ -1,12 +1,12 @@
 class Scheduler<T> {
-	private readonly tasks: T[];
+	private readonly tasks: { name: string; task: T }[];
 
-	constructor(tasks: T[] = []) {
-		this.tasks = tasks;
+	constructor() {
+		this.tasks = [];
 	}
 
-	addTask(task: T) {
-		this.tasks.push(task);
+	addTask(name: string, task: T) {
+		this.tasks.push({ name, task });
 
 		if (this.tasks.length === 1) {
 			this.run();
@@ -17,10 +17,14 @@ class Scheduler<T> {
 		while (this.tasks.length > 0) {
 			const task = this.tasks[0];
 
-			await task;
+			await task.task;
 
 			this.tasks.shift();
 		}
+	}
+
+	getTasks() {
+		return this.tasks;
 	}
 }
 
