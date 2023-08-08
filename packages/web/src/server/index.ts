@@ -73,6 +73,7 @@ io.on('connect', (socket) => {
 	// check if user is logged in
 
 	if (!socket.handshake.headers.cookie) {
+		socket.emit('user', 'Not logged in');
 		return socket.disconnect();
 	}
 
@@ -81,6 +82,7 @@ io.on('connect', (socket) => {
 	});
 
 	if (!cookie) {
+		socket.emit('user', 'Not logged in');
 		return socket.disconnect();
 	}
 
