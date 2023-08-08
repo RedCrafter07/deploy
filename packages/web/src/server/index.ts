@@ -59,30 +59,6 @@ interface ProjectData {
 	host?: { port: string; domain: string };
 }
 
-/* app.post('/api/cm', (req, res) => {
-	const data = req.body as ProjectData;
-
-	cmSocket.emit('add', data);
-
-	res.sendStatus(200);
-});
-
-app.get('/api/cm', (req, res) => {
-	cmSocket.emit('get all');
-
-	cmSocket.once('get all', (data: any) => {
-		res.json(data);
-	});
-});
-
-app.delete('/api/cm/:id', (req, res) => {
-	const id = req.params.id;
-
-	cmSocket.emit('remove', id);
-
-	res.sendStatus(200);
-}); */
-
 app.get('/', (req, res) => {
 	res.send('Hello world!');
 });
