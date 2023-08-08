@@ -33,22 +33,27 @@ export default function Login() {
 									socket.connect();
 								});
 						}}
+						className='flex flex-row gap-2'
 					>
-						<label htmlFor='username'>Username</label>
-						<input
-							className='input'
-							type='text'
-							name='username'
-							id='username'
-						/>
+						<div>
+							<label htmlFor='username'>Username</label>
+							<input
+								className='input'
+								type='text'
+								name='username'
+								id='username'
+							/>
+						</div>
 
-						<label htmlFor='password'>Password</label>
-						<input
-							className='input'
-							type='password'
-							name='password'
-							id='password'
-						/>
+						<div>
+							<label htmlFor='password'>Password</label>
+							<input
+								className='input'
+								type='password'
+								name='password'
+								id='password'
+							/>
+						</div>
 
 						<button
 							className='w-full bg-zinc-800 rounded-lg text-center p-2 hover:bg-green-600 active:scale-95'
