@@ -17,6 +17,7 @@ import express from 'express';
 import { createServer } from 'http';
 import { Server as SocketServer } from 'socket.io';
 import path from 'path';
+import bcrypt from 'bcrypt';
 
 const mongoURI = `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}`;
 
@@ -69,9 +70,13 @@ console.log('Checking config...');
 
 		console.log('Writing users...');
 
+		console.log('Hashing password...');
+
+		const password = await bcrypt.hashSync(config.password, 10);
+
 		await system.collection('users').insertOne({
 			username: config.username,
-			password: config.password,
+			password,
 			admin: true,
 		});
 
