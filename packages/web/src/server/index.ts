@@ -127,5 +127,5 @@ server.listen(process.env.WEB_PORT, () => {
 });
 
 function sendClient(req: Request, res: Response) {
-	res.sendFile(path.join(__dirname, '..', 'client', 'core', 'index.html'));
+	res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
 }
