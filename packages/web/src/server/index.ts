@@ -18,11 +18,19 @@ const {
 	WEB_CM_PORT,
 } = process.env as Record<string, string>;
 
+// ==== WEBSERVER SETUP ==== //
+
 const app = express();
 const server = createServer(app);
 const io = new SocketServer(server, {
 	transports: ['websocket'],
 });
+
+app.use(bodyParser.json());
+app.use(cookieParser(COOKIE_SECRET));
+app.use('/.rd-web', express.static(path.join(__dirname, '..', 'client')));
+
+// ==== DATABASE ==== //
 
 const mongo = new MongoClient(
 	`mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}`,
@@ -38,9 +46,7 @@ mongo.connect();
 const system = mongo.db('rd-system');
 const users = system.collection('users');
 
-app.use(bodyParser.json());
-app.use(cookieParser(COOKIE_SECRET));
-app.use('/.rd-web', express.static(path.join(__dirname, '..', 'client')));
+// ==== CONTAINER MANAGEMENT ==== //
 
 const cmURL = `${WEB_CM_HOST}:${WEB_CM_PORT}`;
 const cmSocket = SocketClient(`http://${cmURL}`, {
@@ -61,6 +67,8 @@ interface ProjectData {
 	host?: { port: string; domain: string };
 }
 
+// ==== SOCKET IO ==== //
+
 io.on('connect', (socket) => {
 	// check if user is logged in
 
@@ -80,6 +88,8 @@ io.on('connect', (socket) => {
 
 	socket.emit('user', username);
 });
+
+// ==== WEBSERVER LOGIC ==== //
 
 app.get('/', (req, res) => {
 	res.send('Hello world!');
