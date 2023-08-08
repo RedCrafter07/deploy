@@ -1,5 +1,4 @@
 import { Configuration } from 'webpack';
-import type { Swcrc } from '@swc/core';
 import HTMLWebpackPlugin from 'html-webpack-plugin';
 
 export default {
@@ -27,26 +26,7 @@ export default {
 		rules: [
 			{
 				test: /\.tsx?$/,
-				loader: 'swc-loader',
-				options: {
-					jsc: {
-						parser: {
-							syntax: 'typescript',
-							jsx: true,
-							decorators: true,
-							dynamicImport: true,
-						},
-						transform: {
-							legacyDecorator: true,
-							react: {
-								pragma: 'React.createElement',
-								pragmaFrag: 'React.Fragment',
-								throwIfNamespace: true,
-								useBuiltins: false,
-							},
-						},
-					},
-				} as Swcrc,
+				loader: 'esbuild-loader',
 			},
 			{
 				test: /\.css$/,
