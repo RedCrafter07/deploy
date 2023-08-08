@@ -22,6 +22,7 @@ export default function Login() {
 							.then(() => {
 								const socket = io(window.location.origin, {
 									reconnection: true,
+									transports: ['websocket'],
 								});
 
 								socket.on('user', (user) => {
