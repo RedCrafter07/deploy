@@ -116,7 +116,7 @@ app.post('/auth/login', async (req, res) => {
 		return res.sendStatus(401);
 	}
 
-	res.cookie('user', user._id, {
+	res.cookie('user', user._id.toString(), {
 		maxAge: 1000 * 60 * 60 * 24 * 7,
 		httpOnly: true,
 	});
