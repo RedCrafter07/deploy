@@ -214,6 +214,7 @@ class NPMApi {
 				forward_port: port,
 				forward_scheme: 'http',
 				certificate_id: certID,
+				allow_websocket_upgrade: 1,
 			},
 			{
 				headers: {
