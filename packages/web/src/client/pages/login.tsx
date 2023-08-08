@@ -3,10 +3,10 @@ import { io } from 'socket.io-client';
 
 export default function Login() {
 	return (
-		<div className='min-h-screen bg-zinc-900 text-zinc-50'>
+		<div className='min-h-screen bg-zinc-950 text-zinc-50'>
 			<div className='grid place-items-center w-full h-screen'>
-				<div className='p-8 rounded-lg bg-zinc-700 border-2 border-zinc-800'>
-					<h1 className='text-3xl'>Login</h1>
+				<div className='p-8 rounded-lg bg-zinc-900'>
+					<h1 className='text-3xl'>RedDeploy Web Interface Login</h1>
 					<h3 className='text-xl'>Please log in to RedDeploy.</h3>
 					<form
 						onSubmit={(e) => {
