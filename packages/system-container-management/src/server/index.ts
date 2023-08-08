@@ -271,9 +271,12 @@ async function initWebServer() {
 		socket.on('login', async (username: string, password: string) => {
 			const u = await system
 				.collection('users')
-				.findOne({ username, password, admin: true });
+				.findOne({ username, admin: true });
 
 			if (!u) return socket.emit('login', false);
+
+			if (!(await bcrypt.compare(password, u.password)))
+				return socket.emit('login', false);
 
 			socket.emit('login', true);
 
