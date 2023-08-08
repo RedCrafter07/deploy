@@ -84,7 +84,8 @@ io.on('connect', (socket) => {
 
 	if (!cookie) {
 		socket.emit('user', 'Not logged in');
-		return socket.disconnect();
+		// return socket.disconnect();
+		return;
 	}
 
 	const username = cookie.split('=')[1];
