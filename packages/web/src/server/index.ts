@@ -4,6 +4,18 @@ import { Server as SocketServer } from 'socket.io';
 import bodyParser from 'body-parser';
 import { createServer } from 'http';
 import cookieParser from 'cookie-parser';
+import { MongoClient } from 'mongodb';
+import { compareSync } from 'bcrypt';
+
+const {
+	DB_HOST,
+	DB_PORT,
+	DB_USER,
+	DB_PASS,
+	COOKIE_SECRET,
+	WEB_CM_HOST,
+	WEB_CM_PORT,
+} = process.env as Record<string, string>;
 
 const app = express();
 const server = createServer(app);
@@ -11,10 +23,24 @@ const io = new SocketServer(server, {
 	transports: ['websocket'],
 });
 
-app.use(bodyParser.json());
-app.use(cookieParser(process.env.COOKIE_SECRET));
+const mongo = new MongoClient(
+	`mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}`,
+	{
+		auth: {
+			username: DB_USER,
+			password: DB_PASS,
+		},
+	},
+);
+mongo.connect();
 
-const cmURL = `${process.env.WEB_CM_HOST}:${process.env.WEB_CM_PORT}`;
+const system = mongo.db('rd-system');
+const users = system.collection('users');
+
+app.use(bodyParser.json());
+app.use(cookieParser(COOKIE_SECRET));
+
+const cmURL = `${WEB_CM_HOST}:${WEB_CM_PORT}`;
 const cmSocket = SocketClient(`http://${cmURL}`, {
 	transports: ['websocket'],
 	reconnection: true,
@@ -57,7 +83,29 @@ app.delete('/api/cm/:id', (req, res) => {
 	res.sendStatus(200);
 }); */
 
-app.get('/', (req, res) => {});
+app.get('/', (req, res) => {
+	res.send('Hello world!');
+});
+
+app.post('/auth/login', async (req, res) => {
+	const { username, password } = req.body;
+
+	const user = await users.findOne({ username });
+
+	if (!user) {
+		return res.sendStatus(404);
+	}
+
+	if (!compareSync(password, user.password)) {
+		return res.sendStatus(401);
+	}
+
+	res.cookie('user', user.username, {
+		maxAge: 1000 * 60 * 60 * 24 * 7,
+		httpOnly: true,
+	});
+});
+
 app.get('*', (req, res) => {
 	res.send('Coming soon!');
 });
