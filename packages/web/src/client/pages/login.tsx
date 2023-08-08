@@ -56,7 +56,7 @@ export default function Login() {
 						</div>
 
 						<button
-							className='w-full bg-zinc-800 rounded-lg text-center p-2 hover:bg-green-600 active:scale-95'
+							className='w-full bg-zinc-800 rounded-lg text-center p-2 hover:bg-green-600 active:scale-95 transition-all duration-100'
 							type='submit'
 						>
 							Login
