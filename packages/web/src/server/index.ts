@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { io as SocketClient } from 'socket.io-client';
 import { Server as SocketServer } from 'socket.io';
 import bodyParser from 'body-parser';
@@ -95,6 +95,10 @@ app.get('/', (req, res) => {
 	res.send('Hello world!');
 });
 
+app.get('/login', async (req, res) => {
+	sendClient(req, res);
+});
+
 app.post('/auth/login', async (req, res) => {
 	const { username, password } = req.body;
 
@@ -121,3 +125,7 @@ app.get('*', (req, res) => {
 server.listen(process.env.WEB_PORT, () => {
 	console.log(`Web interface listening on port ${process.env.WEB_PORT}`);
 });
+
+function sendClient(req: Request, res: Response) {
+	res.sendFile(path.join(__dirname, '..', 'client', 'core', 'index.html'));
+}
