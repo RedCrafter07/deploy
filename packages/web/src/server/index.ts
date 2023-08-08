@@ -70,7 +70,6 @@ interface ProjectData {
 // ==== SOCKET IO ==== //
 
 io.on('connect', (socket) => {
-	console.log(socket.handshake.headers.cookie);
 	// check if user is logged in
 
 	if (!socket.handshake.headers.cookie) {
@@ -84,8 +83,7 @@ io.on('connect', (socket) => {
 
 	if (!cookie) {
 		socket.emit('user', 'Not logged in');
-		// return socket.disconnect();
-		return;
+		return socket.disconnect();
 	}
 
 	const username = cookie.split('=')[1];
@@ -106,21 +104,15 @@ app.get('/login', async (req, res) => {
 app.post('/auth/login', async (req, res) => {
 	const { username, password } = req.body;
 
-	console.log(username, password);
-
 	const user = await users.findOne({ username });
 
 	if (!user) {
-		console.log("User doesn't exist");
 		return res.sendStatus(404);
 	}
 
 	if (!compareSync(password, user.password)) {
-		console.log("Password doesn't match");
 		return res.sendStatus(401);
 	}
-
-	console.log('Success!');
 
 	res.cookie('user', user.username, {
 		maxAge: 1000 * 60 * 60 * 24 * 7,
