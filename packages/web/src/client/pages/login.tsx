@@ -1,3 +1,6 @@
+import axios from 'axios';
+import { io } from 'socket.io-client';
+
 export default function Login() {
 	return (
 		<div className='min-h-screen bg-zinc-900 text-zinc-50'>
@@ -5,7 +8,30 @@ export default function Login() {
 				<h1 className='text-3xl'>Login</h1>
 				<h3 className='text-xl'>Please log in to RedDeploy.</h3>
 
-				<form>
+				<form
+					onSubmit={(e) => {
+						e.preventDefault();
+
+						const data = new FormData(e.target as HTMLFormElement);
+
+						axios
+							.post('/auth/login', {
+								username: data.get('username'),
+								password: data.get('password'),
+							})
+							.then(() => {
+								const socket = io(window.location.origin, {
+									reconnection: true,
+								});
+
+								socket.on('user', (user) => {
+									console.log(user);
+								});
+
+								socket.connect();
+							});
+					}}
+				>
 					<label htmlFor='username'>Username</label>
 					<input className='input' type='text' name='username' id='username' />
 
