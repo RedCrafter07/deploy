@@ -4,7 +4,7 @@ import { Server as SocketServer } from 'socket.io';
 import bodyParser from 'body-parser';
 import { createServer } from 'http';
 import cookieParser from 'cookie-parser';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import { compareSync } from 'bcrypt';
 import path from 'path';
 
@@ -69,7 +69,7 @@ interface ProjectData {
 
 // ==== SOCKET IO ==== //
 
-io.on('connect', (socket) => {
+io.on('connect', async (socket) => {
 	// check if user is logged in
 
 	if (!socket.handshake.headers.cookie) {
@@ -86,9 +86,11 @@ io.on('connect', (socket) => {
 		return socket.disconnect();
 	}
 
-	const username = cookie.split('=')[1];
+	const id = cookie.split('=')[1];
 
-	socket.emit('user', username);
+	const user = await users.findOne({ _id: { $eq: new ObjectId(id) } });
+
+	socket.emit('user', user);
 });
 
 // ==== WEBSERVER LOGIC ==== //
