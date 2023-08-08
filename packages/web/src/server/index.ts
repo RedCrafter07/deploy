@@ -59,6 +59,26 @@ interface ProjectData {
 	host?: { port: string; domain: string };
 }
 
+io.on('connect', (socket) => {
+	// check if user is logged in
+
+	if (!socket.handshake.headers.cookie) {
+		return socket.disconnect();
+	}
+
+	const cookie = socket.handshake.headers.cookie.split(';').find((c) => {
+		return c.trim().startsWith('user=');
+	});
+
+	if (!cookie) {
+		return socket.disconnect();
+	}
+
+	const username = cookie.split('=')[1];
+
+	socket.emit('user', username);
+});
+
 app.get('/', (req, res) => {
 	res.send('Hello world!');
 });
