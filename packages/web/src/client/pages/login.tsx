@@ -33,7 +33,7 @@ export default function Login() {
 									socket.connect();
 								});
 						}}
-						className='flex flex-row gap-2'
+						className='flex flex-col gap-2'
 					>
 						<div>
 							<label htmlFor='username'>Username</label>
