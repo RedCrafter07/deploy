@@ -7,5 +7,5 @@
 }
 
 .input {
-	@apply bg-zinc-900 border border-zinc-700 text-zinc-50 placeholder:text-zinc-50 placeholder:opacity-50 rounded-lg py-2 px-4 block w-full appearance-none leading-normal focus:outline-none;
+	@apply bg-zinc-800 border border-zinc-700 text-zinc-50 placeholder:text-zinc-50 placeholder:opacity-50 rounded-lg py-2 px-4 block w-full appearance-none leading-normal focus:outline-none;
 }
