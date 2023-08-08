@@ -116,6 +116,8 @@ app.post('/auth/login', async (req, res) => {
 		maxAge: 1000 * 60 * 60 * 24 * 7,
 		httpOnly: true,
 	});
+
+	res.sendStatus(200);
 });
 
 app.get('*', (req, res) => {
