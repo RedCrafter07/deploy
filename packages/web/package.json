@@ -1,7 +1,7 @@
 {
-	"name": "config",
+	"name": "web",
 	"version": "1.0.0",
-	"description": "The config for RedDeploy",
+	"description": "The web interface for RedDeploy",
 	"main": "index.js",
 	"scripts": {
 		"dev": "concurrently \"webpack watch -c webpack.config.ts --mode development\" \"tsx watch --clear-screen=false ./src/server/index.ts\"",
