@@ -1,5 +1,6 @@
 import { Configuration } from 'webpack';
 import type { Swcrc } from '@swc/core';
+import HTMLWebpackPlugin from 'html-webpack-plugin';
 
 export default {
 	entry: {
@@ -15,6 +16,12 @@ export default {
 	resolve: {
 		extensions: ['.ts', '.tsx', '.js', '.jsx', '.css'],
 	},
+
+	plugins: [
+		new HTMLWebpackPlugin({
+			template: './src/client/core/index.html',
+		}),
+	],
 
 	module: {
 		rules: [
