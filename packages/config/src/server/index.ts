@@ -161,7 +161,6 @@ const webServer = async () => {
 					'DB_PORT=27017',
 					'DB_USER=root',
 					'DB_PASS=reddeploy',
-					'DB_NAME=reddeploy',
 					`COOKIE_SECRET=${randomBytes(64).toString('hex')}`,
 				],
 				HostConfig: {
