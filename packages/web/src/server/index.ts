@@ -70,6 +70,7 @@ interface ProjectData {
 // ==== SOCKET IO ==== //
 
 io.on('connect', (socket) => {
+	console.log(socket.handshake.headers.cookie);
 	// check if user is logged in
 
 	if (!socket.handshake.headers.cookie) {
