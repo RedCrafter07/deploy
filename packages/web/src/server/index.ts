@@ -6,6 +6,7 @@ import { createServer } from 'http';
 import cookieParser from 'cookie-parser';
 import { MongoClient } from 'mongodb';
 import { compareSync } from 'bcrypt';
+import path from 'path';
 
 const {
 	DB_HOST,
@@ -39,6 +40,7 @@ const users = system.collection('users');
 
 app.use(bodyParser.json());
 app.use(cookieParser(COOKIE_SECRET));
+app.use('/.rd-web', express.static(path.join(__dirname, '..', 'client')));
 
 const cmURL = `${WEB_CM_HOST}:${WEB_CM_PORT}`;
 const cmSocket = SocketClient(`http://${cmURL}`, {
