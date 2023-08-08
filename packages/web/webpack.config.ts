@@ -9,7 +9,7 @@ export default {
 	output: {
 		filename: '[name].js',
 		path: __dirname + '/dist/client',
-		publicPath: '/.rd/',
+		publicPath: '/.rd-web/',
 	},
 
 	resolve: {
