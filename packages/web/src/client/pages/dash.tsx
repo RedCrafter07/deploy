@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import useSocket from '../util/useSocket';
 import { ProjectData } from '../../server';
+import { IconCalendarTime } from '@tabler/icons-react';
 
 interface DbProject extends ProjectData {
 	_id: string;
@@ -10,6 +11,7 @@ export default function Dash() {
 	const socket = useSocket();
 	const [user, setUser] = useState<{ username: string; admin: boolean }>();
 	const [projects, setProjects] = useState<DbProject[]>([]);
+	const [tasks, setTasks] = useState<{ name: string; current: string }[]>([]);
 
 	useEffect(() => {
 		socket.on('user', (user) => {
@@ -22,6 +24,10 @@ export default function Dash() {
 			console.log(projects);
 		});
 
+		socket.on('tasks', (tasks) => {
+			setTasks(tasks);
+		});
+
 		socket.connect();
 	}, []);
 
@@ -31,6 +37,15 @@ export default function Dash() {
 				<h1 className='text-3xl'>Hello, {user?.username}!</h1>
 
 				<div className='grid gap-4 lg:grid-cols-3'>
+					{tasks.map((t) => (
+						<div className='bg-zinc-800 rounded-lg shadow-md p-4 border-2 border-blue-800'>
+							<div className='flex flex-row justify-between'>
+								<h2 className='text-2xl'>{t.name}</h2>
+								<IconCalendarTime />
+							</div>
+							<p>{t.current ? 'Building...' : 'Scheduled...'}</p>
+						</div>
+					))}
 					{projects.map((project) => (
 						<div
 							className='bg-zinc-800 rounded-lg shadow-md p-4'
