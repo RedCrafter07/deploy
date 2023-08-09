@@ -12,7 +12,7 @@ export default function Dash() {
 			socket.emit('getProjects');
 		});
 
-		socket.on('getProjects', (projects) => {
+		socket.on('projects', (projects) => {
 			setProjects(projects);
 			console.log(projects);
 		});
