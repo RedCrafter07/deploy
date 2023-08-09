@@ -1,5 +1,6 @@
 class Scheduler<T> {
-	private readonly tasks: { name: string; task: T }[];
+	private tasks: { name: string; task: T }[];
+	protected currentTask: string;
 
 	constructor() {
 		this.tasks = [];
@@ -17,10 +18,15 @@ class Scheduler<T> {
 		while (this.tasks.length > 0) {
 			const task = this.tasks[0];
 
+			this.currentTask = task.name;
 			await task.task;
 
 			this.tasks.shift();
 		}
+	}
+
+	getCurrentTask() {
+		return this.currentTask;
 	}
 
 	getTasks() {
