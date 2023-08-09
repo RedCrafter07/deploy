@@ -21,7 +21,7 @@ export default function Login() {
 									password: data.get('password'),
 								})
 								.then(() => {
-									window.location.href = '/dash';
+									window.location.href = '/';
 								});
 						}}
 						className='flex flex-col gap-4 mt-4'
