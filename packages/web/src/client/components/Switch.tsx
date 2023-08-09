@@ -6,7 +6,7 @@ type CheckboxProps = React.DetailedHTMLProps<
 >;
 
 export default function Switch(
-	props: CheckboxProps & { label: string; onChange?: (e: boolean) => void },
+	props: CheckboxProps & { label: string; change?: (e: boolean) => void },
 ) {
 	const { label, checked: propsChecked, defaultChecked, ...rest } = props;
 
@@ -20,6 +20,12 @@ export default function Switch(
 		}
 	}, [propsChecked]);
 
+	useEffect(() => {
+		if (props.change) {
+			props.change(checked);
+		}
+	}, [checked]);
+
 	return (
 		<div>
 			<input
@@ -28,7 +34,6 @@ export default function Switch(
 				className='hidden'
 				ref={checkbox}
 				checked={checked}
-				onChange={(e) => props.onChange?.(e.target.checked)}
 			/>
 
 			<label
