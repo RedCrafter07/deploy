@@ -1,35 +1,47 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 type CheckboxProps = React.DetailedHTMLProps<
 	React.InputHTMLAttributes<HTMLInputElement>,
 	HTMLInputElement
 >;
 
-export default function Switch(props: CheckboxProps & { label: string }) {
-	const { label } = props;
+export default function Switch(
+	props: CheckboxProps & { label: string; onChange: (e: boolean) => void },
+) {
+	const { label, checked, defaultChecked, ...rest } = props;
 
 	const checkbox = useRef<HTMLInputElement>(null);
 
 	return (
 		<div>
-			<input type='checkbox' className='hidden' ref={checkbox} />
+			<input
+				type='checkbox'
+				{...rest}
+				className='hidden'
+				onChange={(e) => props.onChange?.(e.target.checked)}
+			/>
 
-			<div
-				className={`rounded-full w-14 h-8 ${
-					checkbox.current?.checked ? 'bg-green-500' : 'bg-zinc-800'
-				} flex items-center cursor-pointer transition-all duration-200`}
+			<label
+				htmlFor={props.id}
+				className='flex items-center cursor-pointer w-max'
 				onClick={() => {
 					checkbox.current?.click();
 				}}
 			>
-				<div
-					className={`rounded-full w-6 h-6 bg-zinc-700 ${
-						checkbox.current?.checked ? 'ml-6' : 'ml-1'
-					} transition-all duration-200`}
-				/>
-			</div>
-
-			<label className='ml-2'>{label}</label>
+				<div className='relative'>
+					<div
+						className={`block ${
+							checked ? 'bg-green-600' : 'bg-zinc-800'
+						} w-10 h-6 rounded-full transition`}
+					/>
+					<div
+						className={`dot absolute left-1 top-1 bg-zinc-100 w-4 h-4 rounded-full transition transform ${
+							checked ? 'translate-x-4' : ''
+						}`}
+					></div>
+				</div>
+				{label && <div className='ml-3 font-medium select-none'>{label}</div>}
+			</label>
 		</div>
 	);
 }
