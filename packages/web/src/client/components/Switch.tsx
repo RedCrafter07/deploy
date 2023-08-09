@@ -18,6 +18,7 @@ export default function Switch(
 				type='checkbox'
 				{...rest}
 				className='hidden'
+				ref={checkbox}
 				onChange={(e) => props.onChange?.(e.target.checked)}
 			/>
 
