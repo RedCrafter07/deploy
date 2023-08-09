@@ -30,7 +30,10 @@ class Scheduler<T> {
 	}
 
 	getTasks() {
-		return this.tasks;
+		return this.tasks.map((t) => ({
+			...t,
+			current: t.name === this.currentTask,
+		}));
 	}
 }
 
