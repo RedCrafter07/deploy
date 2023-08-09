@@ -253,8 +253,6 @@ function validateAuth(
 				else return res.sendStatus(401);
 			}
 		}
-
-		next();
 	}
 
 	return middleware;
