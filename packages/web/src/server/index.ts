@@ -69,6 +69,7 @@ export interface ProjectData {
 		username: string;
 	};
 	withProxy: boolean;
+	ownerID: string;
 	host?: { port: string; domain: string };
 }
 
@@ -112,6 +113,41 @@ io.on('connect', async (socket) => {
 	socket.on('getProjects', async () => {
 		cmSocket.emit('get all');
 	});
+
+	socket.on(
+		'createProject',
+		(data: {
+			name: string;
+			repo: string;
+			branch: string;
+			username: string;
+			token: string;
+			withProxy: boolean;
+			port?: string;
+			domain?: string;
+		}) => {
+			const project: ProjectData = {
+				name: data.name,
+				repo: {
+					name: data.repo,
+					branch: data.branch,
+					username: data.username,
+					token: data.token,
+				},
+				withProxy: data.withProxy,
+				ownerID: socket.data.user._id,
+			};
+
+			if (data.port && data.domain && data.withProxy) {
+				project.host = {
+					port: data.port,
+					domain: data.domain,
+				};
+			}
+
+			cmSocket.emit('add', project);
+		},
+	);
 });
 
 // ==== WEBSERVER LOGIC ==== //
