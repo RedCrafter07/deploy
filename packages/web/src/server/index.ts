@@ -96,7 +96,13 @@ io.on('connect', async (socket) => {
 
 	const { password, ...user } = u;
 
+	socket.data.user = user;
+
 	socket.emit('user', user);
+
+	socket.on('whoami', () => {
+		socket.emit('whoami', socket.data.user);
+	});
 });
 
 // ==== WEBSERVER LOGIC ==== //
