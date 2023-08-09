@@ -6,7 +6,7 @@ type CheckboxProps = React.DetailedHTMLProps<
 >;
 
 export default function Switch(
-	props: CheckboxProps & { label: string; onChange: (e: boolean) => void },
+	props: CheckboxProps & { label: string; onChange?: (e: boolean) => void },
 ) {
 	const { label, checked, defaultChecked, ...rest } = props;
 
