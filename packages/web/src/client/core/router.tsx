@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 const Login = lazy(() => import('../pages/login'));
 const Dash = lazy(() => import('../pages/dash'));
+const New = lazy(() => import('../pages/new'));
 
 export default function Router() {
 	return (
@@ -29,6 +30,7 @@ function Paths() {
 				<Routes location={location}>
 					<Route path='/'>
 						<Route path='login' element={<Login />} />
+						<Route path='new' element={<New />} />
 						<Route index element={<Dash />} />
 					</Route>
 				</Routes>
