@@ -56,11 +56,7 @@ const cmSocket = SocketClient(`http://${cmURL}`, {
 
 cmSocket.connect();
 
-let projects: ProjectData[];
-
 cmSocket.on('get all', (p) => {
-	projects = p;
-
 	io.emit('projects', p);
 });
 
