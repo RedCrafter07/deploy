@@ -50,7 +50,7 @@ const users = system.collection('users');
 
 const cmURL = `${WEB_CM_HOST}:${WEB_CM_PORT}`;
 const cmSocket = SocketClient(`http://${cmURL}`, {
-	transports: ['websocket'],
+	transports: ['polling'],
 	reconnection: true,
 });
 

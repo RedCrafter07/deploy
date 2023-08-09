@@ -5,7 +5,7 @@ export default function useSocket() {
 	const [socket] = useState(
 		io(window.location.origin, {
 			reconnection: true,
-			transports: ['websocket'],
+			transports: ['polling'],
 		}),
 	);
 
