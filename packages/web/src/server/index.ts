@@ -113,6 +113,11 @@ app.get('/login', async (req, res) => {
 	sendClient(req, res);
 });
 
+app.post('/auth/logout', (req, res) => {
+	res.clearCookie('user');
+	res.sendStatus(200);
+});
+
 app.post('/auth/login', async (req, res) => {
 	const { username, password } = req.body;
 
