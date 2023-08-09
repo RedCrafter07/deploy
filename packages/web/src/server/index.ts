@@ -100,6 +100,16 @@ app.get('/', (req, res) => {
 });
 
 app.get('/login', async (req, res) => {
+	if (req.cookies.user) {
+		const user = await users.findOne({
+			_id: { $eq: new ObjectId(req.cookies.user) },
+		});
+
+		if (user) {
+			return res.redirect('/');
+		}
+	}
+
 	sendClient(req, res);
 });
 
