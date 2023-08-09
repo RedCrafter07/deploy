@@ -15,7 +15,7 @@ export default function Switch(props: CheckboxProps & { label: string }) {
 			<input type='checkbox' className='hidden' ref={checkbox} />
 
 			<div
-				className='rounded-full p-2 w-14 h-8 bg-zinc-800'
+				className='rounded-full w-14 h-8 bg-zinc-800 flex items-center cursor-pointer'
 				onClick={() => {
 					checkbox.current?.click();
 				}}
