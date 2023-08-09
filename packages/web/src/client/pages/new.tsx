@@ -18,6 +18,10 @@ export default function New() {
 		socket.connect();
 	}, []);
 
+	useEffect(() => {
+		console.log(withProxy);
+	}, [withProxy]);
+
 	return (
 		<div className='min-h-screen bg-zinc-900 text-zinc-50'>
 			<div
