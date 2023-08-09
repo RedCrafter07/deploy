@@ -23,7 +23,7 @@ const {
 const app = express();
 const server = createServer(app);
 const io = new SocketServer(server, {
-	transports: ['websocket'],
+	transports: ['polling'],
 });
 
 app.use(bodyParser.json());
@@ -50,7 +50,7 @@ const users = system.collection('users');
 
 const cmURL = `${WEB_CM_HOST}:${WEB_CM_PORT}`;
 const cmSocket = SocketClient(`http://${cmURL}`, {
-	transports: ['polling'],
+	transports: ['websocket'],
 	reconnection: true,
 });
 
