@@ -112,9 +112,15 @@ io.on('connect', async (socket) => {
 
 // ==== WEBSERVER LOGIC ==== //
 
-app.get('/', (req, res) => {
-	sendClient(req, res);
-});
+app.get(
+	'/',
+	validateAuth('normal', (req, res) => {
+		res.status(401).redirect('/login');
+	}),
+	(req, res) => {
+		sendClient(req, res);
+	},
+);
 
 app.get(
 	'/login',
