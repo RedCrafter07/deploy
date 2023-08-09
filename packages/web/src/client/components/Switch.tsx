@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type CheckboxProps = React.DetailedHTMLProps<
 	React.InputHTMLAttributes<HTMLInputElement>,
@@ -8,9 +8,17 @@ type CheckboxProps = React.DetailedHTMLProps<
 export default function Switch(
 	props: CheckboxProps & { label: string; onChange?: (e: boolean) => void },
 ) {
-	const { label, checked, defaultChecked, ...rest } = props;
+	const { label, checked: propsChecked, defaultChecked, ...rest } = props;
 
 	const checkbox = useRef<HTMLInputElement>(null);
+
+	const [checked, setChecked] = useState(defaultChecked ?? false);
+
+	useEffect(() => {
+		if (propsChecked !== undefined) {
+			setChecked(propsChecked);
+		}
+	}, [propsChecked]);
 
 	return (
 		<div>
@@ -19,6 +27,7 @@ export default function Switch(
 				{...rest}
 				className='hidden'
 				ref={checkbox}
+				checked={checked}
 				onChange={(e) => props.onChange?.(e.target.checked)}
 			/>
 
@@ -26,7 +35,7 @@ export default function Switch(
 				htmlFor={props.id}
 				className='flex items-center cursor-pointer w-max'
 				onClick={() => {
-					checkbox.current?.click();
+					setChecked(!checked);
 				}}
 			>
 				<div className='relative'>
@@ -39,7 +48,7 @@ export default function Switch(
 						className={`dot absolute left-1 top-1 bg-zinc-100 w-4 h-4 rounded-full transition transform ${
 							checked ? 'translate-x-4' : ''
 						}`}
-					></div>
+					/>
 				</div>
 				{label && <div className='ml-3 font-medium select-none'>{label}</div>}
 			</label>
