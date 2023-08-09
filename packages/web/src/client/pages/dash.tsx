@@ -4,11 +4,19 @@ import useSocket from '../util/useSocket';
 export default function Dash() {
 	const socket = useSocket();
 	const [user, setUser] = useState<{ username: string; admin: boolean }>();
+	const [projects, setProjects] = useState([]);
 
 	useEffect(() => {
 		socket.on('user', (user) => {
 			setUser(user);
+			socket.emit('getProjects');
 		});
+
+		socket.on('getProjects', (projects) => {
+			setProjects(projects);
+			console.log(projects);
+		});
+
 		socket.connect();
 	}, []);
 
