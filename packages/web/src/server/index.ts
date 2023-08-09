@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { io as SocketClient } from 'socket.io-client';
 import { Server as SocketServer } from 'socket.io';
 import bodyParser from 'body-parser';
@@ -113,22 +113,18 @@ io.on('connect', async (socket) => {
 // ==== WEBSERVER LOGIC ==== //
 
 app.get('/', (req, res) => {
-	res.send('Hello world!');
-});
-
-app.get('/login', async (req, res) => {
-	if (req.cookies.user) {
-		const user = await users.findOne({
-			_id: { $eq: new ObjectId(req.cookies.user) },
-		});
-
-		if (user) {
-			return res.redirect('/');
-		}
-	}
-
 	sendClient(req, res);
 });
+
+app.get(
+	'/login',
+	validateAuth('invert', (req, res) => {
+		res.redirect('/');
+	}),
+	async (req, res) => {
+		sendClient(req, res);
+	},
+);
 
 app.post('/auth/logout', (req, res) => {
 	res.clearCookie('user');
@@ -166,4 +162,37 @@ server.listen(process.env.WEB_PORT, () => {
 
 function sendClient(req: Request, res: Response) {
 	res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
+}
+
+function validateAuth(
+	mode: 'normal' | 'invert',
+	cb?: (req: Request, res: Response) => void,
+) {
+	async function middleware(req: Request, res: Response, next: NextFunction) {
+		if (req.cookies.user) {
+			const user = await users.findOne({
+				_id: { $eq: new ObjectId(req.cookies.user) },
+			});
+
+			if (user) {
+				if (mode === 'normal') {
+					return next();
+				} else {
+					if (cb) return cb(req, res);
+					else return res.sendStatus(401);
+				}
+			} else {
+				if (mode === 'invert') {
+					return next();
+				} else {
+					if (cb) return cb(req, res);
+					else return res.sendStatus(401);
+				}
+			}
+		}
+
+		next();
+	}
+
+	return middleware;
 }
