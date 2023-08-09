@@ -126,7 +126,7 @@ export default function New() {
 					</div>
 
 					<AnimatePresence>
-						{withProxy && (
+						{withProxy ? (
 							<motion.div
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
@@ -154,10 +154,10 @@ export default function New() {
 									/>
 								</div>
 							</motion.div>
-						)}
+						) : null}
 					</AnimatePresence>
 
-					<button className='w-full p-2 bg-zinc-800 hover:bg-green-600 rounded-lg text-center active:scale-95 transition-all duration-100'>
+					<button className='mt-2 w-full p-2 bg-zinc-800 hover:bg-green-600 rounded-lg text-center active:scale-95 transition-all duration-100'>
 						Create!
 					</button>
 				</form>
