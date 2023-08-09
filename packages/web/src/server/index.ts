@@ -45,8 +45,6 @@ mongo.connect();
 
 const system = mongo.db('rd-system');
 const users = system.collection('users');
-const projectDb = mongo.db('project');
-const projects = projectDb.collection('projects');
 
 // ==== CONTAINER MANAGEMENT ==== //
 
@@ -55,7 +53,16 @@ const cmSocket = SocketClient(`http://${cmURL}`, {
 	transports: ['websocket'],
 	reconnection: true,
 });
+
 cmSocket.connect();
+
+let projects: any[];
+
+cmSocket.on('get all', (p) => {
+	projects = p;
+
+	io.emit('projects', p);
+});
 
 interface ProjectData {
 	name: string;
@@ -107,8 +114,7 @@ io.on('connect', async (socket) => {
 	});
 
 	socket.on('getProjects', async () => {
-		const p = await projects.find({}).toArray();
-		socket.emit('getProjects', p);
+		cmSocket.emit('get all');
 	});
 });
 
