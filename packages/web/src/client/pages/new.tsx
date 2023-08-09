@@ -124,7 +124,7 @@ export default function New() {
 						<Switch
 							label='Enable proxy'
 							checked={withProxy}
-							onChange={() => setWithProxy((c) => !c)}
+							onChange={(e) => setWithProxy(e)}
 							name='proxy'
 						/>
 					</div>
