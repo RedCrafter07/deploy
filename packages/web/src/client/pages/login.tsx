@@ -21,16 +21,7 @@ export default function Login() {
 									password: data.get('password'),
 								})
 								.then(() => {
-									const socket = io(window.location.origin, {
-										reconnection: true,
-										transports: ['websocket'],
-									});
-
-									socket.on('user', (user) => {
-										console.log(user);
-									});
-
-									socket.connect();
+									window.location.href = '/dash';
 								});
 						}}
 						className='flex flex-col gap-4 mt-4'
