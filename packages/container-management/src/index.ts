@@ -125,6 +125,10 @@ const scheduler = new Scheduler();
 			socket.emit('get tasks', scheduler.getTasks());
 		});
 
+		socket.on('get current task', () => {
+			socket.emit('get current task', scheduler.getCurrentTask());
+		});
+
 		socket.on('remove', async (id: string) => {
 			const projectDb = mongo.db('project');
 			const project = (await projectDb.collection('projects').findOne({
