@@ -25,7 +25,7 @@ export default function New() {
 					!connected
 						? 'opacity-100 pointer-events-auto'
 						: 'opacity-0 pointer-events-none'
-				}`}
+				} z-[42]`}
 			>
 				<div className='bg-black opacity-25' />
 				<div className='grid place-items-center'>
