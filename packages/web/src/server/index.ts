@@ -88,7 +88,13 @@ io.on('connect', async (socket) => {
 
 	const id = cookie.split('=')[1];
 
-	const user = await users.findOne({ _id: { $eq: new ObjectId(id) } });
+	const u = await users.findOne({ _id: { $eq: new ObjectId(id) } });
+	if (!u) {
+		socket.emit('user', 'Not logged in');
+		return socket.disconnect();
+	}
+
+	const { password, ...user } = u;
 
 	socket.emit('user', user);
 });
