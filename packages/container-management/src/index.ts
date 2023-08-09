@@ -104,6 +104,7 @@ const scheduler = new Scheduler();
 			token: string;
 			username: string;
 		};
+		ownerID: string;
 		withProxy: boolean;
 		host?: { port: string; domain: string };
 	}
@@ -199,7 +200,7 @@ const scheduler = new Scheduler();
 	});
 
 	async function addProject(data: ProjectData) {
-		const { host: preBuildHost, repo } = data;
+		const { host: preBuildHost, repo, ownerID } = data;
 
 		console.log(`Building image for project "${data.name}"`);
 
@@ -248,6 +249,7 @@ const scheduler = new Scheduler();
 			container,
 			host,
 			withProxy: data.withProxy,
+			ownerID,
 		};
 
 		const { insertedId } = await project
