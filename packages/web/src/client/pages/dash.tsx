@@ -41,7 +41,9 @@ export default function Dash() {
 						<div className='bg-zinc-800 rounded-lg shadow-md p-4 border-2 border-blue-800'>
 							<div className='flex flex-row justify-between'>
 								<h2 className='text-2xl'>{t.name}</h2>
-								{t.current ? <IconPackageImport /> : <IconCalendarTime />}
+								<div className='opacity-75'>
+									{t.current ? <IconPackageImport /> : <IconCalendarTime />}
+								</div>
 							</div>
 							<p>{t.current ? 'Building...' : 'Scheduled...'}</p>
 						</div>
