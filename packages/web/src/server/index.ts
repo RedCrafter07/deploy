@@ -195,6 +195,13 @@ function validateAuth(
 					else return res.sendStatus(401);
 				}
 			}
+		} else {
+			if (mode === 'invert') {
+				return next();
+			} else {
+				if (cb) return cb(req, res);
+				else return res.sendStatus(401);
+			}
 		}
 
 		next();
