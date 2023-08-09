@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import useSocket from '../util/useSocket';
 import { ProjectData } from '../../server';
-import { IconCalendarTime } from '@tabler/icons-react';
+import { IconCalendarTime, IconPackageImport } from '@tabler/icons-react';
 
 interface DbProject extends ProjectData {
 	_id: string;
@@ -41,7 +41,7 @@ export default function Dash() {
 						<div className='bg-zinc-800 rounded-lg shadow-md p-4 border-2 border-blue-800'>
 							<div className='flex flex-row justify-between'>
 								<h2 className='text-2xl'>{t.name}</h2>
-								<IconCalendarTime />
+								{t.current ? <IconPackageImport /> : <IconCalendarTime />}
 							</div>
 							<p>{t.current ? 'Building...' : 'Scheduled...'}</p>
 						</div>
