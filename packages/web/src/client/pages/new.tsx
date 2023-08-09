@@ -9,13 +9,29 @@ export default function New() {
 	const navigate = useNavigate();
 
 	const [withProxy, setWithProxy] = useState(false);
+	const [connected, setConnected] = useState(false);
 
 	useEffect(() => {
+		socket.on('connect', () => {
+			setConnected(true);
+		});
 		socket.connect();
 	}, []);
 
 	return (
 		<div className='min-h-screen bg-zinc-900 text-zinc-50'>
+			<div
+				className={`absolute top-0 left-0 w-full h-screen backdrop-blur-sm ${
+					!connected
+						? 'opacity-100 pointer-events-auto'
+						: 'opacity-0 pointer-events-none'
+				}`}
+			>
+				<div className='bg-black opacity-25' />
+				<div className='grid place-items-center'>
+					<h1 className='text-3xl'>Connecting to socket...</h1>
+				</div>
+			</div>
 			<div className='container mx-auto p-2'>
 				<h1 className='text-3xl'>Create a new project</h1>
 
@@ -116,31 +132,34 @@ export default function New() {
 								animate={{ opacity: 1 }}
 								exit={{ opacity: 0 }}
 								transition={{ duration: 0.2 }}
+								className='flex flex-col gap-2 mt-2'
 							>
-								<div className='flex flex-col gap-2 mt-2'>
-									<label htmlFor='proxyPort'>Port</label>
+								<label htmlFor='proxyPort'>Port</label>
+								<input
+									type='number'
+									name='port'
+									id='proxyPort'
+									className='input'
+								/>
+
+								<label htmlFor='domain'>Domain</label>
+
+								<div className='flex flex-row gap-2'>
 									<input
-										type='number'
-										name='port'
-										id='proxyPort'
+										type='text'
+										name='domain'
+										id='domain'
 										className='input'
+										placeholder='your-project.example.com'
 									/>
-
-									<label htmlFor='domain'>Domain</label>
-
-									<div className='flex flex-row gap-2'>
-										<input
-											type='text'
-											name='domain'
-											id='domain'
-											className='input'
-											placeholder='your-project.example.com'
-										/>
-									</div>
 								</div>
 							</motion.div>
 						)}
 					</AnimatePresence>
+
+					<button className='w-full p-2 bg-zinc-800 hover:bg-green-600 rounded-lg text-center active:scale-95 transition-all duration-100'>
+						Create!
+					</button>
 				</form>
 			</div>
 		</div>
