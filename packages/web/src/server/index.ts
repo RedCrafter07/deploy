@@ -103,6 +103,11 @@ io.on('connect', async (socket) => {
 	socket.on('whoami', () => {
 		socket.emit('whoami', socket.data.user);
 	});
+
+	socket.on('getProjects', async () => {
+		const projects = await system.collection('projects').find({}).toArray();
+		socket.emit('getProjects', projects);
+	});
 });
 
 // ==== WEBSERVER LOGIC ==== //
