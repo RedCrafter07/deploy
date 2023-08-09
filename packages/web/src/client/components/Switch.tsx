@@ -15,15 +15,17 @@ export default function Switch(props: CheckboxProps & { label: string }) {
 			<input type='checkbox' className='hidden' ref={checkbox} />
 
 			<div
-				className='rounded-full w-14 h-8 bg-zinc-800 flex items-center cursor-pointer'
+				className={`rounded-full w-14 h-8 ${
+					checkbox.current?.checked ? 'bg-green-500' : 'bg-zinc-800'
+				} flex items-center cursor-pointer transition-all duration-200`}
 				onClick={() => {
 					checkbox.current?.click();
 				}}
 			>
 				<div
-					className={`bg-zinc-700 rounded-full w-6 h-6 ${
-						checkbox.current?.checked ? 'ml-6' : ''
-					}`}
+					className={`rounded-full w-6 h-6 bg-zinc-700 ${
+						checkbox.current?.checked ? 'ml-6' : 'ml-1'
+					} transition-all duration-200`}
 				/>
 			</div>
 
