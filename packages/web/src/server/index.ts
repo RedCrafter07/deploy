@@ -64,7 +64,7 @@ cmSocket.on('get all', (p) => {
 	io.emit('projects', p);
 });
 
-interface ProjectData {
+export interface ProjectData {
 	name: string;
 	repo: {
 		name: string;
