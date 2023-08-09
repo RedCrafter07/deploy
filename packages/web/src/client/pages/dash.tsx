@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import useSocket from '../util/useSocket';
+import { ProjectData } from '../../server';
 
 export default function Dash() {
 	const socket = useSocket();
 	const [user, setUser] = useState<{ username: string; admin: boolean }>();
-	const [projects, setProjects] = useState([]);
+	const [projects, setProjects] = useState<ProjectData[]>([]);
 
 	useEffect(() => {
 		socket.on('user', (user) => {
