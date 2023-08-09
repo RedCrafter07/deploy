@@ -60,6 +60,10 @@ cmSocket.on('get all', (p) => {
 	io.emit('projects', p);
 });
 
+cmSocket.on('get tasks', (t) => {
+	io.emit('tasks', t);
+});
+
 export interface ProjectData {
 	name: string;
 	repo: {
@@ -146,6 +150,9 @@ io.on('connect', async (socket) => {
 			}
 
 			cmSocket.emit('add', project);
+
+			cmSocket.emit('get all');
+			cmSocket.emit('get tasks');
 		},
 	);
 });
