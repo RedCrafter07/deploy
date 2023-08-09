@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import useSocket from '../util/useSocket';
 import Switch from '../components/Switch';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 export default function New() {
 	const socket = useSocket();
+	const navigate = useNavigate();
 
 	const [withProxy, setWithProxy] = useState(false);
 
@@ -20,6 +22,23 @@ export default function New() {
 				<form
 					onSubmit={(e) => {
 						e.preventDefault();
+
+						const formData = new FormData(e.target as HTMLFormElement);
+
+						const data = {
+							name: formData.get('name'),
+							repo: formData.get('repo'),
+							branch: formData.get('branch'),
+							username: formData.get('username'),
+							token: formData.get('token'),
+							withProxy,
+							port: formData.get('port'),
+							domain: formData.get('domain'),
+						};
+
+						socket.emit('createProject', data);
+
+						navigate('/');
 					}}
 				>
 					<div className='flex flex-col gap-2'>
