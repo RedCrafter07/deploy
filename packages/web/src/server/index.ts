@@ -127,6 +127,16 @@ app.get(
 );
 
 app.get(
+	'/new',
+	validateAuth('normal', (req, res) => {
+		res.status(401).redirect('/login');
+	}),
+	(req, res) => {
+		sendClient(req, res);
+	},
+);
+
+app.get(
 	'/login',
 	validateAuth('invert', (req, res) => {
 		res.redirect('/');
