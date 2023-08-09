@@ -123,13 +123,13 @@ export default function New() {
 
 						<Switch
 							label='Enable proxy'
-							change={() => setWithProxy((p) => !p)}
+							change={(e) => setWithProxy(e)}
 							name='proxy'
 						/>
 					</div>
 
 					<AnimatePresence>
-						{withProxy ? (
+						{withProxy && (
 							<motion.div
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
@@ -157,7 +157,7 @@ export default function New() {
 									/>
 								</div>
 							</motion.div>
-						) : null}
+						)}
 					</AnimatePresence>
 
 					<button className='mt-2 w-full p-2 bg-zinc-800 hover:bg-green-600 rounded-lg text-center active:scale-95 transition-all duration-100'>
