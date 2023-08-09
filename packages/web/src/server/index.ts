@@ -45,6 +45,8 @@ mongo.connect();
 
 const system = mongo.db('rd-system');
 const users = system.collection('users');
+const projectDb = mongo.db('project');
+const projects = projectDb.collection('projects');
 
 // ==== CONTAINER MANAGEMENT ==== //
 
@@ -105,8 +107,8 @@ io.on('connect', async (socket) => {
 	});
 
 	socket.on('getProjects', async () => {
-		const projects = await system.collection('projects').find({}).toArray();
-		socket.emit('getProjects', projects);
+		const p = await projects.find({}).toArray();
+		socket.emit('getProjects', p);
 	});
 });
 
